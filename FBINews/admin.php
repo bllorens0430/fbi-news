@@ -117,18 +117,37 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Login</title>
+<title>Admin</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-  <p>Hello <?php echo htmlentities($_SESSION['user']['username'], ENT_QUOTES, 'UTF-8'); ?>!</p>
-  <p><a href="memberlist.php">Memberlist</a></p>
-  <p><a href="edit_account.php">Edit Account</a></p>
-  <p><a href="register.php">Register Account</a></p>
-  <p><a href="technique/index.php">Add Technique</a></p>
-  <p><a href="view.php">View Cases</a></p>
+  <div id="container">
+	  <div id="banner">
+	    <h1>Xinwen Fu</h1>
+	  </div>
+	  <div id="navcontainer">
+	    <ul id="navlist">
+	      <li><a target="_blank" href="http://www.cs.uml.edu/~xinwenfu/">HOMEPAGE</a></li>
+	      <li id="active"><a id="current" href="index.php">LOGIN</a></li>
+	      <li><a href="content.php">SYSTEM</a></li>
+	      <li><a href="resources.html">RESOURCES</a></li>
+	      <li><a href="service.html">SERVICE</a></li>
+	      <li><a href="contact.html">CONTACT</a></li>
+	    </ul>
+	  </div>
+	  <div id="content">
+		  <p>Hello <?php echo htmlentities($_SESSION['user']['username'], ENT_QUOTES, 'UTF-8'); ?>!</p>
+		  <p><a href="memberlist.php">Memberlist</a></p>
+		  <p><a href="edit_account.php">Edit Account</a></p>
+		  <p><a href="register.php">Register Account</a></p>
+		  <p><a href="technique/index.php">Add Technique</a></p>
+		  <p><a href="view.php">View Cases</a></p>
+	  </div>
+	</div>
    <form action="logout.php">
   <input type="submit" value="Logout">
 </form>
+</div>
 </body>
 </html> 

@@ -37,7 +37,7 @@ padding : 5px 5px 0 0;
 font : 170% verdana, "Trebuchet MS", arial, tahoma, sans-serif;
 text-align : right;
 letter-spacing : 5px;
-color : #4B2207;
+color : #fff;
 background : inherit;
 }
 			/*TOP NAVIGATION*/
@@ -302,3 +302,4 @@ margin : 0 15px 0 5px;
 	padding:4px 16px;
 	text-shadow:#FE6 0 1px 0
 }
+

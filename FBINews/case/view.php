@@ -136,10 +136,10 @@
 </td>
 </tr>
 </table>
-<table border="1">
+<table id='case'>
   <?php 
   $sql="SELECT * FROM cases ORDER BY news_date DESC";
-          
+  $count="evenrow";    
   foreach ($db->query($sql) as $test)
   {
 	$date = DateTime::createFromFormat('Y-m-d h:i:s', $test['news_date']);
@@ -152,8 +152,14 @@
 	// or supplied previously by the user. After encoding by htmlspecialchars, 
 	// although "O'Reilly" is now not in its literal form in the HTML code, 
 	// it will be displayed and sent properly from a form on an HTML page as seen in a browser
+	if ($count=="oddrow") {
+		$count="evenrow";
+	}
+	else{
+		$count="oddrow";
+	}
 	$id = $test['case_index'];	
-	echo "<tr align='center'>";	
+	echo "<tr class='$count' align='center'>";	
 	echo"<td style='display:none;'><font color='black'>" .htmlspecialchars(stripslashes($test['case_index']), ENT_QUOTES, 'UTF-8')."</font></td>";
 	echo"<td><font color='black'>" . $date->format('m.d.y') . "</font></td>";
 	echo"<td><font color='black'> <a target='_blank' href='".htmlspecialchars(stripslashes($test['news_url']), ENT_QUOTES, 'UTF-8')."'>" . htmlspecialchars(stripslashes($test['news_title']), ENT_QUOTES, 'UTF-8'). "</a></font></td>";
