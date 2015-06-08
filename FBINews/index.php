@@ -17,7 +17,7 @@
 	// If it has, then the login code is run, otherwise the form is displayed
 	if(!empty($_POST))
 	{
-		echo "Check login now! <br>";
+		//echo "Check login now! <br>";
 		// This query retreives the user's information from the database using
 		// their username.
 		$query = "SELECT id, username, password, salt, email
@@ -86,9 +86,9 @@
 			// or not the user is logged in.  We can also use it to retrieve
 			// the user's details.				
 			$_SESSION['user'] = $row;
-//			$_SESSION['username']=$_POST['username'];
+			$_SESSION['username']=$_POST['username'];
 
-/*			
+			
 			// Redirect the user to the private members-only page.
 			if (strcmp($_POST['username'], "root") == 0) {
 			  header("Location: admin.php");
@@ -97,8 +97,8 @@
 			
 			header("Location: view.php");
 			die("Redirecting to: view.php");
-			*/
-//			echo "going to content.php";
+			
+			echo "going to content.php";
 
 			header("Location: content.php");
 			die("Redirecting to: content.php");
