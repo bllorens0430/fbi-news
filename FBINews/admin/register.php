@@ -200,12 +200,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../css/sidestyle.css" rel="stylesheet" type="text/css" />
 <title>Register</title>
 </head>
 
 <body>
 <div id='container'>
 <?php include '../header.php' ?>
+<div id='sidebar'>
+	<h2>Register</h2>
+</div>
 <div id= 'content'>
   <script type="text/javascript" language="JavaScript">
 <!--
@@ -225,7 +229,7 @@ function checkPassword(theForm) {
 //-->
 </script> 
 
-    <h1>Register</h1>
+    
     <form action="register.php" method="post" onsubmit="return checkPassword(this)">
         Username:<br />
         <input type="text" name="username" value="" />

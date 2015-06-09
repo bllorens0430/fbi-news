@@ -59,6 +59,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>View News</title>
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -69,7 +70,9 @@
         // return true or false, depending on whether you want to allow the `href` property to follow through or not
     }
 </script>
-
+<div id='container'>
+  <?php include '../header2.php' ?>
+  <div id='content'>
 <table>
 <tr>
 <td>
@@ -89,23 +92,28 @@
 </td>
 </tr>
 </table>
-<table border="1">
+<table id='dbtable'>
   <?php
   //include("dbo.php");
   
   $sql="SELECT * FROM crime_category ORDER BY crime_classification";
   
   echo "<tr align='left'>";
-  echo"<td><font color='black'> <b>ID</b> </font></td>";
-      echo"<td><font color='black'> <b>Crime Classification</b> </font></td>";
-      echo"<td><font color='black'> <b>Category Name</b> </font></td>";
+  echo"<th><font color='black'> <b>ID</b> </font></td>";
+      echo"<th><font color='black'> <b>Crime Classification</b> </font></td>";
+      echo"<th><font color='black'> <b>Category Name</b> </font></td>";
       echo "</tr>";
-
+      $count="evenrow";
   foreach ($db->query($sql) as $test)
   {
 	  $id=$test['cat_number'];
-  
-      echo "<tr align='left'>";	
+      if ($count=="oddrow") {
+        $count="evenrow";
+      }
+      else{
+        $count="oddrow";
+      }
+      echo "<tr class='$count' align='left'>";	
       echo"<td><font color='black'>" .htmlspecialchars($id, ENT_QUOTES, 'UTF-8') ."</font></td>";
       echo"<td><font color='black'>" . htmlspecialchars($test['crime_classification'], ENT_QUOTES, 'UTF-8') . "</font></td>";
 	  $cat_name=htmlspecialchars($test['cat_name'], ENT_QUOTES, 'UTF-8');

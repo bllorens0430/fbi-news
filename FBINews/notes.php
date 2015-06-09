@@ -8,10 +8,15 @@ require("common.php"); // connect to the database
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+  <link href="css/sidestyle.css" rel="stylesheet" type="text/css" />
 <title>View News</title>
 </head>
 
 <body>
+  <div id='container'>
+    <?php include 'header.php' ?>
+  <div id='content'>
 <table>
 <tr>
 <td>
@@ -42,7 +47,9 @@ require("common.php"); // connect to the database
   $db=null;
   ?>
 </table>
-
+</div>
+<?php include 'footer.php' ?>
+</div>
 </body>
 </html>
 

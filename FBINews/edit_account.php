@@ -158,8 +158,13 @@ function checkPassword(theForm) {
 }
 //-->
 </script> 
+  <div id='container'>
+  	<?php include 'header.php' ?>
+  	<div id='sidebar'>
+		<h2>Edit Account</h2>
+  	</div>
+  	<div id='content'>
   
-  <h1>Edit Account</h1>
   <form action="edit_account.php" method="post" onsubmit="return checkPassword(this)">
 	  Username:<br />
 	  <b><?php echo htmlentities($_SESSION['user']['username'], ENT_QUOTES, 'UTF-8'); ?></b>
@@ -179,6 +184,8 @@ function checkPassword(theForm) {
   </form>
  
 <FORM><INPUT Type="button" VALUE="Cancel" onClick="history.go(-1);return true;"></FORM>
-
+	</div>
+	<?php include 'footer.php' ?>
+</div>
   </body>
 </html>

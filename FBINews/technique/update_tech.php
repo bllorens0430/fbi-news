@@ -31,10 +31,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Edit News</title>
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-
+<div id='container'>
+  <?php include '../header2.php' ?>
+  <div id='content'>
 <form id="technique" name="technique" method="post" action="index.php">
 <table> 
 <tr> 
@@ -78,7 +81,9 @@
 <form action="index.php">
 <input type="submit" value="Cancel">
 </form>      
-
+</div>
+<?php include '../footer.php' ?>
+</div>
 
 </body>
 </html>

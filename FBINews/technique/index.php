@@ -63,7 +63,7 @@ if(isset($_POST['Update']))
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
 <title>View News</title>
 </head>
 
@@ -82,22 +82,9 @@ function goBack() {
 }
 </script>
 
-<div id="container">
-  <div id="banner">
-    <h1>Xinwen Fu</h1>
-  </div>
-  <div id="navcontainer">
-    <ul id="navlist">
-      <li><a target="_blank" href="http://www.cs.uml.edu/~xinwenfu/">HOMEPAGE</a></li>
-      <li><a href="../index.php">LOGIN</a></li>
-      <li id="active"><a id="current" href="../content.php">SYSTEM</a></li>
-      <li><a href="../resources.html">RESOURCES</a></li>
-      <li><a href="../service.html">SERVICE</a></li>
-      <li><a href="../contact.html">CONTACT</a></li>
-    </ul>
-  </div>
 
-
+<div id='container'>
+  <?php include '../header2.php' ?>
   <div id="content">
 <table>
 <tr>
@@ -118,16 +105,21 @@ function goBack() {
 </td>
 </tr>
 </table>
-<table border="1">
+<table id='dbtable'>
   <?php
   
   $sql="SELECT * FROM technique";
-          
+   $count='evenrow';       
   foreach ($db->query($sql) as $test)
   {
-  
+    if ($count=="oddrow") {
+      $count="evenrow";
+    }
+    else{
+      $count="oddrow";
+    }
       $id = $test['technique_index'];	
-      echo "<tr align='center'>";	
+      echo "<tr class='$count' align='center'>";	
       echo"<td><font color='black'>" .htmlspecialchars($test['technique_index'], ENT_QUOTES, 'UTF-8')."</font></td>";
       echo"<td><font color='black'>". htmlspecialchars($test['technique_name'], ENT_QUOTES, 'UTF-8'). "</font></td>";
       echo"<td><font color='black'>". htmlspecialchars($test['technique_category'], ENT_QUOTES, 'UTF-8'). "</font></td>";

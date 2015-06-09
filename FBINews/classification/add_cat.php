@@ -10,9 +10,13 @@ require("../common.php"); // connect to the database
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Add Crime Category</title>
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
+  <div id='container'>
+    <?php include '../header2.php' ?>
+    <div id='content'>
 <form id="crime_cat" name="Crime Category" method="post" action="index.php">
   <p>
     Crime classification: 
@@ -42,5 +46,8 @@ require("../common.php"); // connect to the database
 </table>
 
 </form>
+</div>
+<?php include '../footer.php' ?>
+</div>
 </body>
 </html>

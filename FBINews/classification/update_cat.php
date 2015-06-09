@@ -29,10 +29,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
 <title>Edit News</title>
 </head>
 
 <body>
+<div id='container'>
+  <?php include '../header2.php' ?>
+  <div id='content'>
 <form id="crime-category" name="Crime Category" method="post" action="index.php">
 
 <p>Category Number:
@@ -69,6 +73,8 @@
   </tr>
 </table>    
 </form>
-
+</div>
+<?php include '../footer.php' ?>
+</div>
 </body>
 </html>

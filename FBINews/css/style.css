@@ -18,6 +18,7 @@ min-height: 100%;
 width : 750px;
 margin : 0 auto;
 padding-bottom: 30px;
+background-color: #eee;
 }
 
 * html #container {
@@ -79,6 +80,7 @@ margin-left : 10px;
 margin-bottom : 10px;
 color : #666;
 background : #fff;
+
 }
 #content h2 {
 margin : 0 0 0 0;
@@ -326,7 +328,9 @@ margin : 0 15px 0 5px;
 text-align: left;
 padding-left: 5px;
 color: #BC5510;
+white-space: nowrap;
 }
+
 .oddrow td, .evenrow td{
   padding-left: 5px;
 }
@@ -335,4 +339,7 @@ color: #BC5510;
 input.password{
   width: 125px;
   height: 20px;
+}
+textarea{
+  max-width: 98%;
 }

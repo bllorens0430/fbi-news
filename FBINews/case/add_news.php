@@ -12,27 +12,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
 <title>Add FBI News</title>
 </head>
 
 <body>
 
 <div id="container">
-  <div id="banner">
-    <h1>Xinwen Fu</h1>
-  </div>
-  <div id="navcontainer">
-    <ul id="navlist">
-      <li><a target="_blank" href="http://www.cs.uml.edu/~xinwenfu/">HOMEPAGE</a></li>
-      <li><a href="../index.php">LOGIN</a></li>
-      <li id="active"><a id="current" href="../content.php">SYSTEM</a></li>
-      <li><a href="../resources.html">RESOURCES</a></li>
-      <li><a href="../service.html">SERVICE</a></li>
-      <li><a href="../contact.html">CONTACT</a></li>
-    </ul>
-  </div>
-
+  <?php include '../header2.php' ?>
 
   <div id="content">
 
@@ -132,11 +119,7 @@ function checkDate() {
 </form>
 
   </div>
-  <div id="container-foot">
-    <div id="footer">
-      <p><a href="http://www.cs.uml.edu/~xinwenfu/">homepage</a> | <a href="mailto:xinwenfu@gmail.com">contact</a> | &copy; 2015 Xinwen Fu<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"></a></p>
-    </div>
-  </div>
+  <?php include '../footer.php' ?>
 </div>
 
 

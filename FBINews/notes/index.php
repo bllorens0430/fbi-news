@@ -8,25 +8,16 @@ require("../check.php"); // check if there is a session ongoing
 <head>
 <title>Welcome</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../css/sidestyle.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="container">
-  <div id="banner">
-    <h1>Xinwen Fu</h1>
-  </div>
-  <div id="navcontainer">
-    <ul id="navlist">
-      <li><a href="homepage.html">HOMEPAGE</a></li>
-      <li id="active"><a id="current" href="index.html">ABOUT</a></li>
-      <li><a href="#">SYSTEM</a></li>
-      <li><a href="#">RESOURCES</a></li>
-      <li><a href="#">SERVICE</a></li>
-      <li><a href="#">CONTACT</a></li>
-    </ul>
+  <?php include '../header2.php' ?>
+  <div id='sidebar'>
+        <h2>Motivation</h2>
   </div>
   <div id="content">
-    <h2>Motivation</h2>
     <p class="info"><img class="noborder" src="img/flower.jpg" alt="flower" title="flower"/>Design of the FBI cyber crime news database.</p>
     <p><img src="img/DB.png" width="500" alt="Cyber Crime DB" longdesc="img/DB.png" /></p>
 
@@ -62,11 +53,7 @@ require("../check.php"); // check if there is a session ongoing
 </dl>
 </p>
   </div>
-  <div id="container-foot">
-    <div id="footer">
-      <p><a href="#">homepage</a> | <a href="mailto:denise@mitchinson.net">contact</a> | &copy; 2014 Xinwen Fu<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"></a></p>
-    </div>
-  </div>
+  <?php include '../footer.php' ?>
 </div>
 </body>
 </html>

@@ -13,10 +13,13 @@
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Add FBI News</title>
+  <link href="../css/style.css" rel="stylesheet" type="text/css" />
   </head>
   
   <body>
-
+    <div id='container'>
+      <?php include '../header.php' ?>
+      <div id='content'>
   <p><strong>Cyber Technique Input</strong></p>
   
   <form id="technique" name="technique" method="post" action="index.php">
@@ -56,6 +59,8 @@
 <form action="index.php">
     <input type="submit" value="Cancel">
 </form>
-
+  </div>
+  <?php include '../footer.php' ?>
+  </div>
   </body>
   </html>
