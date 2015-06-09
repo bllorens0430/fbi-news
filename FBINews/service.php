@@ -13,10 +13,23 @@
     <h2>Crime Database</h2>
   </div>
   <div id="content">
+    <h2>Search</h2>
     <p>A case search service is being developed.</p>
-    <a id='cases' href='cases.php'>Browse Cases</a>
-    <button>Browse Techniques</button>
-    <button>Browse Classifications</button>
+
+    <h2>Crime Cases</h3>
+    <p>Our database has compiled various cases of cyber crime from the FBI and
+     other sources. <a id='cases' href='cases.php'>Browse Cases</a></p>
+    
+    <h2>Crime Techniques</h3>
+    <p>There are various techniques to carry out cyber 
+      crime and corresponding defense mechanisms. Here is a list of some of them.
+    <a id='techniques' href='techniques.php'>Browse Techniques</a></p>
+    
+    <h2>Crime Categories</h3>
+    <p>The categories used by the FBI may use a mix of cyber crime techniques.  
+      The categories are listed here for your convenience.
+    <a id='classes' href='categories.php'>Browse Categories</a></p>
+    
   </div>
   <?php include 'footer.php' ?>
 </div>

@@ -16,30 +16,27 @@ require 'common.php';
  <div id="content">
 <table id='dbtable'>
 	<tr>
-		<th>Date</th>
-		<th>Case</th>
-		<th>Classification</th>
+		<th>Technique</th>
+		<th>Category</th>
 	</tr>
   <?php
   
-  $sql="SELECT * FROM cases";
+  $sql="SELECT * FROM technique";
    $count='evenrow';       
-  foreach ($db->query($sql) as $case)
+  foreach ($db->query($sql) as $tech)
   {
-  	$date = DateTime::createFromFormat('Y-m-d h:i:s', $case['news_date']);
     if ($count=="oddrow") {
       $count="evenrow";
     }
     else{
       $count="oddrow";
     }
-      $id = $case['case_index'];
+      $id = $tech['technique_index'];
       $id=str_replace(' ', '', $id);
       echo "<tr class='$count' align='center'>";	
-      echo"<td><font color='black'>" .$date->format('m.d.y')."</font></td>";
-      echo"<td><font color='black'><a href='".htmlspecialchars($case['news_url'], ENT_QUOTES, 'UTF-8')."'>". htmlspecialchars($case['news_title'], ENT_QUOTES, 'UTF-8'). "<a/></font></td>";
-      echo"<td><font color='black'>". htmlspecialchars($case['crime_classification'], ENT_QUOTES, 'UTF-8'). "</font></td>";
-      echo"<td><a href=show_case.php?id=$id><button href=show_case.php?id=$id>View</button></a></td>";
+      echo"<td><font color='black'><a href='".htmlspecialchars($tech['technique_url'], ENT_QUOTES, 'UTF-8')."'>". htmlspecialchars($tech['technique_name'], ENT_QUOTES, 'UTF-8'). "<a/></font></td>";
+      echo"<td><font color='black'>". htmlspecialchars($tech['technique_category'], ENT_QUOTES, 'UTF-8'). "</font></td>";
+      echo"<td><a href=show_technique.php?id=$id><button href=show_technique.php?id=$id>View</button></a></td>";
                           
       echo "</tr>";
   }
