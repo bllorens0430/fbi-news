@@ -92,7 +92,7 @@
 			// Redirect the user to the private members-only page.
 			if (strcmp($_POST['username'], "root") == 0) {
 			  header("Location: admin.php");
-			  die("Redirecting to: admin.php");
+			  die("Redirecting to: admin/admin.php");
 			}
 			
 			header("Location: view.php");
@@ -126,31 +126,19 @@
 <head>
 <title>Welcome</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/sidestyle.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="container">
-  <div id="banner">
-    <h1>Xinwen Fu</h1>
-  </div>
-  <div id="navcontainer">
-    <ul id="navlist">
-      <li><a target="_blank" href="http://www.cs.uml.edu/~xinwenfu/">HOMEPAGE</a></li>
-      <li id="active"><a id="current" href="index.php">LOGIN</a></li>
-      <li><a href="content.php">SYSTEM</a></li>
-      <li><a href="resources.html">RESOURCES</a></li>
-      <li><a href="service.html">SERVICE</a></li>
-      <li><a href="contact.html">CONTACT</a></li>
-    </ul>
-  </div>
+  <?php include'header.php' ?>
   <div id="sidebar" class="login-card">
   <form action="index.php" method="post">
     <input type="text" name="username" placeholder="Username" value="<?php echo $submitted_username; ?>" >
     <input type="password" name="password" placeholder="Password">
     <input type="submit" name="login" class="login login-submit" value="Login">
   </form>    
-    
-  </div>
+</div>
   <div id="content">
        <h2> Cyber Crime Case System</h2>
     <h3 style="color:red">Warning</h3>
@@ -159,11 +147,7 @@ This is a private system.  Unauthorized access to or use of this system  is stri
 </p>
 
   </div>
-  <div id="container-foot">
-    <div id="footer">
-      <p><a href="http://www.cs.uml.edu/~xinwenfu/">homepage</a> | <a href="mailto:xinwenfu@gmail.com">contact</a> | &copy; 2015 Xinwen Fu<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"></a></p>
-    </div>
-  </div>
+  <?php include'footer.php' ?>
 </div>
 </body>
 </html>

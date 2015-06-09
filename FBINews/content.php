@@ -12,7 +12,8 @@
 <head>
 <title>Cyber Crime and Investigation System</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <link href="css/sidestyle.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <div id="container">

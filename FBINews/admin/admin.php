@@ -21,14 +21,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../css/sidestyle.css" rel="stylesheet" type="text/css" />
 <title>Login</title>
 </head>
 
 <body>
+  <div id='container'>
+  <?php include '../header2.php' ?>
+  <div id='sidebar'>
+    <h2>Manage Users</h2>
+  </div>
+  <div id='content'>
   <p>Hello <?php echo htmlentities($_SESSION['user']['username'], ENT_QUOTES, 'UTF-8'); ?>!</p>
   <p><a href="memberlist.php">Memberlist</a></p>
   <p><a href="register.php">Register Account</a></p>
-
 <table>
 <tr>
 <td>
@@ -43,5 +50,8 @@
 </td>
 </tr>
 </table>
+</div>
+<?php include '../footer.php' ?>
+</div>
 </body>
 </html> 

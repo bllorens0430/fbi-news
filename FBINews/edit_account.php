@@ -137,6 +137,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Edit Account</title>
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <link href="css/sidestyle.css" rel="stylesheet" type="text/css" />
 </head>
 <body>  
   <script type="text/javascript" language="JavaScript">

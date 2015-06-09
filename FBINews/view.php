@@ -85,6 +85,8 @@ if(isset($_POST['Update']))
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>View News</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+  <link href="css/sidestyle.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>

@@ -136,7 +136,7 @@
 </td>
 </tr>
 </table>
-<table id='case'>
+<table id='dbtable'>
   <?php 
   $sql="SELECT * FROM cases ORDER BY news_date DESC";
   $count="evenrow";    

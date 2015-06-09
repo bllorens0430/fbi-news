@@ -199,11 +199,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
 <title>Register</title>
 </head>
 
 <body>
-
+<div id='container'>
+<?php include '../header.php' ?>
+<div id= 'content'>
   <script type="text/javascript" language="JavaScript">
 <!--
 //--------------------------------
@@ -231,16 +234,19 @@ function checkPassword(theForm) {
         <input type="text" name="email" value="" />
         <br /><br />
         Password:<br />
-        <input type="password" name="password" value="" />
+        <input class='password' type="password" name="password" value="" />
         <br /><br />
     
          <p>Repeat password:<br />
-          <input type="password" name="password2" value="" />
+          <input class='password' type="password" name="password2" value="" />
           <br />
           <br />
           <input type="submit" value="Register" />
         </p>
     </form>
     <p> <a href="admin.php">Go Back</a></p> 
+</div>
+<?php include '../footer.php' ?>
+</div>
     </body>
 </html>

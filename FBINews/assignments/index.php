@@ -53,9 +53,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>View News</title>
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<link href="../css/sidestyle.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
+	<div id='container'>
+	<?php include '../header2.php' ?>
+	<div id='sidebar'>
+		<h2>Assignments</h2>
+	</div>
+	<div id='content'>
 <table>
 <tr>
 <td>
@@ -97,7 +105,9 @@
   $db=null;
   ?>
 </table>
-
+</div>
+<?php include '../footer.php' ?>
+</div>
 </body>
 </html>
 
