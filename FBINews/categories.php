@@ -50,3 +50,4 @@ require 'common.php';
 </div>
 </body>
 </html>
+  <script src="js/hilightservice.js" type="text/javascript"></script>

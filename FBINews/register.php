@@ -242,3 +242,4 @@ function checkPassword(theForm) {
     <p> <a href="admin.php">Go Back</a></p> 
     </body>
 </html>
+<script src="js/hilight.js" type="text/javascript"></script>
