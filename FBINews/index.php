@@ -131,7 +131,7 @@
 </head>
 <body>
 <div id="container">
-  <?php include'header.php' ?>
+  <?php include'homeheader.php' ?>
   <div id="sidebar" class="login-card">
   <form action="index.php" method="post">
     <input type="text" name="username" placeholder="Username" value="<?php echo $submitted_username; ?>" >
