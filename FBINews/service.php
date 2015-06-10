@@ -14,7 +14,16 @@
   </div>
   <div id="content">
     <h2>Search</h2>
-    <p>A case search service is being developed.</p>
+	<form method="GET" action="service.html" onsubmit="return find"> 
+ 	Search for: <input type="text" name="find" /> in  
+ 	<Select NAME="table"> 
+ 	<Option VALUE="cases">Cases</option> 
+ 	<Option VALUE="crime_categories">Categories</option> 
+ 	<Option VALUE="techniques">Techniques</option> 
+ 	</Select> 
+ 	<input type="hidden" name="searching" value="yes" /> 
+ 	<input type="submit" name="search" value="Search" /> 
+ 	</form>
 
     <h2>Crime Cases</h3>
     <p>Our database has compiled various cases of cyber crime from the FBI and
@@ -35,3 +44,4 @@
 </div>
 </body>
 </html>
+
