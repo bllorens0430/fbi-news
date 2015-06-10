@@ -1,3 +1,4 @@
+//hilights the proper nav link
 (function(){
 //different case for the service pages.
 var list=document.getElementsByClassName('hilight');
