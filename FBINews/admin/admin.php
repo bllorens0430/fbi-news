@@ -4,7 +4,7 @@
   // In other words, it will halt the script whereas 
   // include only emits a warning (E_WARNING) which allows the script to continue. 
   require("../session.php"); // start or resume a session
-  require("../check.php"); // check if there is a session ongoing
+  require("../syscheck.php"); // check if there is a session ongoing
   require("../common.php"); // connect to the database
   
   if (isset($_SESSION)) {

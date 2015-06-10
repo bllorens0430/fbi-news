@@ -1,6 +1,6 @@
 <?php
 require("../session.php"); // start or resume a session
-require("../check.php"); // check if there is a session ongoing
+require("../syscheck.php"); // check if there is a session ongoing
 require("../common.php"); // connect to the database
 
 		

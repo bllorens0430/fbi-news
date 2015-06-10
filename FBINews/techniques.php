@@ -14,6 +14,22 @@ require 'common.php';
 <div id="container">
  <?php include 'header.php' ?>
  <div id="content">
+  <?php
+$num=$_GET['count'];
+  $init=intval($_GET['init']);
+  if($init==0){
+    $last='';
+  }
+  else{
+    $minus=$init-25;
+    $last="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/techniques.php?init=$minus&count=$num'>Last 25</a> <> ";
+  }
+  $init1=$init+1;
+  $plus=$init+25;
+  
+  echo "<p>Displaying $init1 - $plus of $num entries</p>$last<a href='http://localhost:8888/HCISec/fbi-news/FBINews/techniques.php?init=$plus&count=$num'>Next 25</a>";
+  
+?>
 <table id='dbtable'>
 	<tr>
 		<th>Technique</th>
@@ -21,7 +37,7 @@ require 'common.php';
 	</tr>
   <?php
   
-  $sql="SELECT * FROM technique";
+  $sql="SELECT * FROM technique LIMIT $init, 25";
    $count='evenrow';       
   foreach ($db->query($sql) as $tech)
   {
