@@ -22,13 +22,13 @@
 			// like this.  It is much better to display the error with the form
 			// and allow the user to correct their mistake.  However, that is an
 			// exercise for you to implement yourself.
-			die("Please enter a username.");
+			trigger_error("Please enter a username.");
 		}
 		
 		// Ensure that the user has entered a non-empty password
 		if(empty($_POST['password']))
 		{
-			die("Please enter a password.");
+			trigger_error("Please enter a password.");
 		}
 		
 		// Make sure the user entered a valid E-Mail address
@@ -37,7 +37,7 @@
 		// http://us.php.net/manual/en/filter.filters.php
 		if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
 		{
-			die("Invalid E-Mail Address");
+			trigger_error("Invalid E-Mail Address");
 		}
 		
 		// We will use this SQL query to see whether the username entered by the
@@ -68,7 +68,7 @@
 		{
 			// Note: On a production website, you should not output $ex->getMessage().
 			// It may provide an attacker with helpful information about your code. 
-			die("Failed to run query: " . $ex->getMessage());
+			trigger_error("Failed to run query:" . $ex->getMessage());
 		}
 		
 		// The fetch() method returns an array representing the "next" row from
@@ -79,7 +79,7 @@
 		// the database already and we should not allow the user to continue.
 		if($row)
 		{
-			die("This username is already in use");
+			trigger_error("This username is already in use");
 		}
 		
 		// Now we perform the same type of check for the email address, in order
@@ -103,14 +103,14 @@
 		}
 		catch(PDOException $ex)
 		{
-			die("Failed to run query: " . $ex->getMessage());
+			trigger_error("Failed to run query: " . $ex->getMessage());
 		}
 		
 		$row = $stmt->fetch();
 		
 		if($row)
 		{
-			die("This email address is already registered");
+			trigger_error("This email address is already registered");
 		}
 		
 		
@@ -154,7 +154,7 @@
 		// times for each guess they make against a password, whereas if the password
 		// were hashed only once the attacker would have been able 
 		// to make 65537 different guesses in the same amount of time instead of only one.
-		for($round = 0; $round < 65536; $round++)
+		for($round = 0; $round < 10; $round++)
 		{
 			$password = hash('sha256', $password . $salt);
 		}
@@ -179,7 +179,7 @@
 		{
 			// Note: On a production website, you should not output $ex->getMessage().
 			// It may provide an attacker with helpful information about your code. 
-			die("Failed to run query: " . $ex->getMessage());
+			trigger_error("Failed to run query: " . $ex->getMessage());
 		}
 		
 		// This redirects the user back to the login page after they register
