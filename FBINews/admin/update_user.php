@@ -15,7 +15,7 @@
 	  // Make sure the user entered a valid E-Mail address
 	  if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
 	  {
-		  die("Invalid E-Mail Address");
+		  trigger_error("Invalid E-Mail Address");
 	  }
 		
 	  // If the user is changing their E-Mail address, we need to make sure that
@@ -48,14 +48,14 @@
 		  {
 			  // Note: On a production website, you should not output $ex->getMessage().
 			  // It may provide an attacker with helpful information about your code. 
-			  die("Failed to run query: " . $ex->getMessage());
+			  error_log("Failed to run query: " . $ex->getMessage());
 		  }
 		  
 		  // Retrieve results (if any)
 		  $row = $stmt->fetch();
 		  if($row)
 		  {
-			  die("This E-Mail address is already in use");
+			  trigger_error("This E-Mail address is already in use");
 		  }
 	  }
 		
@@ -133,7 +133,7 @@
 		  // It may provide an attacker with helpful information about your code. 
 		  echo "final run";
 		  echo $query;
-		  die("Failed to run query: " . $ex->getMessage());
+		  error_log("Failed to run query: " . $ex->getMessage());
 	  }
 	  
 	  // Now that it is the login user and the user's E-Mail address has changed, 
