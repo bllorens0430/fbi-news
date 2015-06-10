@@ -8,9 +8,9 @@
 </head>
 <body>
 <div id="container">
-  <?php include 'header.php' ?>;
+  <?php include 'header.php' ?>
   <div id="sidebar">
-    <h2>&nbsp;</h2>
+    <h2>Contact</h2>
   </div>
   <div id="content">
     <h2>Xinwen Fu</h2>
@@ -28,3 +28,4 @@ E-mail : xinwenfu@cs.uml.edu</p>
 </div>
 </body>
 </html>
+<script src="js/hilight.js" type="text/javascript"></script>

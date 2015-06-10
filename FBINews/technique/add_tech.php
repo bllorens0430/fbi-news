@@ -18,7 +18,7 @@
   
   <body>
     <div id='container'>
-      <?php include '../header.php' ?>
+      <?php include '../header2.php' ?>
       <div id='content'>
   <p><strong>Cyber Technique Input</strong></p>
   
