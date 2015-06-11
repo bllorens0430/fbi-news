@@ -2,7 +2,7 @@
 	// First we execute our common code to connection to the database 
 	// and start the session
 	require("../session.php");
-	require("../check.php");
+	require("../syscheck.php");
 	require("../common.php");
 	
 	if (isset($_SESSION)) {

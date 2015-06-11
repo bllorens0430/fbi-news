@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 <?php  //This is only displayed if they have submitted the form  
@@ -87,6 +88,28 @@ if ($searching =="yes")  {
 ?>
 
 
+=======
+<?php
+
+require 'common.php';
+
+//get # of rows in each table to pass to browsing pages.
+$sql="SELECT COUNT(*) AS case_count FROM cases";
+$cases= $db->query($sql);
+$case= $cases->fetch(PDO::FETCH_ASSOC);
+$case_count= $case['case_count'];
+
+$sql="SELECT COUNT(*) AS tech_count FROM technique";
+$tech= $db->query($sql);
+$techni= $tech->fetch(PDO::FETCH_ASSOC);
+$tech_count= $techni['tech_count'];
+
+$sql="SELECT COUNT(*) AS cat_count FROM crime_category";
+$cats= $db->query($sql);
+$cat= $cats->fetch(PDO::FETCH_ASSOC);
+$cat_count= $cat['cat_count'];
+?>
+>>>>>>> a023d2e64b6ea9b641bcd6940a77ec8bda28966f
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -116,17 +139,19 @@ if ($searching =="yes")  {
 
     <h2>Crime Cases</h3>
     <p>Our database has compiled various cases of cyber crime from the FBI and
-     other sources. <a id='cases' href='cases.php'>Browse Cases</a></p>
+     other sources. 
+     <?php echo"<a id='cases' href='cases.php?init=0&count=$case_count'>Browse Cases</a></p>" ?>
     
     <h2>Crime Techniques</h3>
     <p>There are various techniques to carry out cyber 
       crime and corresponding defense mechanisms. Here is a list of some of them.
-    <a id='techniques' href='techniques.php'>Browse Techniques</a></p>
-    
+
+    <?php echo"<a id='techniques' href='techniques.php?init=0&count=$tech_count'>Browse Techniques</a></p>" ?>
+
     <h2>Crime Categories</h3>
     <p>The categories used by the FBI may use a mix of cyber crime techniques.  
       The categories are listed here for your convenience.
-    <a id='classes' href='categories.php'>Browse Categories</a></p>
+    <?php echo"<a id='classes' href='categories.php?init=0&count=$cat_count'>Browse Categories</a></p>" ?>
     
   </div>
   <?php include 'footer.php' ?>
