@@ -2,6 +2,8 @@
 
 require 'common.php';
 
+$limit=25;
+
 //get # of rows in each table to pass to browsing pages.
 $sql="SELECT COUNT(*) AS case_count FROM cases";
 $cases= $db->query($sql);
@@ -48,18 +50,18 @@ $cat_count= $cat['cat_count'];
     <h2>Crime Cases</h3>
     <p>Our database has compiled various cases of cyber crime from the FBI and
      other sources. 
-     <?php echo"<a id='cases' href='cases.php?init=0&count=$case_count'>Browse Cases</a></p>" ?>
+     <?php echo"<a id='cases' href='cases.php?init=0&count=$case_count&limit=$limit'>Browse Cases</a></p>" ?>
     
     <h2>Crime Techniques</h3>
     <p>There are various techniques to carry out cyber 
       crime and corresponding defense mechanisms. Here is a list of some of them.
 
-    <?php echo"<a id='techniques' href='techniques.php?init=0&count=$tech_count'>Browse Techniques</a></p>" ?>
+    <?php echo"<a id='techniques' href='techniques.php?init=0&count=$tech_count&limit=$limit'>Browse Techniques</a></p>" ?>
 
     <h2>Crime Categories</h3>
     <p>The categories used by the FBI may use a mix of cyber crime techniques.  
       The categories are listed here for your convenience.
-    <?php echo"<a id='classes' href='categories.php?init=0&count=$cat_count'>Browse Categories</a></p>" ?>
+    <?php echo"<a id='classes' href='categories.php?init=0&count=$cat_count&limit=$limit'>Browse Categories</a></p>" ?>
     
   </div>
   <?php include 'footer.php' ?>

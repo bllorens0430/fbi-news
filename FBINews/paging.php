@@ -5,11 +5,11 @@
 	$num=intval($_GET['count']);
  	$init=intval($_GET['init']);
 
-function echolinks($init, $num, $page){
+function echolinks($init, $num, $page, $limit){
 	
 	//find the proper 
 	$mod=$num;
-	while ($mod%25!=0) {
+	while ($mod%$limit!=0) {
 		$mod--;
 	}
 	$last="|<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$mod&count=$num'>Last</a>";
@@ -18,13 +18,13 @@ function echolinks($init, $num, $page){
     $first='';
   }
   else{
-    $minus=$init-25;
+    $minus=$init-$limit;
     $first="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=0&count=$num'>First</a>|";
     $older="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$minus&count=$num'>Earlier 25</a>|";
   }
   
   $init1=$init+1;
-  $plus=$init+25;
+  $plus=$init+$limit;
   if($plus<$num){
   $new="|<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$plus&count=$num'>Next 25</a>";
   echo "<p>Displaying $init1 - $plus of $num entries</p>
