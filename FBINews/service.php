@@ -20,7 +20,7 @@ if ($searching =="yes")  {
 	//Now we search for our search term, in the cases table 
 	if ($table == cases) {
 		//Should news_url be included in the search as well? 
-		$data = mysql_query("SELECT * FROM $table WHERE (upper('news_date']) OR upper('news_title') OR upper('crime') OR upper('crime_classification') OR upper('investigation') OR upper('notes')) LIKE'%$find%'");   
+		$data = mysql_query("SELECT * FROM $table WHERE (upper('news_date') OR upper('news_title') OR upper('crime') OR upper('crime_classification') OR upper('investigation') OR upper('notes')) LIKE'%$find%'");   
 		//And we display the results  
 		while($result = mysql_fetch_array( $data )) 
 		 {  
