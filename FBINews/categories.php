@@ -15,18 +15,18 @@ require 'paging.php'
  <?php include 'header.php' ?>
  <div id="content">
   <?php
-    echolinks($init, $num, 'categories');
+    echolinks($init, $num, 'categories', $limit);
   ?>
 <table id='dbtable'>
 	<tr>
 		<th>Category</th>
 	</tr>
   <?php
-    getdata($init, 35, 'crime_category', $db);
+    getdata($init, $limit, 'crime_category', $db);
   ?>
 </table>
 <?php
-    echolinks($init, $num, 'categories');
+    echolinks($init, $num, 'categories', $limit);
   ?>
 </div>
 <?php include 'footer.php' ?>

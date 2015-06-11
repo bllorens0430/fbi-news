@@ -16,7 +16,7 @@ require 'paging.php';
  <?php include 'header.php' ?>
  <div id="content">
 <?php
-  echolinks($init, $num, 'techniques');
+  echolinks($init, $num, 'techniques', $limit);
 ?>
 <table id='dbtable'>
 	<tr>
@@ -24,11 +24,11 @@ require 'paging.php';
 		<th>Category</th>
 	</tr>
   <?php
-    getdata($init, 25, 'technique', $db)
+    getdata($init, $limit, 'technique', $db)
   ?>
 </table>
 <?php
-  echolinks($init, $num, 'techniques');
+  echolinks($init, $num, 'techniques', $limit);
 ?>
 </div>
 <?php include 'footer.php' ?>

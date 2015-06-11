@@ -1,5 +1,5 @@
 <?php  //This is only displayed if they have submitted the form  
-if ($searching =="yes")  {  
+/**if ($searching =="yes")  {  
 	echo "<h2>Results</h2><p>";   
 	//If they did not enter a search term we give them an error  
 	if ($find == "")  {  
@@ -81,14 +81,13 @@ if ($searching =="yes")  {
 
 	//And we remind them what they searched for  
 	echo "<b>Searched For:</b> " .$find;    
-		
+**/		
 ?>
 
 <?php
 
 require 'common.php';
 
-$limit=25;
 
 //get # of rows in each table to pass to browsing pages.
 $sql="SELECT COUNT(*) AS case_count FROM cases";
@@ -137,18 +136,18 @@ $cat_count= $cat['cat_count'];
     <h2>Crime Cases</h3>
     <p>Our database has compiled various cases of cyber crime from the FBI and
      other sources. 
-     <?php echo"<a id='cases' href='cases.php?init=0&count=$case_count&limit=$limit'>Browse Cases</a></p>" ?>
+     <?php echo"<a id='cases' href='cases.php?init=0&count=$case_count&limit=25'>Browse Cases</a></p>" ?>
     
     <h2>Crime Techniques</h3>
     <p>There are various techniques to carry out cyber 
       crime and corresponding defense mechanisms. Here is a list of some of them.
 
-    <?php echo"<a id='techniques' href='techniques.php?init=0&count=$tech_count&limit=$limit'>Browse Techniques</a></p>" ?>
+    <?php echo"<a id='techniques' href='techniques.php?init=0&count=$tech_count&limit=25'>Browse Techniques</a></p>" ?>
 
     <h2>Crime Categories</h3>
     <p>The categories used by the FBI may use a mix of cyber crime techniques.  
       The categories are listed here for your convenience.
-    <?php echo"<a id='classes' href='categories.php?init=0&count=$cat_count&limit=$limit'>Browse Categories</a></p>" ?>
+    <?php echo"<a id='classes' href='categories.php?init=0&count=$cat_count&limit=25'>Browse Categories</a></p>" ?>
     
   </div>
   <?php include 'footer.php' ?>

@@ -16,7 +16,7 @@ require 'paging.php';
  <?php include 'header.php' ?>
  <div id="content">
 <?php
-  echolinks($init, $num, 'cases');
+  echolinks($init, $num, 'cases', $limit);
 ?>
 <table id='dbtable'>
 	<tr>
@@ -25,11 +25,11 @@ require 'paging.php';
 		<th>Classification</th>
 	</tr>
   <?php
-    getdata($init, 25, 'cases', $db);
+    getdata($init, $limit, 'cases', $db);
   ?>
 </table>
 <?php
-  echolinks($init, $num, 'cases');
+  echolinks($init, $num, 'cases', $limit);
 ?>
 </div>
 <?php include 'footer.php' ?>
