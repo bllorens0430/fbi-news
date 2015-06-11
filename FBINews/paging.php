@@ -1,31 +1,49 @@
 <?php
 
-//initialize variables 
+//initialize key variables 
 //******SANITIZE GET********
 	$num=intval($_GET['count']);
  	$init=intval($_GET['init']);
 
 function echolinks($init, $num, $page){
+	
+	//find the proper 
+	$mod=$num;
+	while ($mod%25!=0) {
+		$mod--;
+	}
+	$last="|<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$mod&count=$num'>Last</a>";
   if($init==0){
-    $last='';
+    $older='';
+    $first='';
   }
   else{
     $minus=$init-25;
-    $last="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$minus&count=$num'>Last 25 <</a>";
+    $first="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=0&count=$num'>First</a>|";
+    $older="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$minus&count=$num'>Earlier 25</a>|";
   }
+  
   $init1=$init+1;
   $plus=$init+25;
   if($plus<$num){
-  echo "<p>Displaying $init1 - $plus of $num entries</p>$last<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$plus&count=$num'>> Next 25</a>";
+  $new="|<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$plus&count=$num'>Next 25</a>";
+  echo "<p>Displaying $init1 - $plus of $num entries</p>
+ 		$first$older$new$last";
   }
   else{
-    echo "<p>Displaying $init1 - $num of $num entries</p>$last";
+    echo "<p>Displaying $init1 - $num of $num entries</p>
+    $first$older";
   }
 }
+
+//Produces a table on the page for browsing
+//Needs to be sanitized
 function getdata($init, $numentries, $table, $db){ 
   $sql="SELECT * FROM $table LIMIT $init, $numentries";
+  
+  //count is used to alternately style tablerows, see css/style.css 
    $count='evenrow'; 
-     
+  
   foreach ($db->query($sql) as $result){
 
   	if ($count=="oddrow") {
@@ -34,6 +52,10 @@ function getdata($init, $numentries, $table, $db){
     else{
       $count="oddrow";
     }
+
+
+    //Specific queries for each database:
+
 
     if($table=='cases'){
 
