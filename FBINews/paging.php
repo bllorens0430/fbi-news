@@ -2,55 +2,105 @@
 
 //initialize key variables 
 //******SANITIZE GET********
+
+
 	$num=intval($_GET['count']);
  	$init=intval($_GET['init']);
  	$limit=intval($_GET['limit']);
+ 	if (isset($_GET['table'])) {
+ 		$table=$_GET['table'];
+ 	}
+
 
 function echolinks($init, $num, $page, $limit){
+	//in case of negative init
+	if ($init<0) {
+		$init=0;
+	}
 	$limitplus=$limit+25;
 	$limitless=$limit-25;
-	$more="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$init&count=$num&limit=$limitplus'>Show More</a>";
-	$less="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$init&count=$num&limit=$limitless'>Show Less</a>";
-	//find the proper 
+	//$more="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$init&count=$num&limit=$limitplus'>Show More</a>";
+	$more="<button onclick='ajax($init, $num, $limitplus, \"$page\")'>Show More</button>";
+	//$less="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$init&count=$num&limit=$limitless'>Show Less</a>";
+	$less="<button onclick='ajax($init, $num, $limitless, \"$page\")'>Show Less</button>";
+	//find the proper multiple of $limit for the last page
 	$mod=$num;
 	while ($mod%$limit!=0) {
 		$mod--;
 	};
-	$last="|<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$mod&count=$num&limit=$limit'>Last</a>";
+	//$last="|<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$mod&count=$num&limit=$limit'>Last</a>";
+	$last="<button onclick='ajax($mod, $num, $limit, \"$page\")'>Last</button>";
   if($init==0){
     $older='';
     $first='';
   }
   else{
     $minus=$init-$limit;
-    $first="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=0&count=$num&limit=$limit'>First</a>|";
-    $older="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$minus&count=$num&limit=$limit'>Earlier $limit</a>|";
+    //$first="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=0&count=$num&limit=$limit'>First</a>|";
+    $first="<button onclick='ajax(0, $num, $limit, \"$page\")'>First</button>";
+    //$older="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$minus&count=$num&limit=$limit'>Earlier $limit</a>|";
+  	$older="<button onclick='ajax($minus, $num, $limit, \"$page\")'>Earlier $limit</button>";
   }
   if($limit<26){
   	$less='';
+  }
+  if($limit>$num){
+  	$more='';
+  	$cap=$num;
+  }
+  else{
+  	$cap=$limit;
   }
   
   $init1=$init+1;
   $plus=$init+$limit;
   if($plus<$num){
-  $new="|<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$plus&count=$num&limit=$limit'>Next $limit</a>";
+  //$new="|<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$plus&count=$num&limit=$limit'>Next $limit</a>";
+  $new="<button onclick='ajax($plus, $num, $limit, \"$page\")'>Next $limit</button>";
   echo "<p>Displaying $init1 - $plus of $num entries</p>
- 		$first$older$new$last<br>$less | $more";
+ 		$first$older$new$last<br>$less Showing $cap Entries $more";
   }
   else{
     echo "<p>Displaying $init1 - $num of $num entries</p>
-    $first$older<br>$less | $more";
+    $first$older<br>$less Showing $cap Entries $more";
   }
 }
 
 //Produces a table on the page for browsing
 //Needs to be sanitized
 function getdata($init, $numentries, $table, $db){ 
+	//in case of negative initial value
+	if ($init<0) {
+		$init=0;
+	}
+
   $sql="SELECT * FROM $table LIMIT $init, $numentries";
   
   //count is used to alternately style tablerows, see css/style.css 
    $count='evenrow'; 
-  
+  	if($table=='cases'){
+  	echo "<table id='dbtable'>
+  <tr>
+    <th>Date</th>
+    <th>Case</th>
+    <th>Classification</th>
+  </tr>";
+  }
+  elseif ($table=='technique') {
+  	echo"<table id='dbtable'>
+	<tr>
+		<th>Technique</th>
+		<th>Category</th>
+	</tr>";
+  }
+  elseif ($table=='crime_category');{
+  	echo"
+  	<table id='dbtable'>
+	<tr>
+		<th>Category</th>
+	</tr>
+  	";
+  }
   foreach ($db->query($sql) as $result){
 
   	if ($count=="oddrow") {
@@ -103,6 +153,7 @@ function getdata($init, $numentries, $table, $db){
 	  }
 	  
 	}
+	echo "</table>";
 	$db=null;
 }
   ?>

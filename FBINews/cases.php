@@ -17,18 +17,7 @@ require 'paging.php';
  <div id="content">
 <?php
   echolinks($init, $num, 'cases', $limit);
-?>
-<table id='dbtable'>
-	<tr>
-		<th>Date</th>
-		<th>Case</th>
-		<th>Classification</th>
-	</tr>
-  <?php
-    getdata($init, $limit, 'cases', $db);
-  ?>
-</table>
-<?php
+  getdata($init, $limit, 'cases', $db);
   echolinks($init, $num, 'cases', $limit);
 ?>
 </div>
@@ -37,3 +26,5 @@ require 'paging.php';
 </body>
 </html>
   <script src="js/hilightservice.js" type="text/javascript"></script>
+  <script type="text/javascript" src="js/ajax.js">
+  </script>

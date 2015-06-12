@@ -15,18 +15,9 @@ require 'paging.php'
  <?php include 'header.php' ?>
  <div id="content">
   <?php
-    echolinks($init, $num, 'categories', $limit);
-  ?>
-<table id='dbtable'>
-	<tr>
-		<th>Category</th>
-	</tr>
-  <?php
+    echolinks($init, $num, 'crime_category', $limit);
     getdata($init, $limit, 'crime_category', $db);
-  ?>
-</table>
-<?php
-    echolinks($init, $num, 'categories', $limit);
+    echolinks($init, $num, 'crime_category', $limit);
   ?>
 </div>
 <?php include 'footer.php' ?>
@@ -34,3 +25,4 @@ require 'paging.php'
 </body>
 </html>
   <script src="js/hilightservice.js" type="text/javascript"></script>
+  <script src="js/ajax.js" type="text/javascript"></script>
