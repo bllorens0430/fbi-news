@@ -20,16 +20,16 @@ function echolinks($init, $num, $page, $limit){
 	$limitplus=$limit+25;
 	$limitless=$limit-25;
 	//$more="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$init&count=$num&limit=$limitplus'>Show More</a>";
-	$more="<button onclick='ajax($init, $num, $limitplus, \"$page\")'>Show More</button>";
+	$more=" <button class='styled-button-6' onclick='ajax($init, $num, $limitplus, \"$page\")'>Show More</button>";
 	//$less="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$init&count=$num&limit=$limitless'>Show Less</a>";
-	$less="<button onclick='ajax($init, $num, $limitless, \"$page\")'>Show Less</button>";
+	$less="<button class='styled-button-6' onclick='ajax($init, $num, $limitless, \"$page\")'>Show Less</button> ";
 	//find the proper multiple of $limit for the last page
 	$mod=$num;
 	while ($mod%$limit!=0) {
 		$mod--;
 	};
 	//$last="|<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$mod&count=$num&limit=$limit'>Last</a>";
-	$last="<button onclick='ajax($mod, $num, $limit, \"$page\")'>Last</button>";
+	$last="<button class='styled-button-6' onclick='ajax($mod, $num, $limit, \"$page\")'> >>> </button>";
   if($init==0){
     $older='';
     $first='';
@@ -37,9 +37,9 @@ function echolinks($init, $num, $page, $limit){
   else{
     $minus=$init-$limit;
     //$first="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=0&count=$num&limit=$limit'>First</a>|";
-    $first="<button onclick='ajax(0, $num, $limit, \"$page\")'>First</button>";
+    $first="<button class='styled-button-6' onclick='ajax(0, $num, $limit, \"$page\")'> <<< </button>";
     //$older="<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$minus&count=$num&limit=$limit'>Earlier $limit</a>|";
-  	$older="<button onclick='ajax($minus, $num, $limit, \"$page\")'>Earlier $limit</button>";
+  	$older="<button class='styled-button-6' onclick='ajax($minus, $num, $limit, \"$page\")'> < </button>";
   }
   if($limit<26){
   	$less='';
@@ -56,13 +56,13 @@ function echolinks($init, $num, $page, $limit){
   $plus=$init+$limit;
   if($plus<$num){
   //$new="|<a href='http://localhost:8888/HCISec/fbi-news/FBINews/$page.php?init=$plus&count=$num&limit=$limit'>Next $limit</a>";
-  $new="<button onclick='ajax($plus, $num, $limit, \"$page\")'>Next $limit</button>";
-  echo "<p>Displaying $init1 - $plus of $num entries</p>
- 		$first$older$new$last<br>$less Showing $cap Entries $more";
+  $new="<button class='styled-button-6' onclick='ajax($plus, $num, $limit, \"$page\")'> > </button>";
+  echo "<p>$less"."Displaying $init1 - $plus of $num entries$more</p>
+ 		$first$older$new$last";
   }
   else{
-    echo "<p>Displaying $init1 - $num of $num entries</p>
-    $first$older<br>$less Showing $cap Entries $more";
+    echo "<p>$lessShowing $cap Entries $moreDisplaying $init1 - $num of $num entries$more</p>
+    $first$older";
   }
 }
 

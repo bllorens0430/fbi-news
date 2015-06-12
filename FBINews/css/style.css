@@ -353,6 +353,22 @@ white-space: nowrap;
 }
 /* end of table styling*/
 
+.styled-button-6 {
+  background-color:#ed8223;
+  color:#fff;
+  font-family:'Helvetica Neue',sans-serif;
+  font-size:13px;
+  line-height:15px;
+  border-radius:2px;
+  -webkit-border-radius:2px;
+  -moz-border-radius:2px;
+  border:0;
+  text-shadow:#C17C3A 0 -1px 0;
+  width:100px;
+  height:20px;
+  margin-right: 5px;
+} 
+
 input.password{
   width: 125px;
   height: 20px;
