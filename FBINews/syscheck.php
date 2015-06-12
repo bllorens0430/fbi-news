@@ -9,9 +9,9 @@
 		// people can view your members-only content without logging in.
 		die("Redirecting to index.php");
 	}
-	elseif ($_SESSION['user']!='root') {
+	elseif (strcmp($_POST['username'], "root")==false) {
 		//if the user is not root redirect to valid page
-		header("Location: content.php");
+		header("Location: ../content.php");
 
 		die("Please login as sysadmin to view page");
 	}

@@ -24,7 +24,7 @@
 			// like this.  It is much better to display the error with the form
 			// and allow the user to correct their mistake.  However, that is an
 			// exercise for you to implement yourself.
-			trigger_error(error_msg)("Please enter a username.");
+			trigger_error("Please enter a username.");
 		}
 		
 		// Ensure that the user has entered a non-empty password

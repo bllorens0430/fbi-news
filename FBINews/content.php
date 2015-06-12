@@ -17,19 +17,7 @@
 </head>
 <body>
 <div id="container">
-  <div id="banner">
-    <h1>Xinwen Fu</h1>
-  </div>
-  <div id="navcontainer">
-    <ul id="navlist">
-      <li><a target="_blank" href="http://www.cs.uml.edu/~xinwenfu/">HOMEPAGE</a></li>
-      <li id="active"><a href="index.php">LOGIN</a></li>
-      <li><a href="content.php" id="current">SYSTEM</a></li>
-      <li><a href="resources.html">RESOURCES</a></li>
-      <li><a href="service.html">SERVICE</a></li>
-      <li><a href="contact.html">CONTACT</a></li>
-    </ul>
-  </div>
+ <?php include 'header.php'; ?>
   <div id="sidebar">
 <h3>Cyber Crime and Investigation Classification System</h3>
     
@@ -55,11 +43,7 @@
 </form>
 
   </div>
-  <div id="container-foot">
-    <div id="footer">
-      <p><a href="http://www.cs.uml.edu/~xinwenfu/">homepage</a> | <a href="mailto:xinwenfu@gmail.com">contact</a> | &copy; 2015 Xinwen Fu<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"></a></p>
-    </div>
-  </div>
+ <?php include 'footer.php' ?>
 </div>
 </body>
 </html>

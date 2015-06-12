@@ -91,17 +91,13 @@
 			
 			// Redirect the user to the private members-only page.
 			if (strcmp($_POST['username'], "root") == 0) {
-			  header("Location: admin.php");
+			  header("Location: admin/admin.php");
 			  die("Redirecting to: admin/admin.php");
 			}
-			
-			header("Location: view.php");
-			die("Redirecting to: view.php");
-			
-			echo "going to content.php";
-
+			else{
 			header("Location: content.php");
 			die("Redirecting to: content.php");
+		}
 
 		}
 		else
