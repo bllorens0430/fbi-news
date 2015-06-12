@@ -61,7 +61,7 @@ function echolinks($init, $num, $page, $limit){
  		$first$older$new$last";
   }
   else{
-    echo "<p>$lessShowing $cap Entries $moreDisplaying $init1 - $num of $num entries$more</p>
+    echo "<p>$less"."Displaying $init1 - $num of $num entries$more</p>
     $first$older";
   }
 }
