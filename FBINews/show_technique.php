@@ -34,7 +34,7 @@ require 'common.php';
 
  	echo "<a href='$url'><h1>$title</h1></a>
  		<h2>Details</h2>
- 		<p>$detials</p>
+ 		<p>$details</p>
  		<p><span style='font-weight:bold'>Category:</span> $cat</p>";
  	if($notes!=''){
  		echo"<h3>Notes</h2>
