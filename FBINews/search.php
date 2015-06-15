@@ -36,17 +36,21 @@ if($searching=="yes")  {
 	//Now we search for our search term, in the cases table 
 	if($table=="cases"){
 		//Should news_url be included in the search as well? 
-		$sql="SELECT * FROM cases
-			WHERE news_date LIKE '%$find%'
-				OR news_title LIKE '%$find%'
-				OR  crime LIKE '%illegal%'
-				OR crime_classification LIKE '%$find%'
-				OR  investigation LIKE '%$find%'
-				OR notes LIKE '%$find%'";
+		$sql=$db->prepare("SELECT * FROM cases
+			WHERE news_title LIKE ?
+				OR  crime LIKE ?
+				OR  investigation LIKE ? 
+				OR notes LIKE ?");
+	
+			//$search=$find;
 
-		foreach($db->query($sql) as $cases){
-			//$case= $cases->fetch(PDO::FETCH_ASSOC);
-	  		$id=$cases['case_index'];
+		//$counter=$db->query("SELECT COUNT(*) FROM cases");
+		//$case=$sql->execute(array('%'.$find.'%'));
+		//$cases= $case->fetch(PDO::FETCH_ASSOC);
+	  		
+		if($sql->execute(array("'%".$find."%'", "%".$find."%", "%".$find."%", "%".$find."%"))) {
+			while ( $cases=$sql->fetch(PDO::FETCH_ASSOC)) {
+			$id=$cases['case_index'];
 	  		$id=str_replace(' ', '', $id);
       		if($count=="oddrow"){
         		$count="evenrow";
@@ -59,11 +63,11 @@ if($searching=="yes")  {
 	  		$crime=htmlspecialchars($cases['crime'], ENT_QUOTES, 'UTF-8');
 	  		$bold_crime=str_replace("&lt;/b&gt;", "</b>", str_replace("&lt;b&gt;", "</b>", $crime));
       		$temp_search_result.="<td><font color='black'>" . $bold_crime . "</font></td>";
-      		$temp_search_result.="<td><a href='show_case.php?id=$id'><button href='show_case.php?id=$id'>View Case</button></a></td>";}
-
+      		$temp_search_result.="<td><a href='show_case.php?id=$id'><button href='show_case.php?id=$id'>View Case</button></a></td>";
+      	}}
 			//This counts the number of results and sends a message if there weren't any 
 
-			$anymatches= mysql_num_rows($sql); 
+		//	$anymatches= mysql_num_rows($sql); 
 		/*	if($anymatches==0) {  
 				$search_result.="<p>Sorry, but we can not find an entry to match your query</br></br></p>"; }
 			else{*/
@@ -71,17 +75,17 @@ if($searching=="yes")  {
 			$search_result.=$temp_search_result;
 			$search_result.="</table>";
 		//}
+		
 	}
 	//Now we search for our search term in the crime_category table
 	  elseif($table=="crime_category"){
-		$sql="SELECT * FROM $table 
-		WHERE  crime_classification
-			OR cat_name
-			OR cat_explanation
-			OR notes
-			LIKE'%$find%'";   
+		$sql=$db->prepare("SELECT * FROM crime_category 
+		WHERE  cat_name LIKE ?
+			OR cat_explanation LIKE ?
+			OR notes LIKE ?");   
 
-		foreach ($db->query($sql) as $crimes){
+		if($sql->execute(array("%".$find."%", "%".$find."%", "%".$find."%"))) {
+			while ( $crimes=$sql->fetch(PDO::FETCH_ASSOC)) {
 			//$cat_crime= $crimes->fetch(PDO::FETCH_ASSOC);
 	  		$id=$crimes['cat_number'];
       		if($count=="oddrow"){
@@ -96,7 +100,7 @@ if($searching=="yes")  {
 	  		$bold_cat_name=str_replace("&lt;/b&gt;", "</b>", str_replace("&lt;b&gt;", "<b>", $cat_name));
       		$temp_search_result.="<td><font color='black'>" . $bold_cat_name . "</font></td>";
       		$temp_search_result.="<td><a href='show_cat.php?id=$id'><button href='show_cat.php?id=$id'>View Category</button></a></td>";
-		}
+		}}
 			//This counts the number of results and sends a message if there weren't any 
 		
 			$search_result.="<table id='dbtable'>";
@@ -105,17 +109,15 @@ if($searching=="yes")  {
 		
 	}
 	//Now we search for our search term in the technique table
-	else{
-		$sql="SELECT * FROM $table 
-		WHERE technique_name LIKE'%$find%'
-			OR technique_category LIKE'%$find%'
-			OR technique_details LIKE'%$find%'
-			OR notes
-			LIKE'%$find%'";   
+	else if ($table=="technique"){
+		$sql=$db->prepare("SELECT * FROM technique
+		WHERE technique_name LIKE ?
+			OR technique_details LIKE ?
+			OR notes LIKE ? ");   
 
 		//And we display the results 
-		foreach($db->query($sql) as $techniques){
-			//$technique= $techniques->fetch(PDO::FETCH_ASSOC);
+		if($sql->execute(array("%".$find."%", "%".$find."%", "%".$find."%"))) {
+			while ( $techniques=$sql->fetch(PDO::FETCH_ASSOC)) {
 	  		$id=$techniques['technique_index'];
 	  		$id=str_replace(' ', '', $id);
       		if($count=="oddrow"){
@@ -130,7 +132,7 @@ if($searching=="yes")  {
 	  		$bold_technique_name=str_replace("&lt;/b&gt;", "</b>", str_replace("&lt;b&gt;", "</b>", $technique_name));
       		$temp_search_result.="<td><font color='black'>" . $bold_technique_name . "</font></td>";
       		$temp_search_result.="<td><a href='show_technique.php?id=$id'><button href='show_technique.php?id=$id'>View Technique</button></a></td>";
-		}
+		}}
 			//This counts the number of results and sends a message if there weren't any 
 			
 			$search_result.="<table id='dbtable'>";
