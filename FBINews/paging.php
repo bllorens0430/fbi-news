@@ -115,9 +115,9 @@ function getdata($init, $numentries, $table, $db){
 
 
     if($table=='cases'){
-
-	  	$date = DateTime::createFromFormat('Y-m-d h:i:s', $result['news_date']);
-	    $date = htmlspecialchars($date);
+    	$date = htmlspecialchars($result['news_date']);
+	  	$date = DateTime::createFromFormat('Y-m-d h:i:s', $date);
+	      
 	      $id = htmlspecialchars($result['case_index']);
 	      $id=str_replace(' ', '', $id);
 	      echo "<tr class='$count' align='center'>";	
