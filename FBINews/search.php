@@ -50,7 +50,7 @@ if($searching=="yes")  {
 	  		
 		if($sql->execute(array("'%".$find."%'", "%".$find."%", "%".$find."%", "%".$find."%"))) {
 			while ( $cases=$sql->fetch(PDO::FETCH_ASSOC)) {
-			$id=$cases['case_index'];
+			$id=htmlspecialchars($cases['case_index']);
 	  		$id=str_replace(' ', '', $id);
       		if($count=="oddrow"){
         		$count="evenrow";
@@ -87,7 +87,7 @@ if($searching=="yes")  {
 		if($sql->execute(array("%".$find."%", "%".$find."%", "%".$find."%"))) {
 			while ( $crimes=$sql->fetch(PDO::FETCH_ASSOC)) {
 			//$cat_crime= $crimes->fetch(PDO::FETCH_ASSOC);
-	  		$id=$crimes['cat_number'];
+	  		$id=htmlspecialchars($crimes['cat_number']);
       		if($count=="oddrow"){
         		$count="evenrow";
       		}
@@ -118,7 +118,7 @@ if($searching=="yes")  {
 		//And we display the results 
 		if($sql->execute(array("%".$find."%", "%".$find."%", "%".$find."%"))) {
 			while ( $techniques=$sql->fetch(PDO::FETCH_ASSOC)) {
-	  		$id=$techniques['technique_index'];
+	  		$id=htmlspecialchars($techniques['technique_index']);
 	  		$id=str_replace(' ', '', $id);
       		if($count=="oddrow"){
         		$count="evenrow";
