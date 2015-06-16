@@ -2,6 +2,7 @@
 
 require 'common.php';
 require 'session.php';
+require 'page.php';
 //include ("dbo.php");
 
 
@@ -14,7 +15,9 @@ if(isset($_GET['search'])){
 	$searching=$_GET['searching'];
 	$find= $_GET['find'];
 	$table= $_GET['table'];
-
+	$init=intval($_GET['init']);
+	$limit=intval($_GET['limit']);
+	$sum=$limit+$init;
 	$search_result="";
 	$temp_search_result="";
 if($searching=="yes")  {  
@@ -49,29 +52,54 @@ if($searching=="yes")  {
 		//$cases= $case->fetch(PDO::FETCH_ASSOC);
 	  		
 		if($sql->execute(array("'%".$find."%'", "%".$find."%", "%".$find."%", "%".$find."%"))) {
-			while ( $cases=$sql->fetch(PDO::FETCH_ASSOC)) {
-			$id=htmlspecialchars($cases['case_index'], ENT_QUOTES, 'UTF-8');
-	  		$id=str_replace(' ', '', $id);
-      		if($count=="oddrow"){
-        		$count="evenrow";
-      		}
-      		else{
-        		$count="oddrow";
-      		}
-      		$temp_search_result.= "<tr class='$count' align='left'>";	
-      	    $temp_search_result.= "<td><font color='black'>" . htmlspecialchars($cases['news_title'], ENT_QUOTES, 'UTF-8') . "</font></td>";
-	  		$crime=htmlspecialchars($cases['crime'], ENT_QUOTES, 'UTF-8');
-	  		$bold_crime=str_replace("&lt;/b&gt;", "</b>", str_replace("&lt;b&gt;", "</b>", $crime));
-      		$temp_search_result.="<td><font color='black'>" . $bold_crime . "</font></td>";
-      		$temp_search_result.="<td><a href='show_case.php?id=$id'><button href='show_case.php?id=$id'>View Case</button></a></td>";
-      	}}
+			$num = $sql->rowCount();
+			$i=0;
+
+			while ($cases=$sql->fetch(PDO::FETCH_ASSOC)) {
+				
+					$date = htmlspecialchars($cases['news_date']);
+			  		$date = DateTime::createFromFormat('Y-m-d h:i:s', $date);
+			      
+					$id=htmlspecialchars($cases['case_index'], ENT_QUOTES, 'UTF-8');
+			  		$id=str_replace(' ', '', $id);
+		      		if($count=="oddrow"){
+		        		$count="evenrow";
+		      		}
+		      		else{
+		        		$count="oddrow";
+		      		}
+		      		if(($init)<=$i && $i<$sum){
+		      			$temp_search_result.= "<tr class='$count' id='$i'>";
+		      		}
+		      		else{
+		      			$temp_search_result.= "<tr class='$count hide' id='$i'>";
+		      		}	
+		      		$temp_search_result.= "<td><font color='black'>" .$date->format('m.d.y')."</font></td>";
+		      	    $temp_search_result.= "<td><font color='black'>" . htmlspecialchars($cases['news_title'], ENT_QUOTES, 'UTF-8') . "</font></td>";
+			  		$crime=htmlspecialchars($cases['crime'], ENT_QUOTES, 'UTF-8');
+			  		$bold_crime=str_replace("&lt;/b&gt;", "</b>", str_replace("&lt;b&gt;", "</b>", $crime));
+		      		$temp_search_result.="<td><font color='black'>" . $bold_crime . "</font></td>";
+		      		$temp_search_result.="<td class='right'><a href='show_case.php?id=$id'><button href='show_case.php?id=$id'>View</button></a></td>";
+		      	
+		      	
+
+      		$i++;
+      	}
+
+      }
+      
 			//This counts the number of results and sends a message if there weren't any 
 
 		//	$anymatches= mysql_num_rows($sql); 
 		/*	if($anymatches==0) {  
 				$search_result.="<p>Sorry, but we can not find an entry to match your query</br></br></p>"; }
 			else{*/
-			$search_result.="<table id='dbtable'>";
+			$search_result.="<table id='dbtable'>
+							<tr>
+							    <th>Date</th>
+							    <th>Case</th>
+							    <th>Classification</th>
+							  </tr>";
 			$search_result.=$temp_search_result;
 			$search_result.="</table>";
 		//}
@@ -85,6 +113,8 @@ if($searching=="yes")  {
 			OR notes LIKE ?");   
 
 		if($sql->execute(array("%".$find."%", "%".$find."%", "%".$find."%"))) {
+			$num = $sql->rowCount();
+			$i=0;
 			while ( $crimes=$sql->fetch(PDO::FETCH_ASSOC)) {
 			//$cat_crime= $crimes->fetch(PDO::FETCH_ASSOC);
 	  		$id=htmlspecialchars($crimes['cat_number'], ENT_QUOTES, 'UTF-8');
@@ -94,16 +124,32 @@ if($searching=="yes")  {
       		else{
         		$count="oddrow";
       		}
-      		$temp_search_result.="<tr class='$count' align='left'>";	
+      		if(($init)<=$i && $i<$sum){
+		      			$temp_search_result.= "<tr class='$count' id='$i'>";
+		      		}
+		    else{
+		      			$temp_search_result.= "<tr class='$count hide' id='$i'>";
+		      		}	
       		$temp_search_result.="<td><font color='black'>" . htmlspecialchars($crimes['crime_classification'], ENT_QUOTES, 'UTF-8') . "</font></td>";
 	  		$cat_name=htmlspecialchars($crimes['cat_name'], ENT_QUOTES, 'UTF-8');
+	  		$cat_name=str_replace('*', '', $cat_name);
+	  		$cat_name=str_replace('?', '', $cat_name);
 	  		$bold_cat_name=str_replace("&lt;/b&gt;", "</b>", str_replace("&lt;b&gt;", "<b>", $cat_name));
       		$temp_search_result.="<td><font color='black'>" . $bold_cat_name . "</font></td>";
-      		$temp_search_result.="<td><a href='show_cat.php?id=$id'><button href='show_cat.php?id=$id'>View Category</button></a></td>";
+      		$temp_search_result.="<td class='right'><a href='show_cat.php?id=$id'><button href='show_cat.php?id=$id'>View</button></a></td>";
+
+      		$i++;
+
 		}}
 			//This counts the number of results and sends a message if there weren't any 
 		
-			$search_result.="<table id='dbtable'>";
+			$search_result.="<table id='dbtable'>
+						  	<table id='dbtable'>
+							<tr>
+								<th>Classification</th>
+								<th>Category</th>
+							</tr>
+					  		";
 			$search_result.=$temp_search_result;
 			$search_result.="</table>";
 		
@@ -117,6 +163,8 @@ if($searching=="yes")  {
 
 		//And we display the results 
 		if($sql->execute(array("%".$find."%", "%".$find."%", "%".$find."%"))) {
+			$num = $sql->rowCount();
+			$i=0;
 			while ( $techniques=$sql->fetch(PDO::FETCH_ASSOC)) {
 	  		$id=htmlspecialchars($techniques['technique_index'], ENT_QUOTES, 'UTF-8');
 	  		$id=str_replace(' ', '', $id);
@@ -126,16 +174,28 @@ if($searching=="yes")  {
       		else{
         		$count="oddrow";
       		}
-      		$temp_search_result.="<tr class='$count' align='left'>";	
+
+      		if(($init)<=$i && $i<$sum){
+		      			$temp_search_result.= "<tr class='$count' id='$i'>";
+		      		}
+		    else{
+		      			$temp_search_result.= "<tr class='$count hide' id='$i'>";
+		      		}	
       		$temp_search_result.="<td><font color='black'>" . htmlspecialchars($techniques['technique_category'], ENT_QUOTES, 'UTF-8') . "</font></td>";
 	  		$technique_name=htmlspecialchars($techniques['technique_name'], ENT_QUOTES, 'UTF-8');
 	  		$bold_technique_name=str_replace("&lt;/b&gt;", "</b>", str_replace("&lt;b&gt;", "</b>", $technique_name));
       		$temp_search_result.="<td><font color='black'>" . $bold_technique_name . "</font></td>";
-      		$temp_search_result.="<td><a href='show_technique.php?id=$id'><button href='show_technique.php?id=$id'>View Technique</button></a></td>";
+      		$temp_search_result.="<td class='right'><a href='show_technique.php?id=$id'><button href='show_technique.php?id=$id'>View</button></a></td>";
+      		$i++;
 		}}
 			//This counts the number of results and sends a message if there weren't any 
 			
-			$search_result.="<table id='dbtable'>";
+			$search_result.="<table id='dbtable'>
+						<table id='dbtable'>
+						<tr>
+							<th>Technique</th>
+							<th>Category</th>
+						</tr>";
 			$search_result.=$temp_search_result;
 			$search_result.="</table>";
 		}
@@ -143,25 +203,6 @@ if($searching=="yes")  {
 	//And we remind them what they searched for  
 	$search_result.="<b>Searched For:</b> " .$find;   
 }
-?>
-
-<?php
-
-//get # of rows in each table to pass to browsing pages.
-$sql="SELECT COUNT(*) AS case_count FROM cases";
-$cases= $db->query($sql);
-$case= $cases->fetch(PDO::FETCH_ASSOC);
-$case_count= $case['case_count'];
-
-$sql="SELECT COUNT(*) AS tech_count FROM technique";
-$tech= $db->query($sql);
-$techni= $tech->fetch(PDO::FETCH_ASSOC);
-$tech_count= $techni['tech_count'];
-
-$sql="SELECT COUNT(*) AS cat_count FROM crime_category";
-$cats= $db->query($sql);
-$cat= $cats->fetch(PDO::FETCH_ASSOC);
-$cat_count= $cat['cat_count'];
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -187,14 +228,18 @@ $cat_count= $cat['cat_count'];
  	<Option VALUE="technique">Techniques</option> 
  	</Select> 
  	<input type="hidden" name="searching" value="yes" /> 
+ 	<input type="hidden" name="init" value="0" /> 
+ 	<input type="hidden" name="limit" value="25" /> 
  	<input type="submit" name="search" value="Search" /> 
  	</form>
  	<?php
+ 	
  	if(isset($search_result)){
+ 		echoDisplay($init, $num, $table, $limit);
  		echo $search_result;
+ 		echolinks($init, $num, $table, $limit);
  	}
  	?>
-    
   </div>
   <?php include 'footer.php' ?>
 </div>
@@ -202,4 +247,12 @@ $cat_count= $cat['cat_count'];
 </html>
 
 <script src="js/hilight.js" type="text/javascript"></script>
+<script  src="js/paging.js" type="text/javascript"></script>
+<script type="text/javascript">
+	function update (init, num, limit) {
+		page(init, num, limit);
+		getButtons(init, num, limit);
+	}
+</script>
+
 

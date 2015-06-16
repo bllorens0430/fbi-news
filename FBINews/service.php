@@ -42,6 +42,8 @@ $cat_count= $cat['cat_count'];
  	<Option VALUE="technique">Techniques</option> 
  	</Select> 
  	<input type="hidden" name="searching" value="yes" /> 
+ 	<input type="hidden" name="init" value="0" /> 
+ 	<input type="hidden" name="limit" value="25" /> 
  	<input type="submit" name="search" value="Search" /> 
  	</form>
 

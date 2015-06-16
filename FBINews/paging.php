@@ -1,8 +1,6 @@
 <?php
 
 //initialize key variables 
-//******SANITIZE GET********
-
 
 	$num=intval($_GET['count']);
  	$init=intval($_GET['init']);
@@ -67,7 +65,6 @@ function echolinks($init, $num, $page, $limit){
 }
 
 //Produces a table on the page for browsing
-//Needs to be sanitized
 function getdata($init, $numentries, $table, $db){ 
 	//in case of negative initial value
 	if ($init<0) {
@@ -156,4 +153,6 @@ function getdata($init, $numentries, $table, $db){
 	echo "</table>";
 	$db=null;
 }
+
+
   ?>

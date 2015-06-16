@@ -340,15 +340,25 @@ white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    height: 2.5em;
 }
 .right{
  }
 .right button{
-  height: 2.5em;
+  height: 2em;
   margin-top: auto;
-  margin-right: 0px;
+  margin-right: 5px;
   vertical-align: center;
   float: right;
+  background-color: #888;
+  color:#eee;
+  font-family:'Helvetica Neue',sans-serif;
+  border-radius:2px;
+  -webkit-border-radius:2px;
+  -moz-border-radius:2px;
+  border:0;
+  text-shadow:black 0 -1px 0;
+  font-size: 1em;
 
 }
 /* end of table styling*/
@@ -375,4 +385,7 @@ input.password{
 }
 textarea{
   max-width: 98%;
+}
+.hide{
+  display: none;
 }

@@ -1,7 +1,6 @@
 <?php
 
 //initialize key variables 
-//******SANITIZE GET********
 	require 'common.php';
 	require 'paging.php';
 	echo echolinks($init, $num, $table, $limit);
