@@ -1,5 +1,7 @@
 <?php
 
+require 'session.php';
+require 'check.php';
 require 'common.php';
 
 ?>
@@ -44,6 +46,7 @@ require 'common.php';
  		echo"<h3>Notes</h3>
  			<p>No notes.</p>";
  	}
+ 	echo"<a href='/technique/update_tech.php?tech_index=$id'>Edit</a>";
  	?>
  </div>
  <?php include 'footer.php' ?>
