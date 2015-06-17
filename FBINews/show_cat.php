@@ -1,7 +1,5 @@
 <?php
 
-require 'session.php';
-require 'check.php';
 require 'common.php';
 
 ?>
@@ -31,8 +29,8 @@ require 'common.php';
     $title=str_replace('*', '', $title);
 
  	$exp=htmlspecialchars($cat['cat_explanation'], ENT_QUOTES, 'UTF-8');
- 	$classification=htmlspecialchars(stripslashes($cat['crime_classification']), ENT_QUOTES, 'UTF-8');
- 	$notes=htmlspecialchars($cat['notes'], ENT_QUOTES, 'UTF-8');
+ 	$classification=htmlspecialchars($cat['crime_classification'], ENT_QUOTES, 'UTF-8');
+ 	$notes=htmlspecialchars($case['notes'], ENT_QUOTES, 'UTF-8');
  	$db=null;
 
  	echo "<h1>$title</h1>
@@ -47,7 +45,6 @@ require 'common.php';
  		echo"<h3>Notes</h3>
  			<p>No notes.</p>";
  	}
- 	echo"<a href='/classification/update_cat.php?cat_number=$id'>Edit</a>";
  	?>
  </div>
  <?php include 'footer.php' ?>

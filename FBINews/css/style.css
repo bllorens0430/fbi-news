@@ -99,6 +99,7 @@ margin : 0 10px 0 0;
 padding : 10px;
 border-right : 1px solid #eee;
 color : #666;
+background-color: #E16027;
 }
 #sidebar a {
 color : #333;
@@ -388,4 +389,7 @@ textarea{
 }
 .hide{
   display: none;
+}
+.error{
+  color: red;
 }

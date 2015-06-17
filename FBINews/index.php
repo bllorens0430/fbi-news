@@ -1,9 +1,5 @@
 <?php
 
-	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
-	
-
 	// First we execute our common code to connection to the database and start the session
 	// "require" is identical to include except upon failure 
 	// it will also produce a fatal E_COMPILE_ERROR level error. 
@@ -11,18 +7,6 @@
 	// include only emits a warning (E_WARNING) which allows the script to continue. 
 	require("session.php");
 	require("common.php");
-	
-	if(!empty($_SESSION['user'])) {
-		if ($_SESSION['user']=="root") {
-			header("Location: admin/admin.php");
-			die("Redirecting to: admin/admin.php");
-		}
-	else{
-		header("Location: content.php");
-		die("Redirecting to: content.php");
-		}
-	}
-	  
 
 	// This variable will be used to re-display the user's username to them in the
 	// login form if they fail to enter the correct password.  It is initialized here

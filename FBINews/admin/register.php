@@ -12,34 +12,53 @@
 		}
 	}
 	
+	$success='';
+	$user_error='';
+	$email_error='';
+	$pw_error='';
+	$username='';
+	$email='';
+
 	// This if statement checks to determine whether the registration 
 	// form has been submitted
 	// If it has, then the registration code is run, otherwise the form is displayed
 	if(!empty($_POST))
 	{
 		// Ensure that the user has entered a non-empty username
-		if(empty($_POST['username']))
+		if(empty($_POST['username'])OR$_POST['username']=='')
 		{
 			// Note that die() is generally a terrible way of handling user errors
 			// like this.  It is much better to display the error with the form
 			// and allow the user to correct their mistake.  However, that is an
 			// exercise for you to implement yourself.
-			trigger_error("Please enter a username.");
+			
+			$user_error="<span class='error'>Please enter a username.</span>";
+		}
+		else{
+			$username=htmlspecialchars($_POST['username'], ENT_QUOTES, 'utf-8');
 		}
 		
 		// Ensure that the user has entered a non-empty password
 		if(empty($_POST['password']))
 		{
-			trigger_error("Please enter a password.");
+			$pw_error="<span class='error'> Please enter a password. </span>";
 		}
 		
 		// Make sure the user entered a valid E-Mail address
 		// filter_var is a useful PHP function for validating form input, see:
 		// http://us.php.net/manual/en/function.filter-var.php
 		// http://us.php.net/manual/en/filter.filters.php
-		if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+		if(empty($_POST['email'])OR$_POST['email']=='')
 		{
-			trigger_error("Invalid E-Mail Address");
+			$email_error="<span class='error'>Please enter an email.</span>";
+		}
+		elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+		{
+
+			$email_error="<span class='error'>Invalid E-Mail Address</span>";
+		}
+		else{
+			$email=htmlspecialchars($_POST['email']);
 		}
 		
 		// We will use this SQL query to see whether the username entered by the
@@ -81,7 +100,9 @@
 		// the database already and we should not allow the user to continue.
 		if($row)
 		{
-			trigger_error("This username is already in use");
+			if($user_error==""){
+			$user_error="<span class='error'> This username is already in use </span>";
+		}
 		}
 		
 		// Now we perform the same type of check for the email address, in order
@@ -112,85 +133,91 @@
 		
 		if($row)
 		{
-			trigger_error("This email address is already registered");
+			if ($email_error=="") {
+				$email_error="<span class='error'> This email address is already registered </span>";
+			}
 		}
 		
 		
-		// An INSERT query is used to add new rows to a database table.
-		// Again, we are using special tokens (technically called parameters) to
-		// protect against SQL injection attacks.
-		$query = "
-			INSERT INTO users (
-				username,
-				password,
-				salt,
-				email
-			) VALUES (
-				:username,
-				:password,
-				:salt,
-				:email
-			)
-		";
 		
-		// A salt is randomly generated here to protect again brute force attacks
-		// and rainbow table attacks.  The following statement generates a hex
-		// representation of an 8 byte salt.  Representing this in hex provides
-		// no additional security, but makes it easier for humans to read.
-		// For more information:
-		// http://en.wikipedia.org/wiki/Salt_%28cryptography%29
-		// http://en.wikipedia.org/wiki/Brute-force_attack
-		// http://en.wikipedia.org/wiki/Rainbow_table
-		$salt = dechex(mt_rand(0, 2147483647)) . dechex(mt_rand(0, 2147483647));
-		
-		// This hashes the password with the salt so that it can be stored securely
-		// in your database.  The output of this next statement is a 64 byte hex
-		// string representing the 32 byte sha256 hash of the password.  The original
-		// password cannot be recovered from the hash.  For more information:
-		// http://en.wikipedia.org/wiki/Cryptographic_hash_function
-		$password = hash('sha256', $_POST['password'] . $salt);
-		
-		// Next we hash the hash value 65536 more times.  The purpose of this is to
-		// protect against brute force attacks.  
-		// Now an attacker must compute the hash 65537
-		// times for each guess they make against a password, whereas if the password
-		// were hashed only once the attacker would have been able 
-		// to make 65537 different guesses in the same amount of time instead of only one.
-		for($round = 0; $round < 65536; $round++)
-		{
-			$password = hash('sha256', $password . $salt);
+		//Only insert the values if they made no errors
+		if($user_error==''&&$email_error==''&&$pw_error==''){
+			// An INSERT query is used to add new rows to a database table.
+			// Again, we are using special tokens (technically called parameters) to
+			// protect against SQL injection attacks.
+			$query = "
+				INSERT INTO users (
+					username,
+					password,
+					salt,
+					email
+				) VALUES (
+					:username,
+					:password,
+					:salt,
+					:email
+				)
+			";
+			
+			// A salt is randomly generated here to protect again brute force attacks
+			// and rainbow table attacks.  The following statement generates a hex
+			// representation of an 8 byte salt.  Representing this in hex provides
+			// no additional security, but makes it easier for humans to read.
+			// For more information:
+			// http://en.wikipedia.org/wiki/Salt_%28cryptography%29
+			// http://en.wikipedia.org/wiki/Brute-force_attack
+			// http://en.wikipedia.org/wiki/Rainbow_table
+			$salt = dechex(mt_rand(0, 2147483647)) . dechex(mt_rand(0, 2147483647));
+			
+			// This hashes the password with the salt so that it can be stored securely
+			// in your database.  The output of this next statement is a 64 byte hex
+			// string representing the 32 byte sha256 hash of the password.  The original
+			// password cannot be recovered from the hash.  For more information:
+			// http://en.wikipedia.org/wiki/Cryptographic_hash_function
+			$password = hash('sha256', $_POST['password'] . $salt);
+			
+			// Next we hash the hash value 65536 more times.  The purpose of this is to
+			// protect against brute force attacks.  
+			// Now an attacker must compute the hash 65537
+			// times for each guess they make against a password, whereas if the password
+			// were hashed only once the attacker would have been able 
+			// to make 65537 different guesses in the same amount of time instead of only one.
+			for($round = 0; $round < 65536; $round++)
+			{
+				$password = hash('sha256', $password . $salt);
+			}
+			
+			// Here we prepare our tokens for insertion into the SQL query.  We do not
+			// store the original password; only the hashed version of it.  We do store
+			// the salt (in its plaintext form; this is not a security risk).
+			$query_params = array(
+				':username' => $_POST['username'],
+				':password' => $password,
+				':salt' => $salt,
+				':email' => $_POST['email']
+			);
+			
+			try
+			{
+				// Execute the query to create the user
+				$stmt = $db->prepare($query);
+				$result = $stmt->execute($query_params);
+				$success="<p>Successfly registered $username with email: $email.</p>";
+			}
+			catch(PDOException $ex)
+			{
+				// Note: On a production website, you should not output $ex->getMessage().
+				// It may provide an attacker with helpful information about your code. 
+				error_log("Failed to run query: " . $ex->getMessage());
+			}
 		}
-		
-		// Here we prepare our tokens for insertion into the SQL query.  We do not
-		// store the original password; only the hashed version of it.  We do store
-		// the salt (in its plaintext form; this is not a security risk).
-		$query_params = array(
-			':username' => $_POST['username'],
-			':password' => $password,
-			':salt' => $salt,
-			':email' => $_POST['email']
-		);
-		
-		try
-		{
-			// Execute the query to create the user
-			$stmt = $db->prepare($query);
-			$result = $stmt->execute($query_params);
-		}
-		catch(PDOException $ex)
-		{
-			// Note: On a production website, you should not output $ex->getMessage().
-			// It may provide an attacker with helpful information about your code. 
-			error_log("Failed to run query: " . $ex->getMessage());
-		}
-		
 		// This redirects the user back to the login page after they register
-		header("Location: admin.php");
+		//header("Location: admin.php");
 		
 		// Calling die or exit after performing a redirect using the header function
 		// is critical.  The rest of your PHP script will continue to execute and
 		// will be sent to the user if you do not die or exit.
-		trigger_error("Redirecting to admin.php");
+		//die("Redirecting to admin.php");
 	}
 	
 ?>
@@ -206,7 +233,7 @@
 
 <body>
 <div id='container'>
-<?php include '../header.php' ?>
+<?php include '../header2.php' ?>
 <div id='sidebar'>
 	<h2>Register</h2>
 </div>
@@ -229,16 +256,20 @@ function checkPassword(theForm) {
 //-->
 </script> 
 
-    
+    <?php echo $success; ?>
     <form action="register.php" method="post" onsubmit="return checkPassword(this)">
         Username:<br />
-        <input type="text" name="username" value="" />
+        <input type="text" name="username" value=<?php echo "'$username'"?> />
+        <?php echo $user_error; ?>
         <br /><br />
         E-Mail:<br />
-        <input type="text" name="email" value="" />
+        <input type="text" name="email" value=<?php echo "'$email'"?> />
+        <?php echo $email_error; ?>
         <br /><br />
         Password:<br />
         <input class='password' type="password" name="password" value="" />
+        <?php echo $pw_error; ?>
+
         <br /><br />
     
          <p>Repeat password:<br />

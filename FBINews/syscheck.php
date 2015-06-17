@@ -9,7 +9,7 @@
 		// people can view your members-only content without logging in.
 		die("Redirecting to index.php");
 	}
-	elseif (strcmp($_POST['username'], "root")==false) {
+	elseif (isset($_POST['username'])&&strcmp($_POST['username'], "root")==false) {
 		//if the user is not root redirect to valid page
 		header("Location: ../content.php");
 

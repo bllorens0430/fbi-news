@@ -3,12 +3,6 @@
 require 'common.php';
 require 'session.php';
 require 'page.php';
-//include ("dbo.php");
-
-
-//$id = $_GET['id'];
-//$result = $db->query($data);
-//$case = $result->fetch(PDO::FETCH_ASSOC);
 
 //This is only displayed if they have submitted the form  
 if(isset($_GET['search'])){
@@ -29,32 +23,27 @@ if($searching=="yes")  {
 	} 
 }
 
-	// Otherwise we connect to our Database  
-	//mysql_connect("../common.php", "root", "fxw0528t") or die(mysql_error());  
-	//mysql_select_db("mydb") or die(mysql_error());   
+	// Otherwise we connect to our Database    
 	// We preform a bit of filtering  
 	$find=strip_tags($find);  
 	$find=trim ($find);   
 
-	//Now we search for our search term, in the cases table 
+	//Now we search for our search term, in the cases table using prepared statements
 	if($table=="cases"){
-		//Should news_url be included in the search as well? 
+		
 		$sql=$db->prepare("SELECT * FROM cases
 			WHERE news_title LIKE ?
 				OR  crime LIKE ?
 				OR  investigation LIKE ? 
 				OR notes LIKE ?");
-	
-			//$search=$find;
 
-		//$counter=$db->query("SELECT COUNT(*) FROM cases");
-		//$case=$sql->execute(array('%'.$find.'%'));
-		//$cases= $case->fetch(PDO::FETCH_ASSOC);
 	  		
 		if($sql->execute(array("'%".$find."%'", "%".$find."%", "%".$find."%", "%".$find."%"))) {
 			$num = $sql->rowCount();
 			$i=0;
+			$count="evenrow";
 
+			//we cycle through and get all the results
 			while ($cases=$sql->fetch(PDO::FETCH_ASSOC)) {
 				
 					$date = htmlspecialchars($cases['news_date']);
@@ -68,12 +57,16 @@ if($searching=="yes")  {
 		      		else{
 		        		$count="oddrow";
 		      		}
+
+		      		//but only show some of them to keep the page from displaying too many entries
 		      		if(($init)<=$i && $i<$sum){
 		      			$temp_search_result.= "<tr class='$count' id='$i'>";
 		      		}
 		      		else{
 		      			$temp_search_result.= "<tr class='$count hide' id='$i'>";
 		      		}	
+
+		      		//we store them all in a temporary variable
 		      		$temp_search_result.= "<td><font color='black'>" .$date->format('m.d.y')."</font></td>";
 		      	    $temp_search_result.= "<td><font color='black'>" . htmlspecialchars($cases['news_title'], ENT_QUOTES, 'UTF-8') . "</font></td>";
 			  		$crime=htmlspecialchars($cases['crime'], ENT_QUOTES, 'UTF-8');
@@ -87,13 +80,8 @@ if($searching=="yes")  {
       	}
 
       }
-      
-			//This counts the number of results and sends a message if there weren't any 
-
-		//	$anymatches= mysql_num_rows($sql); 
-		/*	if($anymatches==0) {  
-				$search_result.="<p>Sorry, but we can not find an entry to match your query</br></br></p>"; }
-			else{*/
+      	if(isset($temp_search_result)){
+      	//now we sandwich the temp variable in a table
 			$search_result.="<table id='dbtable'>
 							<tr>
 							    <th>Date</th>
@@ -102,8 +90,10 @@ if($searching=="yes")  {
 							  </tr>";
 			$search_result.=$temp_search_result;
 			$search_result.="</table>";
-		//}
-		
+		}
+		else{
+			$search_result.="<p>No results found matching your query</p>";
+		}
 	}
 	//Now we search for our search term in the crime_category table
 	  elseif($table=="crime_category"){
@@ -114,9 +104,10 @@ if($searching=="yes")  {
 
 		if($sql->execute(array("%".$find."%", "%".$find."%", "%".$find."%"))) {
 			$num = $sql->rowCount();
+			
 			$i=0;
+			$count="evenrow";
 			while ( $crimes=$sql->fetch(PDO::FETCH_ASSOC)) {
-			//$cat_crime= $crimes->fetch(PDO::FETCH_ASSOC);
 	  		$id=htmlspecialchars($crimes['cat_number'], ENT_QUOTES, 'UTF-8');
       		if($count=="oddrow"){
         		$count="evenrow";
@@ -141,8 +132,8 @@ if($searching=="yes")  {
       		$i++;
 
 		}}
-			//This counts the number of results and sends a message if there weren't any 
-		
+		//Again we check for any results and print a message if we don't find any
+		if(isset($temp_search_result)){
 			$search_result.="<table id='dbtable'>
 						  	<table id='dbtable'>
 							<tr>
@@ -152,7 +143,10 @@ if($searching=="yes")  {
 					  		";
 			$search_result.=$temp_search_result;
 			$search_result.="</table>";
-		
+		}
+		else{
+			$search_result.="<p>No results found matching your query</p>";
+		}
 	}
 	//Now we search for our search term in the technique table
 	else if ($table=="technique"){
@@ -163,8 +157,11 @@ if($searching=="yes")  {
 
 		//And we display the results 
 		if($sql->execute(array("%".$find."%", "%".$find."%", "%".$find."%"))) {
+			
 			$num = $sql->rowCount();
 			$i=0;
+			$count="evenrow";
+
 			while ( $techniques=$sql->fetch(PDO::FETCH_ASSOC)) {
 	  		$id=htmlspecialchars($techniques['technique_index'], ENT_QUOTES, 'UTF-8');
 	  		$id=str_replace(' ', '', $id);
@@ -188,8 +185,9 @@ if($searching=="yes")  {
       		$temp_search_result.="<td class='right'><a href='show_technique.php?id=$id'><button href='show_technique.php?id=$id'>View</button></a></td>";
       		$i++;
 		}}
-			//This counts the number of results and sends a message if there weren't any 
 			
+		//Again we check for any results and print a message if we don't find any
+		if(isset($temp_search_result)){
 			$search_result.="<table id='dbtable'>
 						<table id='dbtable'>
 						<tr>
@@ -199,9 +197,13 @@ if($searching=="yes")  {
 			$search_result.=$temp_search_result;
 			$search_result.="</table>";
 		}
+		else{
+			$search_result.="<p>No results found matching your query</p>";
+		}
 
 	//And we remind them what they searched for  
 	$search_result.="<b>Searched For:</b> " .$find;   
+}
 }
 ?>
 
@@ -246,13 +248,12 @@ if($searching=="yes")  {
 </body>
 </html>
 
-<script src="js/hilight.js" type="text/javascript"></script>
+<script src="js/hilightservice.js" type="text/javascript"></script>
 <script  src="js/paging.js" type="text/javascript"></script>
 <script type="text/javascript">
+	//Calls external js onclick of button
 	function update (init, num, limit) {
 		page(init, num, limit);
 		getButtons(init, num, limit);
 	}
 </script>
-
-

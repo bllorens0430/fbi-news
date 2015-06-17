@@ -1,7 +1,12 @@
+
+//Shows proper elements of search result table
 function page(init, num, limit){
 
+	//set some variables
 	var sum=limit+init;
 	var initplus = init+1;
+
+	//if i is within a range of what is supposed to be visible make it visible
 	for (var i = 0; i <= num-1; i++) {
 		var get= i;
 		if(initplus<=get&&get<=sum){
@@ -13,6 +18,7 @@ function page(init, num, limit){
 			};
 
 		}
+		//else hide the current element
 		else{
 			if(get%2==0){
 				document.getElementById(get).className='evenrow hide';

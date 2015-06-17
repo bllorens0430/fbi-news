@@ -1,9 +1,6 @@
 <?php
 
-require 'session.php';
-require 'check.php';
 require 'common.php';
-
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -36,7 +33,6 @@ require 'common.php';
  	$investigation=htmlspecialchars($case['investigation'], ENT_QUOTES, 'UTF-8');
  	$notes=htmlspecialchars($case['notes'], ENT_QUOTES, 'UTF-8');
  	$url=htmlspecialchars($case['news_url'], ENT_QUOTES, 'UTF-8');
- 	
  	$db=null;
 
  	echo "<a href='$url'><h1>$title</h1></a>
@@ -54,11 +50,8 @@ require 'common.php';
  		echo"<h3>Notes</h3>
  			<p>No notes.</p>";
  	}
- 	echo"<a href='/case/update.php?case_index=$id'>Edit</a>";
  	?>
-
  </div>
-
  <?php include 'footer.php' ?>
 </div>
 </body>
