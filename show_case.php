@@ -54,7 +54,7 @@ require 'common.php';
  		echo"<h3>Notes</h3>
  			<p>No notes.</p>";
  	}
- 	echo"<a href='/case/update.php?case_index=$id'>Edit</a>";
+ 	echo"<a href='../case/update.php?case_index=$id'>Edit</a>";
  	?>
 
  </div>
