@@ -47,7 +47,7 @@ require 'common.php';
  		echo"<h3>Notes</h3>
  			<p>No notes.</p>";
  	}
- 	echo"<a href='../classification/update_cat.php?cat_number=$id'>Edit</a>";
+ 	echo"<a href='classification/update_cat.php?cat_number=$id'>Edit</a>";
  	?>
  </div>
  <?php include 'footer.php' ?>
