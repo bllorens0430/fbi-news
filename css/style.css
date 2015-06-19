@@ -393,3 +393,8 @@ textarea{
 .error{
   color: red;
 }
+/*chart stylying*/
+#chart_div{
+  width: 100%;
+}
+/* end of chart styling */

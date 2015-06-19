@@ -1,7 +1,6 @@
 <?php
 
 require 'session.php';
-require 'check.php';
 require 'common.php';
 
 ?>
