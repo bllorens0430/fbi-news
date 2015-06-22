@@ -77,7 +77,7 @@ background : transparent url(../img/menu_arrow.gif) bottom center no-repeat;
 #content {
 padding : 10px;
 margin-left : 10px;
-margin-bottom : 10px;
+margin-bottom : 100px;
 color : #666;
 background : #fff;
 
@@ -361,6 +361,10 @@ white-space: nowrap;
   text-shadow:black 0 -1px 0;
   font-size: 1em;
 
+}
+
+#vis-form td{
+  vertical-align: text-top;
 }
 /* end of table styling*/
 
