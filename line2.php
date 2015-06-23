@@ -2,6 +2,7 @@
 include 'session.php';
 include 'common.php';
 include 'visualize.php';
+include 'cat_box.php';
 //get # of rows in each table to pass to browsing pages.
 
 //initialize an array with zero values for all the years in question.
@@ -15,14 +16,14 @@ if (isset($_POST['submit'])) {
   else{
     $regres='';
   }
-  if(isset($_POST['cases'])&&$_POST['cases']=='2v3'){
-      $array = array('1002', '1003' );
-      $data= new visualize(2, $array, $regres, $begin, $end, $db ); 
-      $lines=2;
+  if(isset($_POST['cases'])){
+      $array=$_POST['cases'];
+      $data= new visualize( $array, $regres, $begin, $end, $db ); 
+      $lines=count($array);
   }
   else{
      $array = array('all');
-    $data= new visualize(1, $array, $regres, $begin, $end, $db);
+    $data= new visualize( $array, $regres, $begin, $end, $db);
     $lines=1;
   }
 
@@ -33,9 +34,10 @@ else{
       $end=2015;
        $regres='';
         $array = array('all');
-        $data= new visualize(1, $array, $regres, $begin, $end, $db);
+        $data= new visualize( $array, $regres, $begin, $end, $db);
         $lines=1;
 }
+echo "LINES:".$lines;
 
   $data->set_everything($regres);
 
@@ -57,18 +59,25 @@ function drawBasic() {
 
       var data = new google.visualization.DataTable();
       data.addColumn('date', 'Year');
-      data.addColumn('number', 'Cases');
-      <?php if($lines>1){
-        echo "data.addColumn('number', '1003');";
+      
+        <?php if($lines>1){
+          for ($i=0; $i < $lines; $i++) { 
+            echo "data.addColumn('number', '$i');
+            data.addColumn({type: 'string', role: 'tooltip', p: {'html': true}});";
+          }
+      }
+      else{
+        echo "data.addColumn('number', 'Cases');
+        data.addColumn({type: 'string', role: 'tooltip', p: {'html': true}});";
       }
       ?>
-      data.addColumn({type: 'string', role: 'tooltip', p: {'html': true}});
-
+      
       data.addRows([
       <?php $data->get_mathdata();?>
       ]);
 
       var options = {
+        legend: 'none',
         tooltip: {isHtml: true},
         hAxis: {
           title: 'Year',
@@ -76,7 +85,7 @@ function drawBasic() {
         vAxis: {
           title: 'Cases',
         },
-        colors: ['orange', 'blue'],
+
          <?php $data->get_regres(); ?>
         
         
@@ -127,16 +136,15 @@ function drawBasic() {
       <input type='radio' name='regression' value='polynomial' <?php  $data->get_poly();?> > polynomial<br>
        <input type='radio' name='regression' value='exponential' <?php  $data->get_exp();?> > exponential<br>
   </td>
-  <td>
-       <b>Cases</b><br>
-       <input type='radio' name='cases' value ='all' checked> All Cases <br>
-       <input type='radio' name='cases' value ='2v3'> 1002 vs 1003<br>
-</td>
+ 
 <td>
     <input type='submit' name='submit'></input>
   </td>
   </tr>
-  </table>
+</table>
+       <b>Cases</b><br>
+       <?php cat_box($db) ?>
+
   </form>
 </div>
 <?php include 'footer.php' ?>
@@ -145,4 +153,7 @@ function drawBasic() {
 </html>
 
 <script src="js/hilightservice.js" type="text/javascript"></script>
-
+<script src="js/toggle.js" type="text/javascript"></script>
+<?php $data->db_close();
+$db=null;
+ ?>

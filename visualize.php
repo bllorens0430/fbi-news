@@ -21,6 +21,7 @@ class visualize{
 	//to handle the cases that will be part of the data
 	private $num_compare='';
 	private $case_array='';
+	private $cat_names='';
 
 	//actual data to be passed to js constructor
 		//for line graph
@@ -37,18 +38,12 @@ class visualize{
 	private $db='';
 
 	//constructor
-	public function __construct($num_comp=1, $array=array('all'), $regress='', $begin=2003, $end=2015, $db){
-		$this->num_compare=$num_comp;
+	public function __construct( $array=array('all'), $regress='', $begin=2003, $end=2015, $db){
+		
+		$this->num_compare=count($array);
 		$this->case_array=$array;
 
-		$this->error = '';
-		$this->regres = '';
-		$this->linear = '' ;
-		$this->poly = '' ;
-		$this->exp = '' ;
-		$this->sql = '';
-		$this->mathdata= '';
-		$this->stringdata='';
+	
 		$this->begin=$begin;
 		$this->end=$end;
 		$this->db=$db;
@@ -103,19 +98,26 @@ class visualize{
 		    $this->error.="<p class='error'> The start year must be earlier than the end year.</p>";
 
 		  }
+		  if($this->num_compare==0){
+		  	$this->sql=$this->db->prepare("SELECT crime_classification, news_date 
+		  FROM cases   ORDER BY news_date");
+		  	$this->error.="<p class='error'>Please select at least one crime classification</p>";
+		  }
+		  elseif($this->num_compare==1){
+		  	$this->sql=$this->db->prepare("SELECT crime_classification, news_date 
+		  FROM cases WHERE crime_classification LIKE '%".$this->case_array[0]."%'  ORDER BY news_date");
+		  }
+		  else{
+		  	$this->sql="SELECT crime_classification, news_date 
+		  FROM cases WHERE crime_classification LIKE '%".$this->case_array[0]."%'";
+		  	for ($i=1; $i < $this->num_compare; $i++) { 
+		  		$this->sql.="OR crime_classification LIKE '%".$this->case_array[$i]."%'";
+		  	}	
+		  	$this->sql=$this->db->prepare($this->sql);
+		}
 		  if ($this->case_array[0]=='all') {
 		    $this->sql=$this->db->prepare("SELECT crime_classification, news_date 
 		  FROM cases   ORDER BY news_date");
-		}
-		  else{
-		  $this->sql=$this->db->prepare(
-		  "SELECT crime_classification, news_date 
-		  FROM cases  
-		  WHERE crime_classification 
-		  LIKE '%1002%'
-		  OR crime_classification
-		  LIKE '%1003%'
-		  ORDER BY news_date");
 		}
 	}
 
@@ -131,12 +133,13 @@ class visualize{
 		  	$datearr[$i]=0;
 		  }
 		  else{
-		  	$datearr[$i] = array('1002' => 0, '1003' => 0);
+		  	for ($x=0; $x < $this->num_compare; $x++) { 
+		  	$datearr[$i][$this->case_array[$x]] =  0;
 			}
+			
 		}
-		  //these variables are going to be passed to a form to dynamically generate the first and last relevant years.
-		  //Note if it turns out cybercrim happened before 0 b.c. or after 3000, then these constants will need to be changed.
-		  
+	}
+		 
 		if ($this->sql->execute()) {
 		  while($data=$this->sql->fetch(PDO::FETCH_ASSOC)){
 
@@ -146,15 +149,18 @@ class visualize{
 		    $date = idate('Y', $date);
 		    if($this->num_compare>1){
 		                if(isset($datearr[$date])){
-		                  
-		              if(strpos(strval($data['crime_classification']),'1002')===0){
+		             	  foreach ($this->case_array as $guess){
+		             	
+		             	  	if ($guess=='all'){
+		             	  		$datearr[$date][$guess]++;
+		             	  	}
+		              		if(strpos(strval($data['crime_classification']),$guess)===0){
+					
+									$datearr[$date][$guess]++;            
+		              				
+		              		}
+		         		 }
 		              
-		              $datearr[$date]['1002']++;
-		              }
-		              else{
-
-		                $datearr[$date]['1003']++;
-		              }
 		            }
 
 		            if($date<$this->firstyear){
@@ -181,28 +187,56 @@ class visualize{
 		}
 
 		//create a string full of data points for the chart
-		$stringdata2="";
-		$stringdata3="";
+		$string_dat_arr= array();
 		if($this->num_compare>1){
 		  foreach ($datearr as $year => $count) {
 		    if($year!=0){
-		    $count2=$count['1002'];
-		    $count3=$count['1003'];
-		 
-		    $thisyear=strval($year);
-		    $this->mathdata.= "[new Date($thisyear, 0, 1),$count2,$count3, '<strong>".$thisyear."</strong><br>Cases:<strong>$count2, $count3</strong>'], ";  
-		    $stringdata2= $stringdata2+$count2;
-		    $stringdata3=$stringdata3+$count3;
+		    	$thisyear=strval($year);
+		    	
+		    	$this->mathdata.= "[new Date($thisyear, 0, 1),";
+		    	foreach($this->case_array as $case) {
+				    $sum=$count[$case];
+				    	if($case=='all'){
+		    				$this->mathdata.= "$sum, '<strong>".$thisyear."</strong><br>"."All".":<strong>$sum</strong>', ";
+		    				if(isset($string_dat_arr['All'])){
+							   	$string_dat_arr['All']=$string_dat_arr['All']+$sum;
+							   }
+							   else{
+							   	$string_dat_arr['All']=$sum;
+							   }
+		   				}
+		    			else{
+							$this->mathdata.=" $sum, '<strong>".$thisyear."</strong><br>".$this->cat_names[$case].":<strong>$sum</strong>', ";
+					  	
+							   if(isset($string_dat_arr[$this->cat_names[$case]])){
+							   	$string_dat_arr[$this->cat_names[$case]]=$string_dat_arr[$this->cat_names[$case]]+$sum;
+							   }
+							   else{
+							   	$string_dat_arr[$this->cat_names[$case]]=$sum;
+							   }
+						}
+				}
+				 
+				 $this->mathdata.="],";
+
 		  }
 		  }
-		  $this->stringdata.="['1002', $stringdata2], ['1003', $stringdata3]";
+		  $this->stringdata.="";
+		  foreach ($string_dat_arr as $cat => $count) {
+		 	 $this->stringdata.="['$cat', $count],";
+		}
 
 		}
 		else{
 		  foreach ($datearr as $year => $count) {
-		    
-		    $this->mathdata.= "[new Date($year, 0, 1),$count, '<strong>".$year."</strong><br>Cases:<strong>$count</strong>'], ";  
-		    $this->stringdata.= "['$year',$count], ";
+		    if($this->case_array[0]=='all'){
+		    	$this->mathdata.= "[new Date($year, 0, 1),$count, '<strong>".$year."</strong><br>".$this->case_array[0].":<strong>$count</strong>'], ";  
+		    	$this->stringdata.= "['$year',$count], ";
+		    }
+		    else{
+		    	$this->mathdata.= "[new Date($year, 0, 1),$count, '<strong>".$year."</strong><br>".$this->cat_names[$this->case_array[0]].":<strong>$count</strong>'], ";  
+		    	$this->stringdata.= "['$year',$count], ";
+			}
 		  }
 		}
 	}
@@ -248,9 +282,28 @@ class visualize{
 		}
 	
 	}
+	function set_cat_names(){
+		$this->cat_names=array();
+		$sql="SELECT cat_name, crime_classification FROM crime_category";
+		foreach ($this->db->query($sql) as $result) {
+			
+			$name=htmlspecialchars($result['cat_name']);
+			$class=htmlspecialchars($result['crime_classification']);
+			if(substr($class, 4,4)=='0000'){
+				$this->cat_names[substr($class, 0,4)]=$name;
+			}
+			elseif($class!='0'){
+				$this->cat_names[$class]=$name;
+			}
+			else{
+				$this->cat_names[$class]='unclassified';
+			}
+		}
+	}
 	
 	function set_everything($reg){
 		$this->set_regres($reg);
+		$this->set_cat_names();
 		$this->set_sql($this->begin, $this->end);
 		$this->set_data();
 		$this->set_year();
@@ -266,10 +319,10 @@ class visualize{
 	function get_dropdown(){
 
 	echo"<td>
-    	<b>Start Year</b>
-    	<select name='begin'>.".$this->fyeardropdown."</select><br>
-    	<b>End Year</b>
-    	<select name='end'>".$this->lyeardropdown."</select><br>
+    	<b>Start Year</b><br>
+    	<select name='begin'>.".$this->fyeardropdown."</select><br><br>
+    	<b>End Year</b><br>
+    	<select name='end'>".$this->lyeardropdown."</select><br><br>
   		</td>";
 	}
 	function get_regres(){
@@ -288,5 +341,8 @@ class visualize{
 	function get_exp(){
 		echo $this->exp;
 	}
+}
+function db_close(){
+	$this->db=null;
 }
 ?>
