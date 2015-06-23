@@ -37,7 +37,7 @@ else{
         $data= new visualize( $array, $regres, $begin, $end, $db);
         $lines=1;
 }
-echo "LINES:".$lines;
+
 
   $data->set_everything($regres);
 

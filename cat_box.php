@@ -5,7 +5,12 @@
 		$buttonNames=array();
 		//special case for 0 classification
 		$buttonNames['0']='Unclassified';
-	echo "<input type='checkbox' name='cases[]' value ='all' checked> All Cases"; 
+		if(isset($_POST['cases'])&&!in_array('all', $_POST['cases'])){	
+			echo "<input type='checkbox' name='cases[]' value ='all'> All Cases"; 
+		}
+		else{
+			echo "<input type='checkbox' name='cases[]' value ='all' checked> All Cases"; 
+		}
 
 
      $sql="SELECT crime_classification, cat_name FROM crime_category GROUP BY crime_classification";
@@ -20,7 +25,11 @@
      		$buttonNames[substr($class, 0,4)]=$name;
      	}
      	elseif($class!='0'){
-     		$buttons[substr($class, 0,4)].= "<input type='checkbox' name='cases[]' value='".$class."' >".$name."<br>";
+     		$buttons[substr($class, 0,4)].= "<input type='checkbox' name='cases[]' value='".$class."'"; 
+     		if(isset($_POST['cases'])&&in_array($class, $_POST['cases'])){	
+     			$buttons[substr($class, 0,4)].=" checked";
+     		}
+     		$buttons[substr($class, 0,4)].=">".$name."<br>";
      	}
      		
      	
@@ -36,7 +45,11 @@
      	}
      	echo "<tr class='$tr_counter'>
      	<td><h4><span class='overflow'>".$buttonNames[$button]."</span></h4></td>
-     	<td><input type='checkbox' name='cases[]' value='".$button."' >Include</td>
+     	<td><input type='checkbox' name='cases[]' value='".$button."'";
+     	if(isset($_POST['cases'])&&in_array($button, $_POST['cases'])){	
+     		echo ' checked';
+     	}
+     	echo" >Include</td>
      	<td><button type='button' name='".$button."'class='styled-button-DV' onclick='toggleCase(this.name)'>Subcategories</button></td>
      	</tr>
      	<div  class='".$button." miniwindow hide'>
