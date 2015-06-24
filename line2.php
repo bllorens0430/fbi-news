@@ -106,6 +106,7 @@ function drawBasic() {
  
         var options = {
           title: 'Case Percentage',
+          legend: {isHtml: true},
           pieSliceText: 'none',
           pieHole: 0.4,
         };

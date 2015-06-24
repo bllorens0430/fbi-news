@@ -16,7 +16,11 @@
      $sql="SELECT crime_classification, cat_name FROM crime_category GROUP BY crime_classification";
      foreach($db->query($sql) as $result){
      	$class=htmlspecialchars($result['crime_classification']);
-     	$name=htmlspecialchars($result['cat_name']);
+     	$name=str_replace('<b>', '##b##', $result['cat_name']);
+          $name=str_replace('</b>', '##/b##', $name);
+          $name=htmlspecialchars($name);
+          $name=str_replace('##b##', '<b>', $name);
+          $name=str_replace('##/b##', '</b>', $name);  
      	if(!isset($buttons[substr($class, 0,4)])){
      		$buttons[substr($class, 0,4)]="";
      	}

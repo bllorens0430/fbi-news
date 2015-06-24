@@ -223,6 +223,7 @@ class visualize{
 		  }
 		  $this->stringdata.="";
 		  foreach ($string_dat_arr as $cat => $count) {
+		  	$cat=strip_tags($cat);
 		 	 $this->stringdata.="['$cat', $count],";
 		}
 
@@ -287,7 +288,11 @@ class visualize{
 		$sql="SELECT cat_name, crime_classification FROM crime_category";
 		foreach ($this->db->query($sql) as $result) {
 			
-			$name=htmlspecialchars($result['cat_name']);
+			$name=str_replace('<b>', '##b##', $result['cat_name']);
+     		$name=str_replace('</b>', '##/b##', $name);
+     		$name=htmlspecialchars($name);
+     		$name=str_replace('##b##', '<b>', $name);
+     		$name=str_replace('##/b##', '</b>', $name);	
 			$class=htmlspecialchars($result['crime_classification']);
 			if(substr($class, 4,4)=='0000'){
 				$this->cat_names[substr($class, 0,4)]=$name;
