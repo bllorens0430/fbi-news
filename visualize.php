@@ -300,12 +300,50 @@ class visualize{
 			}
 		}
 	}
-	
+	//map is a seperate function that simultaneously sets and gets the map data. It is not meant to be used in congruence 
+	//with other visualizations as it requires a single case and isn't meant to take multiple cases
+	function map(){
+        $maparr="";
+        $case=$this->case_array[0];
+        if ($case=='all') {
+          $sql=$this->db->prepare("SELECT case_location, COUNT(case_location) AS locount
+          FROM cases WHERE news_date>='$this->begin-01-01' AND news_date<= '$this->end-12-31' GROUP BY case_location");
+          $mapdata="['States', 'Cases'], ";
+        }
+        else{
+           $sql=$this->db->prepare("SELECT case_location, COUNT(case_location) AS locount
+          FROM cases WHERE news_date>='$this->begin-01-01' AND news_date<= '$this->end-12-31' AND crime_classification LIKE '%$case%' GROUP BY case_location");
+           $cat_name=$this->cat_names[$case];
+           $mapdata="['States', '$cat_name'], ";
+        }
+        if($sql->execute()){
+         while($data=$sql->fetch(PDO::FETCH_ASSOC)){
+            $location=htmlspecialchars($data['case_location']);
+            $locount=htmlspecialchars($data['locount']);
+            $maparr[$location]=$locount;
+          }
+          if($maparr!=""){
+          foreach ($maparr as $locname => $locnumb) {
+            $mapdata.="['$locname', $locnumb], ";
+          }
+        }
+        else{
+          $this->errors.="<p class='error'>There are no recorded cases for $case</p>";
+        }
+          return $mapdata;
+      }
+    }
 	function set_everything($reg){
 		$this->set_regres($reg);
 		$this->set_cat_names();
 		$this->set_sql($this->begin, $this->end);
 		$this->set_data();
+		$this->set_year();
+		$this->set_dropdown();
+	}
+	//sets necessary data for map visualization
+	function set_map_plus(){
+		$this->set_cat_names();
 		$this->set_year();
 		$this->set_dropdown();
 	}
@@ -341,8 +379,12 @@ class visualize{
 	function get_exp(){
 		echo $this->exp;
 	}
-}
-function db_close(){
+	function get_cat_names(){
+		return $this->cat_names;
+	}
+	function db_close(){
 	$this->db=null;
 }
+}
+
 ?>
