@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
   }
   if(isset($_POST['cases'])){
       $array=$_POST['cases'];
-      $data= new visualize( $array, $regres, $begin, $end, $db ); 
+      $data= new visualize( $array, $regres, $begin, $end, $db );
       $lines=count($array);
   }
   else{
@@ -39,7 +39,10 @@ else{
 }
 
 
-  $data->set_everything($regres);
+    $data->set_regres($regres);
+    $data->set_cat_names();
+    $data->set_sql();
+    $data->set_year();
 
 ?>
 
@@ -59,9 +62,9 @@ function drawBasic() {
 
       var data = new google.visualization.DataTable();
       data.addColumn('date', 'Year');
-      
+
         <?php if($lines>1){
-          for ($i=0; $i < $lines; $i++) { 
+          for ($i=0; $i < $lines; $i++) {
             echo "data.addColumn('number', '$i');
             data.addColumn({type: 'string', role: 'tooltip', p: {'html': true}});";
           }
@@ -71,9 +74,13 @@ function drawBasic() {
         data.addColumn({type: 'string', role: 'tooltip', p: {'html': true}});";
       }
       ?>
-      
+
       data.addRows([
-      <?php $data->get_mathdata();?>
+      <?php
+      $data->set_line();
+      $data->get_mathdata();
+      $data->kill_line();
+      ?>
       ]);
 
       var options = {
@@ -86,13 +93,13 @@ function drawBasic() {
           title: 'Cases',
         },
 
-         <?php $data->get_regres(); ?>
-        
-        
-     
-  
+         <?php $data->get_regres();?>
+
+
+
+
       }
-       
+
 
       var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
 
@@ -101,9 +108,13 @@ function drawBasic() {
 //donut
        var data = google.visualization.arrayToDataTable([
             ['Year', 'Cases'],
-           <?php $data->get_stringdata(); ?>
+           <?php
+           $data->set_pie();
+           $data->get_stringdata();
+           $data->kill_pie();
+            ?>
         ]);
- 
+
         var options = {
           title: 'Case Percentage',
           legend: {isHtml: true},
@@ -124,12 +135,17 @@ function drawBasic() {
     <h2>FBI Reported Cyber Crime Cases <?php echo$begin."-".$end; ?></h2>
       <div id="chart_div"></div>
       <div id="donutchart"></div>
-	
+
   <form method='post' action='line2.php'>
     <?php $data->get_error(); ?>
     <table id='vis-form'>
       <tr>
-    <?php $data->get_dropdown(); ?>
+    <?php
+          $data->set_dropdown();
+          $data->get_dropdown();
+          $data->kill_dropdown();
+          $data->kill_the_cat();
+       ?>
   <td>
    <b> Regression</b><br>
     <input type='radio' name='regression' value='None' checked> none<br>
@@ -137,14 +153,14 @@ function drawBasic() {
       <input type='radio' name='regression' value='polynomial' <?php  $data->get_poly();?> > polynomial<br>
        <input type='radio' name='regression' value='exponential' <?php  $data->get_exp();?> > exponential<br>
   </td>
- 
+
 <td>
     <input type='submit' name='submit'></input>
   </td>
   </tr>
 </table>
        <b>Cases</b><br>
-       <?php cat_box($db) ?>
+       <?php cat_box($db); ?>
 
   </form>
 </div>
