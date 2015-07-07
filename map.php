@@ -13,9 +13,9 @@ $error='';
 
 
     if(isset($_POST['cases'])){
-  
+
         $array=array($_POST['cases']);
-        $data= new visualize( $array, '', $begin, $end, $db ); 
+        $data= new visualize( $db, $array, '', $begin, $end);
          $data->set_map_plus();
         $mapdata= $data->map();
 
@@ -23,7 +23,7 @@ $error='';
     else{
 
        $array = array('all');
-      $data= new visualize( $array, '', $begin, $end, $db, 'all');
+      $data= new visualize($db, $array, '', $begin, $end, 'all');
        $data->set_map_plus();
        $mapdata= $data->map();
 
@@ -35,13 +35,13 @@ else{
       $end=2015;
        $regres='';
         $array = array('all');
-        $data= new visualize($array, $regres, $begin, $end, $db);
+        $data= new visualize($db, $array, $regres, $begin, $end;
          $data->set_map_plus();
         $mapdata= $data->map( $begin, $end, $db, 'all');
       }
-    
-     
-  
+
+
+
 
 ?>
 
@@ -60,9 +60,9 @@ else{
     function drawMap() {
 
       var data = google.visualization.arrayToDataTable([
-        
+
         <?php echo $mapdata; ?>
-        
+
       ]);
 
       var options = {
@@ -70,11 +70,11 @@ else{
         displayMode: 'regions',
         resolution: 'provinces',
         colorAxis: {colors: ['#D68533', '#CC6600', '#8F4700']},
-        backgroundColor:{ 
-                        fill: '#474747', 
-                        stroke: '#141414', 
-                        strokeWidth: 5} 
-              
+        backgroundColor:{
+                        fill: '#474747',
+                        stroke: '#141414',
+                        strokeWidth: 5}
+
 
       };
 
@@ -90,25 +90,32 @@ else{
  <?php include 'header.php' ?>
 
   <div id="content">
-    <h2>FBI Reported Cyber Crime Cases <?php echo$begin."-".$end; ?></h2>
+    <h2>FBI Cyber Crime News Location <?php echo$begin."-".$end; ?> (Data Fictitious)</h2>
       <div id="map_canvas"></div>
       <div id="chart_div"></div>
       <div id="donutchart"></div>
-	
+
   <form method='post' action='map.php'>
     <?php $data->get_error();
     echo $error; ?>
     <table id='vis-form'>
       <tr>
     <?php $data->get_dropdown(); ?>
- 
+
 <td>
     <input type='submit' name='submit'></input>
   </td>
   </tr>
 </table>
        <b>Cases</b><br>
-       <?php cat_rad($db); ?>
+       <?
+       if(isset($_POST['cases'])&&!in_array('all', $_POST['cases'])){
+      echo "<input type='checkbox' name='cases[]' value ='all'> All Cases";
+    }
+    else{
+      echo "<input type='checkbox' name='cases[]' value ='all' checked> All Cases";
+    }
+       php cat_rad($db); ?>
 
   </form>
 </div>

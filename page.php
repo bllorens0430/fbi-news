@@ -5,7 +5,7 @@ function echolinks($init, $num, $page, $limit){
 
 	$more=" <button id='more'  class='styled-button-6' onclick='update($init, $num, $limitplus)'>Show More</button>";
 	$less="<button id='less' class='styled-button-6 hide' onclick='update($init, $num, $limitless)'>Show Less</button> ";
-	
+
   //find the proper multiple of $limit for the last page
 	$mod=$num;
 	while ($mod%$limit!=0) {
@@ -15,7 +15,7 @@ function echolinks($init, $num, $page, $limit){
     $minus=$init-$limit;
     $first="<button id='first' class='styled-button-6 hide' onclick='update(0, $num, $limit)'> <<< </button>";
   	$older="<button id='older' class='styled-button-6 hide' onclick='update($minus, $num, $limit)'> < </button>";
-  
+
   $init1=$init+1;
   $plus=$init+$limit;
 
@@ -28,7 +28,7 @@ function echolinks($init, $num, $page, $limit){
   else{
 
     echo "<p>$less"."<span class='innerText'>Displaying $init1 - $plus of $num entries</span>$more</p>
- 		$first$older$new$last<br><br>";
+ 		$last$new$older$first<br><br>";
   }
 }
 function echoDisplay($init, $num, $page, $limit){

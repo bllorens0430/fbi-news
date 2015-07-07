@@ -39,7 +39,7 @@ class visualize{
 	private $db='';
 
 	//constructor
-	public function __construct( $array=array('all'), $regress='', $begin=2003, $end=2015, $db){
+	public function __construct( $db, $array=array('all'), $regress='', $begin=2003, $end=2015){
 
 		$this->num_compare=count($array);
 		$this->case_array=$array;
@@ -475,9 +475,19 @@ function set_pie(){
 	function get_cat_names(){
 		return $this->cat_names;
 	}
+
+	function get_fy(){
+		echo $this->firstyear;
+	}
+	function get_ly(){
+		echo $this->lastyear;
+	}
+
 	function db_close(){
 	$this->db=null;
 }
+
+
 //kill functions clear up data so that the server doesn't overload.
 	function kill_dropdown(){
 		$this->fyeardropdown=null;

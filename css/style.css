@@ -124,7 +124,7 @@ bottom: 0;
 width: 750px;
 border-top: 1px solid #eee;
 background: #eee;
-} 
+}
 #footer p {
 margin-left: 5px;
 }
@@ -163,22 +163,22 @@ border : 1px dashed #8a795d;
 font-size : 80%;
 color: #aaa;
 background : #fff;
-} 
-.post .date { 
+}
+.post .date {
 background : url(../img/clock.gif) no-repeat left center;
 padding-left : 15px;
 margin : 0 15px 0 5px;
-} 
-.post .comments { 
+}
+.post .comments {
 background : url(../img/comment.gif) no-repeat left center;
 padding-left : 15px;
 margin : 0 15px 0 5px;
-} 
-.post .readmore { 
+}
+.post .readmore {
 background : url(../img/document.gif) no-repeat left center;
 padding-left : 15px;
 margin : 0 15px 0 5px;
-} 
+}
 
 .login-card {
   padding: 40px;
@@ -240,7 +240,7 @@ margin : 0 15px 0 5px;
   /* border: 1px solid #3079ed; */
   border: 0px;
   color: #fff;
-  text-shadow: 0 1px rgba(0,0,0,0.1); 
+  text-shadow: 0 1px rgba(0,0,0,0.1);
   background-color: #4d90fe;
   /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#4787ed)); */
 }
@@ -286,7 +286,7 @@ margin : 0 15px 0 5px;
 	text-shadow:#C17C3A 0 -1px 0;
 	width:90px;
 	height:30px
-}    
+}
 
 .styled-button-1 {
 	-webkit-box-shadow:rgba(0,0,0,0.2) 0 1px 0 0;
@@ -306,7 +306,7 @@ margin : 0 15px 0 5px;
 	text-shadow:#FE6 0 1px 0
 }
 /* begining of table styling */
-.oddrow { 
+.oddrow {
   background-color: #666;
   border-right: 1px solid #666;
 }
@@ -319,15 +319,16 @@ margin : 0 15px 0 5px;
 .oddrow td{
   border-collapse: collapse;
 }
-#dbtable, #dbtable td{
+.dbtable, .dbtable td{
   border-collapse: collapse;
 }
-#dbtable{
+.dbtable{
   border-radius: 2px;
   position: relative;
-  width: 100%;
+  width: 95%;
+  padding-right: 2px;
 }
-#dbtable th{
+.dbtable th{
 text-align: left;
 padding-left: 5px;
 color: #BC5510;
@@ -385,18 +386,31 @@ white-space: nowrap;
   height:20px;
   margin-right: 5px;
 
-} 
+}
 
 
 
 .miniwindow{
   position: fixed;
-  width: 50%;
-  top: 200px;
+  width: 40%;
+  left: 30%;
   background-color: #fff;
   border: solid 1px gray;
   border-radius: 2px;
   z-index: 1000;
+  overflow-y:scroll;
+  height: 30%;
+}
+.bigwindow{
+  position: fixed;
+
+  left: 20%;
+  background-color: #fff;
+  border: solid 1px gray;
+  border-radius: 2px;
+  z-index: 1000;
+  overflow-y:scroll;
+  height: 50%;
 }
 
 .styled-button-DV {
@@ -414,7 +428,24 @@ white-space: nowrap;
   height:20px;
   margin-right: 5px;
 
-} 
+}
+.styled-button-srch {
+  background-color:#ed8223;
+  color:#fff;
+  font-family:'Helvetica Neue',sans-serif;
+  font-size:13px;
+  line-height:15px;
+  border-radius:2px;
+  -webkit-border-radius:2px;
+  -moz-border-radius:2px;
+  border:0;
+  text-shadow:#C17C3A 0 -1px 0;
+  width:100px;
+  height:40px;
+  margin-right: 5px;
+
+}
+
 
 input.password{
   width: 125px;

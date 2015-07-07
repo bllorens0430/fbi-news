@@ -1,6 +1,6 @@
 <?php
 
-//initialize key variables 
+//initialize key variables
 
 	$num=intval($_GET['count']);
  	$init=intval($_GET['init']);
@@ -49,7 +49,7 @@ function echolinks($init, $num, $page, $limit){
   else{
   	$cap=$limit;
   }
-  
+
   $init1=$init+1;
   $plus=$init+$limit;
   if($plus<$num){
@@ -65,18 +65,18 @@ function echolinks($init, $num, $page, $limit){
 }
 
 //Produces a table on the page for browsing
-function getdata($init, $numentries, $table, $db){ 
+function getdata($init, $numentries, $table, $db){
 	//in case of negative initial value
 	if ($init<0) {
 		$init=0;
 	}
 
   $sql="SELECT * FROM $table LIMIT $init, $numentries";
-  
-  //count is used to alternately style tablerows, see css/style.css 
-   $count='evenrow'; 
+
+  //count is used to alternately style tablerows, see css/style.css
+   $count='evenrow';
   	if($table=='cases'){
-  	echo "<table id='dbtable'>
+  	echo "<table class='dbtable'>
   <tr>
     <th>Date</th>
     <th>Case</th>
@@ -84,15 +84,15 @@ function getdata($init, $numentries, $table, $db){
   </tr>";
   }
   elseif ($table=='technique') {
-  	echo"<table id='dbtable'>
+  	echo"<table class='dbtable'>
 	<tr>
 		<th>Technique</th>
 		<th>Category</th>
 	</tr>";
   }
-  elseif ($table=='crime_category');{
+  elseif ($table=='crime_category')  {
   	echo"
-  	<table id='dbtable'>
+  	<table class='dbtable'>
 	<tr>
 		<th>Category</th>
 	</tr>
@@ -114,15 +114,15 @@ function getdata($init, $numentries, $table, $db){
     if($table=='cases'){
     	$date = htmlspecialchars($result['news_date']);
 	  	$date = DateTime::createFromFormat('Y-m-d h:i:s', $date);
-	      
+
 	      $id = htmlspecialchars($result['case_index']);
 	      $id=str_replace(' ', '', $id);
-	      echo "<tr class='$count' align='center'>";	
+	      echo "<tr class='$count' align='center'>";
 	      echo"<td><font color='black'>" .$date->format('m.d.y')."</font></td>";
 	      echo"<td><font color='black'><a href='".htmlspecialchars($result['news_url'], ENT_QUOTES, 'UTF-8')."'>". htmlspecialchars($result['news_title'], ENT_QUOTES, 'UTF-8'). "<a/></font></td>";
 	      echo"<td><font color='black'>". htmlspecialchars($result['crime_classification'], ENT_QUOTES, 'UTF-8'). "</font></td>";
 	      echo"<td class='right'><a href=show_case.php?id=$id><button href=show_case.php?id=$id>View</button></a></td>";
-	                          
+
 	      echo "</tr>";
 	  }
 	  if($table=='crime_category'){
@@ -135,20 +135,20 @@ function getdata($init, $numentries, $table, $db){
 	      echo "<tr class='$count'>";
 	      echo"<td><font color='black'>". $categg. "</font></td>";
 	      echo"<td class='right'><a href=show_cat.php?id=$id><button href=show_cat.php?id=$id>View</button></a></td>";
-                          
+
       echo "</tr>";
 	  }
 	  if ($table=='technique') {
 	  	  $id = $result['technique_index'];
 	      $id=str_replace(' ', '', $id);
-	      echo "<tr class='$count' align='center'>";	
+	      echo "<tr class='$count' align='center'>";
 	      echo"<td><font color='black'><a href='".htmlspecialchars($result['technique_url'], ENT_QUOTES, 'UTF-8')."'>". htmlspecialchars($result['technique_name'], ENT_QUOTES, 'UTF-8'). "<a/></font></td>";
 	      echo"<td><font color='black'>". htmlspecialchars($result['technique_category'], ENT_QUOTES, 'UTF-8'). "</font></td>";
 	      echo"<td class='right'><a href=show_technique.php?id=$id><button href=show_technique.php?id=$id>View</button></a></td>";
-	                          
+
 	      echo "</tr>";
 	  }
-	  
+
 	}
 	echo "</table>";
 	$db=null;

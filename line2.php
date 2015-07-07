@@ -18,12 +18,12 @@ if (isset($_POST['submit'])) {
   }
   if(isset($_POST['cases'])){
       $array=$_POST['cases'];
-      $data= new visualize( $array, $regres, $begin, $end, $db );
+      $data= new visualize($db, $array, $regres, $begin, $end);
       $lines=count($array);
   }
   else{
      $array = array('all');
-    $data= new visualize( $array, $regres, $begin, $end, $db);
+    $data= new visualize($db, $array, $regres, $begin, $end);
     $lines=1;
   }
 
@@ -34,7 +34,7 @@ else{
       $end=2015;
        $regres='';
         $array = array('all');
-        $data= new visualize( $array, $regres, $begin, $end, $db);
+        $data= new visualize($db, $array, $regres, $begin, $end);
         $lines=1;
 }
 
@@ -132,7 +132,7 @@ function drawBasic() {
  <?php include 'header.php' ?>
 
   <div id="content">
-    <h2>FBI Reported Cyber Crime Cases <?php echo$begin."-".$end; ?></h2>
+    <h2>FBI Cyber Crime News <?php echo$begin."-".$end; ?></h2>
       <div id="chart_div"></div>
       <div id="donutchart"></div>
 
@@ -160,7 +160,14 @@ function drawBasic() {
   </tr>
 </table>
        <b>Cases</b><br>
-       <?php cat_box($db); ?>
+       <?
+       if(isset($_POST['cases'])&&!in_array('all', $_POST['cases'])){
+      echo "<input type='checkbox' name='cases[]' value ='all'> All Cases";
+    }
+    else{
+      echo "<input type='checkbox' name='cases[]' value ='all' checked> All Cases";
+    }
+        cat_box($db); ?>
 
   </form>
 </div>
