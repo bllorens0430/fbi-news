@@ -23,11 +23,11 @@ require 'common.php';
  	$id= substr($id, 0, 10) . ' ' . substr($id, 10);
  	//get case variables from db
  	$sql="SELECT * FROM cases WHERE case_index = '$id'";
- 	
+
  	$result= $db->query($sql);
  	$case= $result->fetch(PDO::FETCH_ASSOC);
  	$date=$date = DateTime::createFromFormat('Y-m-d h:i:s', $case['news_date']);
- 	
+
  	$date=$date->format('m.d.y');
  	$title=htmlspecialchars($case['news_title'], ENT_QUOTES, 'UTF-8');
  	$crime=htmlspecialchars($case['crime'], ENT_QUOTES, 'UTF-8');
@@ -35,7 +35,18 @@ require 'common.php';
  	$investigation=htmlspecialchars($case['investigation'], ENT_QUOTES, 'UTF-8');
  	$notes=htmlspecialchars($case['notes'], ENT_QUOTES, 'UTF-8');
  	$url=htmlspecialchars($case['news_url'], ENT_QUOTES, 'UTF-8');
- 	
+
+  $sql="SELECT * FROM cases_has_technique
+  INNER JOIN technique ON technique_technique_index = technique_index
+  WHERE cases_case_index = '$id'";
+  $techniques= $db->query($sql);
+  $techs=[];
+  while($row = $techniques->fetch(PDO::FETCH_ASSOC)){
+    $name=$row['technique_name'];
+    $t_id=$row['technique_index'];
+    $techs[]=[$t_id, $name];
+  }
+
  	$db=null;
 
  	echo "<a href='$url'><h1>$title</h1></a>
@@ -53,6 +64,13 @@ require 'common.php';
  		echo"<h3>Notes</h3>
  			<p>No notes.</p>";
  	}
+
+  if(!empty($techs)){
+    echo "<h2>Techniques in Case</h2>";
+          foreach ($techs as $tech) {
+            echo "<h3><a href='show_technique.php?id=$tech[1]'>$tech[0]</a></h3>";
+          }
+  }
  	echo"<a href='case/update.php?case_index=$id'>Edit</a>";
  	?>
 

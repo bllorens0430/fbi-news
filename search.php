@@ -263,7 +263,7 @@ if($searching=="yes")  {
   </div>
   <div id="content">
     <h2>Search</h2>
-	<form method="GET" action="search.php" onsubmit="return find">
+	<form method="GET" action="search.php" onsubmit="return find" onchange="hidebutton()">
  	Search for: <input type="text" name="find" /> in
  	<Select NAME="table">
  	<Option VALUE="cases">Cases</option>
@@ -277,8 +277,8 @@ if($searching=="yes")  {
   Between
   <input type='date' name='start' value='<?php $dates->get_fy(); ?>'></input>
   And
-  <input type='date' name= 'finish' value='<?php $dates->get_ly(); ?>'></input><br>
-  <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-srch'>Search By Classification</button>
+  <input type='date' name= 'finish' value='<?php $dates->get_ly(); ?>'></input>
+  <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-srch hidebutton'>Search By Classification</button>
   <div class='classifys bigwwindow hide'>
   <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-DV'>Hide</button>
   <?php cat_box($db)?>
@@ -312,3 +312,19 @@ if($searching=="yes")  {
 	}
 </script>
 <script src="js/toggle.js" type="text/javascript"></script>
+<script>
+function hidebutton(){
+  if (document.getElementsByName('table')[0].value == 'cases') {
+     button = document.getElementsByClassName('hidebutton');
+     for (var i = 0; i < button.length; i++) {
+     	button[i].className='styled-button-srch hidebutton';
+     };
+  }
+  else{
+   	button = document.getElementsByClassName('hidebutton');
+     for (var i = 0; i < button.length; i++) {
+     	button[i].className='styled-button-srch hidebutton hide';
+     };
+  };
+};
+</script>

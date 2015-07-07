@@ -50,10 +50,10 @@ $cat_count= $cat['cat_count'];
   Between
   <input type='date' name='start' value='<?php $dates->get_fy(); ?>'></input>
   And
-  <input type='date' name= 'finish' value='<?php $dates->get_ly(); ?>'></input><br>
+  <input type='date' name= 'finish' value='<?php $dates->get_ly(); ?>'></input>
   <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-srch'>Search By Classification</button>
   <div class='classifys bigwwindow hide'>
-  <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-DV'>Hide</button>
+  <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-DV hidebutton'>Hide</button>
   <?php cat_box($db)?>
   </div>
  	<input type="hidden" name="searching" value="yes" />
@@ -86,4 +86,12 @@ $cat_count= $cat['cat_count'];
 
 <script src="js/hilight.js" type="text/javascript"></script>
 <script src="js/toggle.js" type="text/javascript"></script>
+<script>
+  if (document.getElementsByName('table').value == 'Cases') {
+      document.getElementsByClassName('hidebutton').className = 'styled-button-DV hidebutton';
+  }
+  else{
+    document.getElementsByClassName('hidebutton').className = 'styled-button-DV hidebutton hide';
+  };
+</script>
 
