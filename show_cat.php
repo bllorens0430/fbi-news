@@ -25,15 +25,13 @@ require 'common.php';
 if($sql->execute()){
  	$cat= $sql->fetch(PDO::FETCH_ASSOC);
 
- 	$title=htmlspecialchars($cat['cat_name'], ENT_QUOTES, 'UTF-8');
+ 	$title=strip_tags($cat['cat_name']);
  	$title=str_replace('?', '', $title);
-    $title=str_replace('&lt;b&gt;', '', $title);
-    $title=str_replace('&lt;/b&gt;', '', $title);
     $title=str_replace('*', '', $title);
 
- 	$exp=htmlspecialchars($cat['cat_explanation'], ENT_QUOTES, 'UTF-8');
- 	$classification=htmlspecialchars(stripslashes($cat['crime_classification']), ENT_QUOTES, 'UTF-8');
- 	$notes=htmlspecialchars($cat['notes'], ENT_QUOTES, 'UTF-8');
+ 	$exp=strip_tags($cat['cat_explanation']);
+ 	$classification=strip_tags(stripslashes($cat['crime_classification']));
+ 	$notes=strip_tags($cat['notes']);
  	$db=null;
 
  	echo "<h1>$title</h1>

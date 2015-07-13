@@ -29,12 +29,12 @@ require 'common.php';
  	$date=$date = DateTime::createFromFormat('Y-m-d h:i:s', $case['news_date']);
 
  	$date=$date->format('m.d.y');
- 	$title=htmlspecialchars($case['news_title'], ENT_QUOTES, 'UTF-8');
- 	$crime=htmlspecialchars($case['crime'], ENT_QUOTES, 'UTF-8');
- 	$classification=htmlspecialchars($case['crime_classification'], ENT_QUOTES, 'UTF-8');
- 	$investigation=htmlspecialchars($case['investigation'], ENT_QUOTES, 'UTF-8');
- 	$notes=htmlspecialchars($case['notes'], ENT_QUOTES, 'UTF-8');
- 	$url=htmlspecialchars($case['news_url'], ENT_QUOTES, 'UTF-8');
+ 	$title=strip_tags($case['news_title']);
+ 	$crime=strip_tags($case['crime']);
+ 	$classification=strip_tags($case['crime_classification']);
+ 	$investigation=strip_tags($case['investigation']);
+ 	$notes=strip_tags($case['notes']);
+ 	$url=strip_tags($case['news_url']);
 
   $sql="SELECT * FROM cases_has_technique
   INNER JOIN technique ON technique_technique_index = technique_index

@@ -29,11 +29,11 @@ require 'common.php';
 
    	$techni= $sql->fetch(PDO::FETCH_ASSOC);
 
-   	$title=htmlspecialchars($techni['technique_name'], ENT_QUOTES, 'UTF-8');
-   	$cat=htmlspecialchars($techni['technique_category'], ENT_QUOTES, 'UTF-8');
-   	$details=htmlspecialchars($techni['technique_details'], ENT_QUOTES, 'UTF-8');
-   	$notes=htmlspecialchars($techni['notes'], ENT_QUOTES, 'UTF-8');
-   	$url=htmlspecialchars($techni['technique_url'], ENT_QUOTES, 'UTF-8');
+   	$title=strip_tags($techni['technique_name']);
+   	$cat=strip_tags($techni['technique_category']);
+   	$details=strip_tags($techni['technique_details']);
+   	$notes=strip_tags($techni['notes']);
+   	$url=strip_tags($techni['technique_url']);
    	$db=null;
 
    	echo "<a href='$url'><h1>$title</h1></a>
