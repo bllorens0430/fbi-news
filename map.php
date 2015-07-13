@@ -35,7 +35,7 @@ else{
       $end=2015;
        $regres='';
         $array = array('all');
-        $data= new visualize($db, $array, $regres, $begin, $end;
+        $data= new visualize($db, $array, $regres, $begin, $end);
          $data->set_map_plus();
         $mapdata= $data->map( $begin, $end, $db, 'all');
       }
@@ -94,28 +94,34 @@ else{
       <div id="map_canvas"></div>
       <div id="chart_div"></div>
       <div id="donutchart"></div>
-
+  <noscript><h3 class='error'>Uh oh, you need javascript enabled to use our site's Data Visualization!</h3></noscript>
   <form method='post' action='map.php'>
     <?php $data->get_error();
     echo $error; ?>
     <table id='vis-form'>
       <tr>
     <?php $data->get_dropdown(); ?>
-
+  <td>
+  <b>Cases</b><br>
+       <?php
+       if(isset($_POST['cases'])&&$_POST['cases']!='all'){
+      echo "<input type='radio' name='cases' value ='all'> All Cases <br>";
+    }
+    else{
+      echo "<input type='radio' name='cases' value ='all' checked> All Cases <br>";
+    }
+    ?>
+  <button type='button' onclick='toggleCase("classifys", "dvwindow")' class='styled-button-srch'>Filter By Classification</button>
+  <div class='classifys dvwindow hide'>
+  <button type='button' onclick='toggleCase("classifys", "dvwindow")' class='styled-button-DV'>Hide</button>
+  <?php cat_rad($db) ?>
+  </div>
+</td>
 <td>
     <input type='submit' name='submit'></input>
   </td>
   </tr>
 </table>
-       <b>Cases</b><br>
-       <?
-       if(isset($_POST['cases'])&&!in_array('all', $_POST['cases'])){
-      echo "<input type='checkbox' name='cases[]' value ='all'> All Cases";
-    }
-    else{
-      echo "<input type='checkbox' name='cases[]' value ='all' checked> All Cases";
-    }
-       php cat_rad($db); ?>
 
   </form>
 </div>

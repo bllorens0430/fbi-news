@@ -135,7 +135,7 @@ function drawBasic() {
     <h2>FBI Cyber Crime News <?php echo$begin."-".$end; ?></h2>
       <div id="chart_div"></div>
       <div id="donutchart"></div>
-
+    <noscript><h3 class='error'>Uh oh, you need javascript enabled to use our site's Data Visualization!</h3></noscript>
   <form method='post' action='line2.php'>
     <?php $data->get_error(); ?>
     <table id='vis-form'>
@@ -153,21 +153,28 @@ function drawBasic() {
       <input type='radio' name='regression' value='polynomial' <?php  $data->get_poly();?> > polynomial<br>
        <input type='radio' name='regression' value='exponential' <?php  $data->get_exp();?> > exponential<br>
   </td>
-
+<td>
+<b>Cases</b><br>
+       <?php
+       if(isset($_POST['cases'])&&!in_array('all', $_POST['cases'])){
+      echo "<input type='checkbox' name='cases[]' value ='all'> All Cases <br>";
+    }
+    else{
+      echo "<input type='checkbox' name='cases[]' value ='all' checked> All Cases <br>";
+    }
+    ?>
+  <button type='button' onclick='toggleCase("classifys", "dvwindow")' class='styled-button-srch'>Filter By Classification</button>
+  <div class='classifys dvwindow hide'>
+  <button type='button' onclick='toggleCase("classifys", "dvwindow")' class='styled-button-DV'>Hide</button>
+  <?php cat_box($db) ?>
+  </div>
+</td>
 <td>
     <input type='submit' name='submit'></input>
   </td>
   </tr>
 </table>
-       <b>Cases</b><br>
-       <?
-       if(isset($_POST['cases'])&&!in_array('all', $_POST['cases'])){
-      echo "<input type='checkbox' name='cases[]' value ='all'> All Cases";
-    }
-    else{
-      echo "<input type='checkbox' name='cases[]' value ='all' checked> All Cases";
-    }
-        cat_box($db); ?>
+
 
   </form>
 </div>

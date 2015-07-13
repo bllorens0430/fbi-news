@@ -36,31 +36,34 @@ $cat_count= $cat['cat_count'];
   </div>
   <div id="content">
     <h2>Search</h2>
-	<form method="GET" action="search.php" onsubmit="return find">
- 	Search for: <input type="text" name="find" /> in
- 	<Select NAME="table">
- 	<Option VALUE="cases">Cases</option>
- 	<Option VALUE="crime_category">Categories</option>
- 	<Option VALUE="technique">Techniques</option>
- 	</Select><br>
-  <?php
+	 <form method="GET" action="search.php" onsubmit="return find" onchange="hidebutton()">
+  Search for: <input type="text" name="find" /> in
+  <Select NAME="table">
+  <Option VALUE="cases">Cases</option>
+  <Option VALUE="crime_category">Categories</option>
+  <Option VALUE="technique">Techniques</option>
+  </Select>
+   <?php
     $dates = new visualize($db=$db);
     $dates->set_year();
   ?>
+  <div class = 'hidebutton'>
+  <br>
   Between
-  <input type='date' name='start' value='<?php $dates->get_fy(); ?>'></input>
+  <input type='date' name='start' value='<?php  $dates->get_fy(); echo"-01-01";?>'></input>
   And
-  <input type='date' name= 'finish' value='<?php $dates->get_ly(); ?>'></input>
+  <input type='date' name= 'finish' value='<?php echo date('Y-m-d'); ?>'></input>
   <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-srch'>Search By Classification</button>
   <div class='classifys bigwwindow hide'>
-  <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-DV hidebutton'>Hide</button>
+  <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-DV'>Hide</button>
   <?php cat_box($db)?>
   </div>
- 	<input type="hidden" name="searching" value="yes" />
- 	<input type="hidden" name="init" value="0" />
- 	<input type="hidden" name="limit" value="25" />
- 	<input type="submit" name="search" value="Search" />
- 	</form>
+  </div>
+  <input type="hidden" name="searching" value="yes" />
+  <input type="hidden" name="init" value="0" />
+  <input type="hidden" name="limit" value="25" />
+  <input type="submit" name="search" value="Search" />
+  </form>
 
     <h2>Crime Cases</h3>
     <p>Our database has compiled various cases of cyber crime from the FBI and
@@ -87,11 +90,19 @@ $cat_count= $cat['cat_count'];
 <script src="js/hilight.js" type="text/javascript"></script>
 <script src="js/toggle.js" type="text/javascript"></script>
 <script>
-  if (document.getElementsByName('table').value == 'Cases') {
-      document.getElementsByClassName('hidebutton').className = 'styled-button-DV hidebutton';
+  function hidebutton(){
+  if (document.getElementsByName('table')[0].value == 'cases') {
+     button = document.getElementsByClassName('hidebutton');
+     for (var i = 0; i < button.length; i++) {
+      button[i].className='hidebutton';
+     };
   }
   else{
-    document.getElementsByClassName('hidebutton').className = 'styled-button-DV hidebutton hide';
+    button = document.getElementsByClassName('hidebutton');
+     for (var i = 0; i < button.length; i++) {
+      button[i].className='hidebutton hide';
+     };
   };
+};
 </script>
 

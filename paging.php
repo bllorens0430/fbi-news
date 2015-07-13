@@ -70,8 +70,12 @@ function getdata($init, $numentries, $table, $db){
 	if ($init<0) {
 		$init=0;
 	}
-
-  $sql="SELECT * FROM $table LIMIT $init, $numentries";
+if($table == 'cases' OR $table == 'technique' OR $table == 'crime_category'){
+  $sql="SELECT * FROM $table LIMIT :init, :numentries";
+  $sql=$db->prepare($sql);
+  $sql->bindParam(':init', $init, PDO::PARAM_INT);
+  $sql->bindParam(':numentries', $numentries, PDO::PARAM_INT);
+}
 
   //count is used to alternately style tablerows, see css/style.css
    $count='evenrow';
@@ -98,7 +102,9 @@ function getdata($init, $numentries, $table, $db){
 	</tr>
   	";
   }
-  foreach ($db->query($sql) as $result){
+
+ if ($sql->execute()) {
+      while($result=$sql->fetch(PDO::FETCH_ASSOC)){
 
   	if ($count=="oddrow") {
       $count="evenrow";
@@ -150,6 +156,7 @@ function getdata($init, $numentries, $table, $db){
 	  }
 
 	}
+}
 	echo "</table>";
 	$db=null;
 }

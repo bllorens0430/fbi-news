@@ -1,4 +1,4 @@
-<?php  
+<?php
 require("session.php"); // start or resume a session
 require("check.php"); // check if there is a session ongoing
 require("common.php"); // connect to the database
@@ -34,16 +34,19 @@ require("common.php"); // connect to the database
 <table border="1">
   <?php
   //include("classification/dbo.php");
-  
-  $sql="SELECT notes FROM users WHERE username='".$_SESSION['user']['username']."'";
-          
-  foreach ($db->query($sql) as $test)
+
+  $sql="SELECT notes FROM users WHERE username= :user;";
+  $sql=$db->prepare($sql);
+  $sql->bindParam(':user', $_SESSION['user']['username'], PDO::PARAM_STR);
+  if($sql->execute()){
+  while ($test=$sql->fetch(PDO::FETCH_ASSOC))
   {
 //		echo htmlspecialchars($test['notes'], ENT_QUOTES, 'UTF-8');
-		// Since the assignment is given by admin, we assume admin is benign 
-		// will not perform XSS 
+		// Since the assignment is given by admin, we assume admin is benign
+		// will not perform XSS
 		echo $test['notes'];
   }
+}
   $db=null;
   ?>
 </table>

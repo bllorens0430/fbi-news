@@ -9,7 +9,9 @@ require 'cat_box.php';
 //This is only displayed if they have submitted the form
 if(isset($_GET['search'])){
 	$searching=$_GET['searching'];
-	$find= $_GET['find'];
+
+  $find=$_GET['find'];
+
 	$table= $_GET['table'];
 	$init=intval($_GET['init']);
 	$limit=intval($_GET['limit']);
@@ -19,16 +21,13 @@ if(isset($_GET['search'])){
 if($searching=="yes")  {
 	$search_result.="<p><h2>Results</h2></p>";
 	//If they did not enter a search term we give them an error
-	if($find=="")  {
-		$search_result.="<p>You forgot to enter a search term</p>";
-		exit;
-	}
 }
 
 	// Otherwise we connect to our Database
 	// We preform a bit of filtering
 	$find=strip_tags($find);
 	$find=trim ($find);
+	$findme='%'.$find.'%';
 
 	//Now we search for our search term, in the cases table using prepared statements
 	if($table=="cases"){
@@ -36,35 +35,58 @@ if($searching=="yes")  {
 			WHERE";
 		$cats='';
 		if (isset($_GET['cases'])){
+			#set this and for dates since dates will not be the first in the query
 			$catarr=$_GET['cases'];
-			$cats.=" AND (crime_classification = $catarr[0]";
+			if(strpos($catarr[0], '0000')){
+					$cats.=" (crime_classification LIKE :0";
+					$catarr[0]="%".$catarr[0]."%";
+				}
+				else{
+					$cats.=" (crime_classification = :0";
+				}
 			$len=count($catarr);
 			for ($i=1; $i < $len; $i++) {
-				$cats.=" OR crime_classification = $catarr[$i]";
+				if(strpos($catarr[$i], '0000')){
+					$cats.=" OR crime_classification LIKE :$i";
+					$catarr[$i]="%".$catarr[$i]."%";
+				}
+				else{
+					$cats.=" OR crime_classification = :$i";
+				}
 			}
-			$cats.=")";
+			$cats.=") AND";
 		}
 		if(isset($_GET['start'])&&isset($_GET['finish'])&&$_GET['finish']!=''){
 				$start=date('Y-m-d H:i:s', strtotime($_GET['start']));
 				$finish=date('Y-m-d H:i:s', strtotime($_GET['finish']));
-				$sql.=" news_date > '$start'
-				AND news_date < '$finish'
-				AND (news_title LIKE ?
-				OR  crime LIKE ?
-				OR  investigation LIKE ?
-				OR notes LIKE ?)".$cats."ORDER BY news_date";
-				#echo $sql;
+				$sql.=$cats." news_date > :start
+				AND news_date < :finish
+				 AND (news_title LIKE :find
+				OR  crime LIKE :find
+				OR  investigation LIKE :find
+				OR notes LIKE :find) ORDER BY news_date";
+
 		}
 		else{
-			$sql.=" news_title LIKE ?
-				OR  crime LIKE ?
-				OR  investigation LIKE ?
-				OR notes LIKE ?".$cats;
+			$sql.=$cats." news_title LIKE :find
+				OR  crime LIKE :find
+				OR  investigation LIKE :find
+				OR notes LIKE :find";
 		}
 		$sql=$db->prepare($sql);
+		if(isset($_GET['cases'])){
+			for ($i=0; $i < $len; $i++) {
+				$sql->bindParam(":$i", $catarr[$i], PDO::PARAM_STR);
+			}
+		}
+		if (isset($_GET['start'])&&isset($_GET['finish'])&&$_GET['finish']!=''){
 
+			$sql->bindParam(':start', $start, PDO::PARAM_STR);
+			$sql->bindParam(':finish', $finish, PDO::PARAM_STR);
+		}
+			$sql->bindParam(':find', $findme, PDO::PARAM_STR);
 
-		if($sql->execute(array("'%".$find."%'", "%".$find."%", "%".$find."%", "%".$find."%"))) {
+		if($sql->execute()){
 			$num = $sql->rowCount();
 			$i=0;
 			$count="evenrow";
@@ -74,7 +96,9 @@ if($searching=="yes")  {
 
 					$date = htmlspecialchars($cases['news_date']);
 			  		$date = DateTime::createFromFormat('Y-m-d h:i:s', $date);
-
+			  			#echo $date->format('m.d.y.');
+			  			#echo $cases['crime_classification'];
+			  			#echo "<br>";
 					$id=htmlspecialchars($cases['case_index'], ENT_QUOTES, 'UTF-8');
 			  		$id=str_replace(' ', '', $id);
 		      		if($count=="oddrow"){
@@ -120,15 +144,18 @@ if($searching=="yes")  {
 		else{
 			$search_result.="<p>No results found matching your query</p>";
 		}
+		//And we remind them what they searched for
+		$search_result.="<b>Searched For:</b> " .$find;
 	}
 	//Now we search for our search term in the crime_category table
 	  elseif($table=="crime_category"){
 		$sql=$db->prepare("SELECT * FROM crime_category
-		WHERE  cat_name LIKE ?
-			OR cat_explanation LIKE ?
-			OR notes LIKE ?");
+		WHERE  cat_name LIKE :find
+			OR cat_explanation LIKE :find
+			OR notes LIKE :find");
 
-		if($sql->execute(array("%".$find."%", "%".$find."%", "%".$find."%"))) {
+		$sql->bindParam(":find", $findme, PDO::PARAM_STR);
+		if($sql->execute()) {
 			$num = $sql->rowCount();
 
 			$i=0;
@@ -173,6 +200,8 @@ if($searching=="yes")  {
 		else{
 			$search_result.="<p>No results found matching your query</p>";
 		}
+		//And we remind them what they searched for
+		$search_result.="<b>Searched For:</b> " .$find;
 	}
 	//Now we search for our search term in the technique table
 	else if ($table=="technique"){
@@ -190,14 +219,14 @@ if($searching=="yes")  {
 		}
 
 			$sql.="
-				  technique_name LIKE ?
-				OR  technique_details LIKE ?
-				OR notes LIKE ?".$cats;
+				  technique_name LIKE :find
+				OR  technique_details LIKE :find
+				OR notes LIKE :find".$cats;
 
 		$sql=$db->prepare($sql);
-
+		$sql->bindParam(':find', $findme, PDO::PARAM_STR);
 		//And we display the results
-		if($sql->execute(array("%".$find."%", "%".$find."%", "%".$find."%"))) {
+		if($sql->execute()) {
 
 			$num = $sql->rowCount();
 			$i=0;
@@ -269,20 +298,23 @@ if($searching=="yes")  {
  	<Option VALUE="cases">Cases</option>
  	<Option VALUE="crime_category">Categories</option>
  	<Option VALUE="technique">Techniques</option>
- 	</Select><br>
+ 	</Select>
  	 <?php
     $dates = new visualize($db=$db);
     $dates->set_year();
   ?>
+  <div class = 'hidebutton'>
+  <br>
   Between
-  <input type='date' name='start' value='<?php $dates->get_fy(); ?>'></input>
+  <input type='date' name='start' value='<?php  $dates->get_fy(); echo"-01-01";?>'></input>
   And
-  <input type='date' name= 'finish' value='<?php $dates->get_ly(); ?>'></input>
-  <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-srch hidebutton'>Search By Classification</button>
-  <div class='classifys bigwwindow hide'>
+  <input type='date' name= 'finish' value='<?php echo date('Y-m-d'); ?>'></input>
+  <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-srch'>Search By Classification</button>
+  <div class='classifys bigwindow hide'>
   <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-DV'>Hide</button>
   <?php cat_box($db)?>
   </div>
+	</div>
  	<input type="hidden" name="searching" value="yes" />
  	<input type="hidden" name="init" value="0" />
  	<input type="hidden" name="limit" value="25" />
@@ -317,13 +349,13 @@ function hidebutton(){
   if (document.getElementsByName('table')[0].value == 'cases') {
      button = document.getElementsByClassName('hidebutton');
      for (var i = 0; i < button.length; i++) {
-     	button[i].className='styled-button-srch hidebutton';
+     	button[i].className='hidebutton';
      };
   }
   else{
    	button = document.getElementsByClassName('hidebutton');
      for (var i = 0; i < button.length; i++) {
-     	button[i].className='styled-button-srch hidebutton hide';
+     	button[i].className='hidebutton hide';
      };
   };
 };

@@ -91,7 +91,6 @@ class visualize{
 	//Gets the proper sql call
 	//num_compare = the number of kinds of cases (currently 1 or 2)
 	public function set_sql(){
-
 		  if($this->begin>$this->end){
 		    $this->begin=2003;
 		    $this->end=2015;
@@ -105,15 +104,25 @@ class visualize{
 		  }
 		  elseif($this->num_compare==1){
 		  	$this->sql=$this->db->prepare("SELECT crime_classification, news_date
-		  FROM cases WHERE crime_classification LIKE '%".$this->case_array[0]."%'  ORDER BY news_date");
+		  FROM cases WHERE crime_classification LIKE :c0  ORDER BY news_date");
+		  	$caseArr=[];
+		  	$caseArr[]="%".$this->case_array[0]."%";
+		  	$this->sql->bindParam(':0', $caseArr[0], PDO::PARAM_STR);
+
 		  }
 		  else{
 		  	$this->sql="SELECT crime_classification, news_date
-		  FROM cases WHERE crime_classification LIKE '%".$this->case_array[0]."%'";
+		  FROM cases WHERE crime_classification LIKE :c0";
+		  	$caseArr=[];
+		  	$caseArr[]="%".$this->case_array[0]."%";
 		  	for ($i=1; $i < $this->num_compare; $i++) {
-		  		$this->sql.="OR crime_classification LIKE '%".$this->case_array[$i]."%'";
+		  		$this->sql.=" OR crime_classification LIKE :c$i";
+		  		$caseArr[]="%".$this->case_array[$i]."%";
 		  	}
 		  	$this->sql=$this->db->prepare($this->sql);
+		  	for ($i=0; $i < $this->num_compare; $i++) {
+		  		$this->sql->bindParam(":c$i", $caseArr[$i], PDO::PARAM_STR);
+		  	}
 		}
 		  if ($this->case_array[0]=='all') {
 		    $this->sql=$this->db->prepare("SELECT crime_classification, news_date
@@ -398,17 +407,25 @@ function set_pie(){
 	function map(){
         $maparr="";
         $case=$this->case_array[0];
+        $caselike = "%$case%";
+        $beg="$this->begin-01-01";
+        $end= "$this->end-12-31";
         if ($case=='all') {
           $sql=$this->db->prepare("SELECT case_location, COUNT(case_location) AS locount
-          FROM cases WHERE news_date>='$this->begin-01-01' AND news_date<= '$this->end-12-31' GROUP BY case_location");
+          FROM cases WHERE news_date>= :beg AND news_date<= :end GROUP BY case_location");
           $mapdata="['States', 'Cases'], ";
+
         }
         else{
            $sql=$this->db->prepare("SELECT case_location, COUNT(case_location) AS locount
-          FROM cases WHERE news_date>='$this->begin-01-01' AND news_date<= '$this->end-12-31' AND crime_classification LIKE '%$case%' GROUP BY case_location");
+          FROM cases WHERE news_date>= :beg AND news_date<= :end AND crime_classification LIKE :case GROUP BY case_location");
+           $sql->bindParam(':case', $caselike, PDO::PARAM_STR);
+
            $cat_name=$this->cat_names[$case];
            $mapdata="['States', '$cat_name'], ";
         }
+        $sql->bindParam(':beg', $beg, PDO::PARAM_STR);
+        $sql->bindParam(':end', $end, PDO::PARAM_STR);
         if($sql->execute()){
          while($data=$sql->fetch(PDO::FETCH_ASSOC)){
             $location=htmlspecialchars($data['case_location']);

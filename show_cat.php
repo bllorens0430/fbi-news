@@ -18,10 +18,12 @@ require 'common.php';
  	<?php
  	//get id from passed url
  	$id=$_GET['id'];
- 	$sql="SELECT * FROM crime_category WHERE cat_number = '$id'";
- 	
- 	$result= $db->query($sql);
- 	$cat= $result->fetch(PDO::FETCH_ASSOC);
+ 	$sql="SELECT * FROM crime_category WHERE cat_number = :id";
+  $sql=$db->prepare($sql);
+  $sql->bindParam(':id', $id, PDO::PARAM_INT);
+
+if($sql->execute()){
+ 	$cat= $sql->fetch(PDO::FETCH_ASSOC);
 
  	$title=htmlspecialchars($cat['cat_name'], ENT_QUOTES, 'UTF-8');
  	$title=str_replace('?', '', $title);
@@ -47,6 +49,7 @@ require 'common.php';
  			<p>No notes.</p>";
  	}
  	echo"<a href='classification/update_cat.php?cat_number=$id'>Edit</a>";
+}
  	?>
  </div>
  <?php include 'footer.php' ?>

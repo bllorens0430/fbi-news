@@ -5,12 +5,6 @@
 		$buttonNames=array();
 		//special case for 0 classification
 		$buttonNames['0']='Unclassified';
-		if(isset($_POST['cases'])&&('all'!=$_POST['cases'])){	
-			echo "<input type='radio' name='cases' value ='all'> All Cases"; 
-		}
-		else{
-			echo "<input type='radio' name='cases' value ='all' checked> All Cases"; 
-		}
 
 
      $sql="SELECT crime_classification, cat_name FROM crime_category GROUP BY crime_classification";
@@ -20,7 +14,7 @@
           $name=str_replace('</b>', '##/b##', $name);
           $name=htmlspecialchars($name);
           $name=str_replace('##b##', '<b>', $name);
-          $name=str_replace('##/b##', '</b>', $name);  
+          $name=str_replace('##/b##', '</b>', $name);
      	if(!isset($buttons[substr($class, 0,4)])){
      		$buttons[substr($class, 0,4)]="";
      	}
@@ -29,14 +23,14 @@
      		$buttonNames[substr($class, 0,4)]=$name;
      	}
      	elseif($class!='0'){
-     		$buttons[substr($class, 0,4)].= "<input type='radio' name='cases' value='".$class."'"; 
-     		if(isset($_POST['cases'])&&$class==$_POST['cases']){	
+     		$buttons[substr($class, 0,4)].= "<input type='radio' name='cases' value='".$class."'";
+     		if(isset($_POST['cases'])&&$class==$_POST['cases']){
      			$buttons[substr($class, 0,4)].=" checked";
      		}
      		$buttons[substr($class, 0,4)].=">".$name."<br>";
      	}
-     		
-     	
+
+
      }
      $tr_counter='evenrow';
      echo"<div id='dbtable'><table><tr><th>Category</th><th>Include in Data?</th><th>Show Subcategories</th></tr><tr>";
@@ -50,7 +44,7 @@
      	echo "<tr class='$tr_counter'>
      	<td><h4><span class='overflow'>".$buttonNames[$button]."</span></h4></td>
      	<td><input type='radio' name='cases' value='".$button."'";
-     	if(isset($_POST['cases'])&&$button==$_POST['cases']&&$_POST['cases']!='all'){	
+     	if(isset($_POST['cases'])&&$button==$_POST['cases']&&$_POST['cases']!='all'){
      		echo ' checked';
      	}
      	echo" >Include</td>

@@ -403,8 +403,18 @@ white-space: nowrap;
 }
 .bigwindow{
   position: fixed;
-
   left: 20%;
+  background-color: #fff;
+  border: solid 1px gray;
+  border-radius: 2px;
+  z-index: 1000;
+  overflow-y:scroll;
+  height: 50%;
+}
+.dvwindow{
+position: fixed;
+  left: 40%;
+  top:40%;
   background-color: #fff;
   border: solid 1px gray;
   border-radius: 2px;
@@ -454,6 +464,10 @@ input.password{
 textarea{
   max-width: 98%;
 }
+
+.hidebutton{
+  display: inline;
+}
 .hide{
   display: none;
 }
@@ -465,3 +479,4 @@ textarea{
   width: 100%;
 }
 /* end of chart styling */
+

@@ -44,6 +44,7 @@ require 'common.php';
   while($row = $techniques->fetch(PDO::FETCH_ASSOC)){
     $name=$row['technique_name'];
     $t_id=$row['technique_index'];
+    $t_id=str_replace(' ', '', $t_id);
     $techs[]=[$t_id, $name];
   }
 
@@ -68,7 +69,7 @@ require 'common.php';
   if(!empty($techs)){
     echo "<h2>Techniques in Case</h2>";
           foreach ($techs as $tech) {
-            echo "<h3><a href='show_technique.php?id=$tech[1]'>$tech[0]</a></h3>";
+            echo "<h3><a href='show_technique.php?id=$tech[0]'>$tech[1]</a></h3>";
           }
   }
  	echo"<a href='case/update.php?case_index=$id'>Edit</a>";
