@@ -16,7 +16,6 @@ function echolinks($init, $num, $page, $limit, $find, $start, $finish){
     $new="<button id='new' class='styled-button-6 hide' onclick='update($plus, $num, $limit)'> > </button>";
     $last="<button id='last' class='styled-button-6 hide' onclick='update($mod, $num, $limit)'> >>> </button>";
     $thru=$num;
-    echo"Thru $thru";
   }
   else{
     $new="<noscript><a class='button_link' href=search.php?find=$find&table=$page&start=$start&finish=$finish&searching=yes&init=$plus&limit=$limit&search=Search></noscript><button id='new' class='styled-button-6' onclick='update($plus, $num, $limit)'> > </button><noscript></a></noscript>";

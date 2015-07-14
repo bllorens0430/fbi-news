@@ -28,7 +28,7 @@
 
 
           }
-          echo"<Select multiple name=cases[]>";
+          echo"(Select multiple classifications with (<span class='error'>command</span>) on mac and (<span class='error'>control</span>) on windows.) <Select multiple name=cases[]>";
           foreach ($buttons as $button => $input) {
             echo "<optgroup label='$buttonNames[$button]'>
             <option name='cases[]' value='".$button."'";

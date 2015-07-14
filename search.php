@@ -313,12 +313,8 @@ if($searching=="yes")  {
   And
   <input type='date' name= 'finish' value='<?php echo date('Y-m-d'); ?>'></input>
 <?php
-if (isset($_GET['noscript'])) {
-  echo"<h4>Filter by Classification";
-  cat_multi($db);
-  echo "<br><br>";
-}
-else{
+
+if (!isset($_GET['noscript'])) {
   echo"
   <div class = 'hidebutton'>
   <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-srch'>Search By Classification</button>
@@ -335,6 +331,11 @@ else{
  	<input type="hidden" name="limit" value="25" />
   <noscript> <input type="hidden" name="noscript" value="1" /> </noscript>
  	<input type="submit" name="search" value="Search" />
+<?php if (isset($_GET['noscript'])) {
+  echo"<p>Filter by Classification</p>";
+  cat_multi($db);
+  echo "<br><br>";
+}?>
  	</form>
  	<?php
 
