@@ -5,6 +5,7 @@ require 'session.php';
 require 'page.php';
 require 'visualize.php';
 require 'cat_box.php';
+require 'cat_multi.php';
 
 //This is only displayed if they have submitted the form
 if(isset($_GET['search'])){
@@ -37,7 +38,7 @@ if($searching=="yes")  {
 		if (isset($_GET['cases'])){
 			#set this and for dates since dates will not be the first in the query
 			$catarr=$_GET['cases'];
-			if(strpos($catarr[0], '0000')){
+			if($catarr[0]!='0'){
 					$cats.=" (crime_classification LIKE :0";
 					$catarr[0]="%".$catarr[0]."%";
 				}
@@ -57,6 +58,8 @@ if($searching=="yes")  {
 			$cats.=") AND";
 		}
 		if(isset($_GET['start'])&&isset($_GET['finish'])&&$_GET['finish']!=''){
+        $buttonstart=$_GET['start'];
+        $buttonfinish=$_GET['finish'];
 				$start=date('Y-m-d H:i:s', strtotime($_GET['start']));
 				$finish=date('Y-m-d H:i:s', strtotime($_GET['finish']));
 				$sql.=$cats." news_date > :start
@@ -109,7 +112,7 @@ if($searching=="yes")  {
 		      		}
 
 		      		//but only show some of them to keep the page from displaying too many entries
-		      		if(($init)<=$i && $i<$sum){
+		      		if((($init)<=$i && $i<$sum)){
 		      			$temp_search_result.= "<tr class='$count' id='$i'>";
 		      		}
 		      		else{
@@ -303,21 +306,34 @@ if($searching=="yes")  {
     $dates = new visualize($db=$db);
     $dates->set_year();
   ?>
-  <div class = 'hidebutton'>
+
   <br>
   Between
   <input type='date' name='start' value='<?php  $dates->get_fy(); echo"-01-01";?>'></input>
   And
   <input type='date' name= 'finish' value='<?php echo date('Y-m-d'); ?>'></input>
-  <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-srch'>Search By Classification</button>
+<?php
+if (isset($_GET['noscript'])) {
+  echo"<h4>Filter by Classification";
+  cat_multi($db);
+  echo "<br><br>";
+}
+else{
+  echo"
+  <div class = 'hidebutton'>
+  <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-srch'>Search By Classification</button>
   <div class='classifys bigwindow hide'>
-  <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-DV'>Hide</button>
-  <?php cat_box($db)?>
+  <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-DV'>Hide</button>";
+   cat_box($db);
+   echo"
   </div>
-	</div>
+	</div>";
+}
+  ?>
  	<input type="hidden" name="searching" value="yes" />
  	<input type="hidden" name="init" value="0" />
  	<input type="hidden" name="limit" value="25" />
+  <noscript> <input type="hidden" name="noscript" value="1" /> </noscript>
  	<input type="submit" name="search" value="Search" />
  	</form>
  	<?php
@@ -325,7 +341,7 @@ if($searching=="yes")  {
  	if(isset($search_result)){
  		echoDisplay($init, $num, $table, $limit);
  		echo $search_result;
- 		echolinks($init, $num, $table, $limit);
+ 		echolinks($init, $num, $table, $limit, $find, $buttonstart, $buttonfinish);
  	}
  	?>
   </div>
@@ -360,3 +376,4 @@ function hidebutton(){
   };
 };
 </script>
+<script type="text/javascript">update(<?php echo"$init, $num, $limit" ?>)</script>

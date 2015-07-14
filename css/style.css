@@ -480,3 +480,8 @@ textarea{
 }
 /* end of chart styling */
 
+.button_link{
+  color: white;
+  display: inline;
+
+}

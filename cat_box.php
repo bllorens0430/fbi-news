@@ -1,5 +1,5 @@
 <?php
-	require 'common.php';
+     require 'common.php';
 	function cat_box($db){
 		$buttons=array();
 		$buttonNames=array();

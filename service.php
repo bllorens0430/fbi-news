@@ -64,6 +64,9 @@ $cat_count= $cat['cat_count'];
   <input type="hidden" name="limit" value="25" />
   <input type="submit" name="search" value="Search" />
   </form>
+    <h2>Data Visualization</h2>
+    <p>Visualize what the FBI news is reporting on cyber crime. <a href='line2.php'> View Data Visualization </a></p>
+
 
     <h2>Crime Cases</h3>
     <p>Our database has compiled various cases of cyber crime from the FBI and

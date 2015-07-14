@@ -39,13 +39,13 @@ function getButtons(init, num, limit){
 
 	}
 
-	//now we initialize various permutations of variables for the various functions of each button	
+	//now we initialize various permutations of variables for the various functions of each button
 	var initplus=init+1;
 	var sum=init+limit;
 	var minus=init-limit;
 	var more=limit+25;
 	var less=limit-25;
-	
+
 	//now we handle edge cases, both for variable values and button visibility
 
 	//find the last entries with regards to limit size
@@ -54,7 +54,6 @@ function getButtons(init, num, limit){
 		mod--;
 	}
 
-	
 
 	//in case we are at the last entries
 	if (sum>num) {
@@ -111,6 +110,6 @@ function getButtons(init, num, limit){
 	for (var i = 0; i < list.length; i++) {
 		list[i].innerText="Displaying "+initplus+"-"+sum+" of "+num+" entries.";
 	};
-	
+
 
 };

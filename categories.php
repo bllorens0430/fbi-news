@@ -1,5 +1,5 @@
 <?php
-
+include 'session.php';
 require 'common.php';
 require 'paging.php'
 ?>
