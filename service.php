@@ -1,7 +1,7 @@
 <?php
 include 'session.php';
 include 'common.php';
-include 'cat_box.php';
+include 'cat_forms.php';
 include 'visualize.php';
 //get # of rows in each table to pass to browsing pages.
 $sql="SELECT COUNT(*) AS case_count FROM cases";
@@ -20,11 +20,11 @@ $cat= $cats->fetch(PDO::FETCH_ASSOC);
 $cat_count= $cat['cat_count'];
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Welcome</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link href="css/style.css" rel="stylesheet" type="text/css" />
   <link href="css/sidestyle.css" rel="stylesheet" type="text/css" />
 </head>
@@ -50,19 +50,34 @@ $cat_count= $cat['cat_count'];
   <div class = 'hidebutton'>
   <br>
   Between
-  <input type='date' name='start' value='<?php  $dates->get_fy(); echo"-01-01";?>'></input>
+  <input type='date' name='start' value='<?php  $dates->get_fy(); echo"-01-01";?>'
   And
-  <input type='date' name= 'finish' value='<?php echo date('Y-m-d'); ?>'></input>
-  <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-srch'>Search By Classification</button>
-  <div class='classifys bigwwindow hide'>
-  <button type='button' onclick='toggleCase("classifys", "bigwindow")' class='styled-button-DV'>Hide</button>
-  <?php cat_box($db)?>
+  <input type='date' name= 'finish' value='<?php echo date('Y-m-d'); ?>'>
+  <?php
+if (!isset($_GET['noscript'])&&isset($_COOKIE['username'])) {
+  $cat=new cats($db);
+  echo"
+  <div class = 'hidebutton'>
+  <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-srch'>Search By Classification</button>
+  <div class='classifys bigwindow hide'>
+  <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-DV'>Hide</button>";
+   $cat->cat();
+   echo"
   </div>
-  </div>
+  </div>";
+}
+  ?>
   <input type="hidden" name="searching" value="yes" />
   <input type="hidden" name="init" value="0" />
   <input type="hidden" name="limit" value="25" />
+  <noscript> <input type="hidden" name="noscript" value="1" /> </noscript>
   <input type="submit" name="search" value="Search" />
+  <?php if (isset($_GET['noscript'])||!isset($_COOKIE['username'])) {
+  echo"<div id='multi'><p>Filter by Classification</p>";
+  $cat = new cats($db, False, True);
+  $cat->cat_multi();
+  echo "<br><br></div>";
+}?>
   </form>
     <h2>Data Visualization</h2>
     <p>Visualize what the FBI news is reporting on cyber crime. <a href='line2.php'> View Data Visualization </a></p>

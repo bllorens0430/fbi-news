@@ -1,20 +1,22 @@
 <?php
      require 'common.php';
 	function cat_box($db){
+          #this will hold subcategories
 		$buttons=array();
+          #this will hold main categories
 		$buttonNames=array();
 		//special case for 0 classification
 		$buttonNames['0']='Unclassified';
 
-
+          #get all categories from DB
           $sql="SELECT crime_classification, cat_name FROM crime_category GROUP BY crime_classification";
           foreach($db->query($sql) as $result){
-          	$class=htmlspecialchars($result['crime_classification']);
-          	$name=str_replace('<b>', '##b##', $result['cat_name']);
-          	$name=str_replace('</b>', '##/b##', $name);
-          	$name=htmlspecialchars($name);
-          	$name=str_replace('##b##', '<b>', $name);
-          	$name=str_replace('##/b##', '</b>', $name);
+               #Get rid of unwanted tags
+          	$class=strip_tags($result['crime_classification']);
+               #allow bold tags through
+          	$name=strip_tags($result['cat_name'], '<b>');
+
+               #For each major category we want to set a
           	if(!isset($buttons[substr($class, 0,4)])){
           		$buttons[substr($class, 0,4)]="";
           	}

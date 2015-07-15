@@ -13,4 +13,6 @@
       <li class='hilight'><a href="contact.php">CONTACT</a></li>
     </ul>
   </div>
-
+<script>
+document.cookie="username=script";
+</script>

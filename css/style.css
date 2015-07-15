@@ -121,7 +121,7 @@ background : inherit;
 clear:both;
 position: absolute;
 bottom: 0;
-width: 750px;
+right: 50px;
 border-top: 1px solid #eee;
 background: #eee;
 }
@@ -484,4 +484,7 @@ textarea{
   color: white;
   display: inline;
 
+}
+#multi select{
+  width: 100%;
 }

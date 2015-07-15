@@ -4,8 +4,8 @@ require 'common.php';
 require 'session.php';
 require 'page.php';
 require 'visualize.php';
-require 'cat_box.php';
-require 'cat_multi.php';
+require 'cat_forms.php';
+
 
 //This is only displayed if they have submitted the form
 if(isset($_GET['search'])){
@@ -315,12 +315,13 @@ if($searching=="yes")  {
 <?php
 
 if (!isset($_GET['noscript'])) {
+  $cat=new cats($db);
   echo"
   <div class = 'hidebutton'>
   <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-srch'>Search By Classification</button>
   <div class='classifys bigwindow hide'>
   <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-DV'>Hide</button>";
-   cat_box($db);
+   $cat->cat();
    echo"
   </div>
 	</div>";
@@ -332,8 +333,9 @@ if (!isset($_GET['noscript'])) {
   <noscript> <input type="hidden" name="noscript" value="1" /> </noscript>
  	<input type="submit" name="search" value="Search" />
 <?php if (isset($_GET['noscript'])) {
-  echo"<p>Filter by Classification</p>";
-  cat_multi($db);
+  echo"<div><p>Filter by Classification</p>";
+  $cat = new cats($db, False, True);
+  $cat->cat_multi();
   echo "<br><br>";
 }?>
  	</form>

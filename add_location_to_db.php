@@ -1,5 +1,6 @@
 <?php
-
+#note this php code will fill a cases - location with random states and should only be used for testing purposes
+#using this page could be catastrophic if location data was already in the DB
 require 'common.php';
 
 
@@ -57,16 +58,16 @@ $states = array(
     'WY'=>'Wyoming',
 );
 
-
-
-for ($i=0; $i < 491; $i++) { 
+#uncomment the below code and this will run automatically
+/*
+for ($i=0; $i < 491; $i++) {
 	$rand=array_rand($states);
 	$rand_state=$states[$rand];
-	$sql="UPDATE cases 
-		SET case_location='$rand_state' 
+	$sql="UPDATE cases
+		SET case_location='$rand_state'
 		WHERE case_location=''
 		LIMIT 1";
 	$q=$db->prepare($sql);
 	$q->execute();
-}
+}*/
 ?>
