@@ -2,29 +2,29 @@
   require("../session.php"); // start or resume a session
   require("../check.php"); // check if there is a session ongoing
   require("../common.php"); // connect to the database
-  
+
   $t = microtime(true);
   $micro = sprintf("%06d",($t - floor($t)) * 1000000);
   $d = new DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
-  ?> 
+  ?>
 
-  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <!DOCTYPE html>
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Add FBI News</title>
   <link href="../css/style.css" rel="stylesheet" type="text/css" />
   </head>
-  
+
   <body>
     <div id='container'>
       <?php include '../header2.php' ?>
       <div id='content'>
   <p><strong>Cyber Technique Input</strong></p>
-  
+
   <form id="technique" name="technique" method="post" action="index.php">
-  <table> 
-  <tr> 
+  <table>
+  <tr>
   <td> Technique Index </td>
   <td> Technique Name</td>
   <td> Technique Category</td>
@@ -43,7 +43,7 @@
   <p>Technique References<br />
     <textarea name="tech_refs" id="tech_refs" cols="128" rows="5" form="technique"></textarea>
   </p>
-  
+
   <p>Notes<br />
     <textarea name="tech_notes" id="tech_notes" cols="128" rows="5" form="technique"></textarea>
   </p>

@@ -5,11 +5,11 @@ require 'common.php';
 
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Welcome</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link href="css/style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -18,9 +18,9 @@ require 'common.php';
  <div id="content">
  	<?php
  	//get id from passed url
- 	$id=$_GET['id'];
+ 	$u_id=$_GET['id'];
  	//add space in proper place
- 	$id= substr($id, 0, 10) . ' ' . substr($id, 10);
+ 	$id= substr($u_id, 0, 10) . ' ' . substr($u_id, 10);
  	//get case variables from db
  	$sql="SELECT * FROM cases WHERE case_index = '$id'";
 
@@ -58,7 +58,7 @@ require 'common.php';
  		<h2>Investigation</h2>
  		<p>$investigation</p>";
  	if($notes!=''){
- 		echo"<h3>Notes</h2>
+ 		echo"<h3>Notes</h3>
  			<p>$notes</p>";
  	}
  	else{
@@ -72,13 +72,14 @@ require 'common.php';
             echo "<h3><a href='show_technique.php?id=$tech[0]'>$tech[1]</a></h3>";
           }
   }
- 	echo"<a href='case/update.php?case_index=$id'>Edit</a>";
+ 	echo"<a href='case/update.php?case_index=$u_id'>Edit</a>";
  	?>
 
  </div>
 
  <?php include 'footer.php' ?>
 </div>
+<script src="js/hilightservice.js" type="text/javascript"></script>
 </body>
 </html>
-<script src="js/hilightservice.js" type="text/javascript"></script>
+

@@ -468,7 +468,7 @@ function set_pie(){
 
 	echo"<td>
     	<b>Start Year</b><br>
-    	<select name='begin'>.".$this->fyeardropdown."</select><br><br>
+    	<select name='begin'>".$this->fyeardropdown."</select><br><br>
     	<b>End Year</b><br>
     	<select name='end'>".$this->lyeardropdown."</select><br><br>
   		</td>";

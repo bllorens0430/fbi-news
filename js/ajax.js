@@ -12,9 +12,15 @@ function ajax(init, count, limit, table){
           {
           if (xmlhttp.readyState==4 && xmlhttp.status==200)
             {
-            document.getElementById("content").innerHTML = xmlhttp.responseText;
+              document.getElementById("content").innerHTML = xmlhttp.responseText;
+              unhide = document.getElementsByClassName('styled-button-6');
+              for (var i = 0; i < unhide.length; i++) {
+                unhide[i].className='styled-button-6';
+              };
             }
           }
       xmlhttp.open("GET","pajax.php?init="+init+"&count="+count+"&limit="+limit+"&table="+table,true);
       xmlhttp.send();
+
+
  }

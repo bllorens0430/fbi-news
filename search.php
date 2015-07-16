@@ -20,7 +20,7 @@ if(isset($_GET['search'])){
 	$search_result="";
 	$temp_search_result="";
 if($searching=="yes")  {
-	$search_result.="<p><h2>Results</h2></p>";
+	$search_result.="<h2>Results</h2>";
 	//If they did not enter a search term we give them an error
 }
 
@@ -70,6 +70,7 @@ if($searching=="yes")  {
 				OR notes LIKE :find) ORDER BY news_date";
 
 		}
+
 		else{
 			$sql.=$cats." news_title LIKE :find
 				OR  crime LIKE :find
@@ -120,12 +121,12 @@ if($searching=="yes")  {
 		      		}
 
 		      		//we store them all in a temporary variable
-		      		$temp_search_result.= "<td><font color='black'>" .$date->format('m.d.y')."</font></td>";
-		      	    $temp_search_result.= "<td><font color='black'>" . htmlspecialchars($cases['news_title'], ENT_QUOTES, 'UTF-8') . "</font></td>";
+		      		$temp_search_result.= "<td>" .$date->format('m.d.y')."</td>";
+		      	    $temp_search_result.= "<td>" . htmlspecialchars($cases['news_title'], ENT_QUOTES, 'UTF-8') . "</td>";
 			  		$crime=htmlspecialchars($cases['crime'], ENT_QUOTES, 'UTF-8');
 			  		$bold_crime=str_replace("&lt;/b&gt;", "</b>", str_replace("&lt;b&gt;", "</b>", $crime));
-		      		$temp_search_result.="<td><font color='black'>" . $bold_crime . "</font></td>";
-		      		$temp_search_result.="<td class='right'><a href='show_case.php?id=$id'><button href='show_case.php?id=$id'>View</button></a></td>";
+		      		$temp_search_result.="<td>" . $bold_crime . "</td>";
+		      		$temp_search_result.="<td class='right'><a href='show_case.php?id=$id'>View</a></td>";
 
 
 
@@ -140,6 +141,7 @@ if($searching=="yes")  {
 							    <th>Date</th>
 							    <th>Case</th>
 							    <th>Classification</th>
+                  <th>View</th>
 							  </tr>";
 			$search_result.=$temp_search_result;
 			$search_result.="</table>";
@@ -177,13 +179,13 @@ if($searching=="yes")  {
 		    else{
 		      			$temp_search_result.= "<tr class='$count hide' id='$i'>";
 		      		}
-      		$temp_search_result.="<td><font color='black'>" . htmlspecialchars($crimes['crime_classification'], ENT_QUOTES, 'UTF-8') . "</font></td>";
+      		$temp_search_result.="<td>" . htmlspecialchars($crimes['crime_classification'], ENT_QUOTES, 'UTF-8') . "</td>";
 	  		$cat_name=htmlspecialchars($crimes['cat_name'], ENT_QUOTES, 'UTF-8');
 	  		$cat_name=str_replace('*', '', $cat_name);
 	  		$cat_name=str_replace('?', '', $cat_name);
 	  		$bold_cat_name=str_replace("&lt;/b&gt;", "</b>", str_replace("&lt;b&gt;", "<b>", $cat_name));
-      		$temp_search_result.="<td><font color='black'>" . $bold_cat_name . "</font></td>";
-      		$temp_search_result.="<td class='right'><a href='show_cat.php?id=$id'><button href='show_cat.php?id=$id'>View</button></a></td>";
+      		$temp_search_result.="<td>" . $bold_cat_name . "</td>";
+      		$temp_search_result.="<td class='right'><a href='show_cat.php?id=$id'>View</a></td>";
 
       		$i++;
 
@@ -251,11 +253,11 @@ if($searching=="yes")  {
 		    else{
 		      			$temp_search_result.= "<tr class='$count hide' id='$i'>";
 		      		}
-      		$temp_search_result.="<td><font color='black'>" . htmlspecialchars($techniques['technique_category'], ENT_QUOTES, 'UTF-8') . "</font></td>";
+      		$temp_search_result.="<td>" . htmlspecialchars($techniques['technique_category'], ENT_QUOTES, 'UTF-8') . "</td>";
 	  		$technique_name=htmlspecialchars($techniques['technique_name'], ENT_QUOTES, 'UTF-8');
 	  		$bold_technique_name=str_replace("&lt;/b&gt;", "</b>", str_replace("&lt;b&gt;", "</b>", $technique_name));
-      		$temp_search_result.="<td><font color='black'>" . $bold_technique_name . "</font></td>";
-      		$temp_search_result.="<td class='right'><a href='show_technique.php?id=$id'><button href='show_technique.php?id=$id'>View</button></a></td>";
+      		$temp_search_result.="<td>" . $bold_technique_name . "</td>";
+      		$temp_search_result.="<td class='right'><a href='show_technique.php?id=$id'>View</a></td>";
       		$i++;
 		}}
 
@@ -280,11 +282,11 @@ if($searching=="yes")  {
 }
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Welcome</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link href="css/style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -309,19 +311,20 @@ if($searching=="yes")  {
 
   <br>
   Between
-  <input type='date' name='start' value='<?php  $dates->get_fy(); echo"-01-01";?>'></input>
+  <input type='date' name='start' value='<?php  $dates->get_fy(); echo"-01-01";?>'>
   And
-  <input type='date' name= 'finish' value='<?php echo date('Y-m-d'); ?>'></input>
+  <input type='date' name= 'finish' value='<?php echo date('Y-m-d'); ?>'>
 <?php
 
 if (!isset($_GET['noscript'])) {
   $cat=new cats($db);
   echo"
   <div class = 'hidebutton'>
-  <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-srch'>Search By Classification</button>
+  <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-srch'>Filter By Classification</button>
   <div class='classifys bigwindow hide'>
   <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-DV'>Hide</button>";
    $cat->cat();
+   $cat=null;
    echo"
   </div>
 	</div>";
@@ -336,6 +339,7 @@ if (!isset($_GET['noscript'])) {
   echo"<div><p>Filter by Classification</p>";
   $cat = new cats($db, False, True);
   $cat->cat_multi();
+  $cat=null;
   echo "<br><br>";
 }?>
  	</form>
@@ -350,17 +354,15 @@ if (!isset($_GET['noscript'])) {
   </div>
   <?php include 'footer.php' ?>
 </div>
-</body>
-</html>
 
 <script src="js/hilightservice.js" type="text/javascript"></script>
 <script  src="js/paging.js" type="text/javascript"></script>
 <script type="text/javascript">
-	//Calls external js onclick of button
-	function update (init, num, limit) {
-		page(init, num, limit);
-		getButtons(init, num, limit);
-	}
+  //Calls external js onclick of button
+  function update (init, num, limit) {
+    page(init, num, limit);
+    getButtons(init, num, limit);
+  }
 </script>
 <script src="js/toggle.js" type="text/javascript"></script>
 <script>
@@ -368,15 +370,23 @@ function hidebutton(){
   if (document.getElementsByName('table')[0].value == 'cases') {
      button = document.getElementsByClassName('hidebutton');
      for (var i = 0; i < button.length; i++) {
-     	button[i].className='hidebutton';
+      button[i].className='hidebutton';
      };
   }
   else{
-   	button = document.getElementsByClassName('hidebutton');
+    button = document.getElementsByClassName('hidebutton');
      for (var i = 0; i < button.length; i++) {
-     	button[i].className='hidebutton hide';
+      button[i].className='hidebutton hide';
      };
   };
 };
 </script>
 <script type="text/javascript">update(<?php echo"$init, $num, $limit" ?>)</script>
+<script type="text/javascript">
+  unhide = document.getElementsByClassName('unhideme');
+   for (var i = 0; i < unhide.length; i++) {
+      unhide[i].className='styled-button-srch';
+     };
+</script>
+</body>
+</html>

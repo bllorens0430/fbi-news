@@ -50,7 +50,7 @@ $cat_count= $cat['cat_count'];
   <div class = 'hidebutton'>
   <br>
   Between
-  <input type='date' name='start' value='<?php  $dates->get_fy(); echo"-01-01";?>'
+  <input type='date' name='start' value='<?php  $dates->get_fy(); echo"-01-01";?>'>
   And
   <input type='date' name= 'finish' value='<?php echo date('Y-m-d'); ?>'>
   <?php
@@ -58,10 +58,11 @@ if (!isset($_GET['noscript'])&&isset($_COOKIE['username'])) {
   $cat=new cats($db);
   echo"
   <div class = 'hidebutton'>
-  <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-srch'>Search By Classification</button>
+  <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-srch'>Filter By Classification</button>
   <div class='classifys bigwindow hide'>
   <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-DV'>Hide</button>";
    $cat->cat();
+   $cat=null;
    echo"
   </div>
   </div>";
@@ -76,11 +77,12 @@ if (!isset($_GET['noscript'])&&isset($_COOKIE['username'])) {
   echo"<div id='multi'><p>Filter by Classification</p>";
   $cat = new cats($db, False, True);
   $cat->cat_multi();
+  $cat=null;
   echo "<br><br></div>";
 }?>
   </form>
     <h2>Data Visualization</h2>
-    <p>Visualize what the FBI news is reporting on cyber crime. <a href='line2.php'> View Data Visualization </a></p>
+    <p>Visualize what the FBI news is reporting on cyber crime. <a href='datavis.php'> View Data Visualization </a></p>
 
 
     <h2>Crime Cases</h3>

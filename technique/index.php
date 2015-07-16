@@ -15,25 +15,25 @@ if(isset($_POST['Add']))
 	$varTechRefs = $_POST['tech_refs'];
 	$varTechNotes = $_POST['tech_notes'];
 	$errorMessage = "";
-	
-	$sql = "INSERT INTO technique (technique_index, technique_name, technique_category, 
-	technique_details, technique_url, notes) 
+
+	$sql = "INSERT INTO technique (technique_index, technique_name, technique_category,
+	technique_details, technique_url, notes)
 	VALUES (:tech_index, :tech_name, :tech_cat, :tech_details, :tech_refs, :tech_notes)";
-	  
-	$array_param=array(':tech_index'=>addslashes($varTechIndex), 
+
+	$array_param=array(':tech_index'=>addslashes($varTechIndex),
 	':tech_name'=>addslashes($varTechName),
 	':tech_cat'=>intval($varTechcat),
 	':tech_details'=>addslashes($varTechDetails),
 	':tech_refs'=>addslashes($varTechRefs),
 	':tech_notes' =>addslashes($varTechNotes));
-	  
+
 	$sth = $db->prepare($sql);
 	$sth->execute($array_param);
-//	$dbh=null;  
+//	$dbh=null;
 }
 
 if(isset($_POST['Update']))
-{	
+{
 	$varTechIndex = $_POST['tech_index'];
 	$varTechName = $_POST['tech_name'];
 	$varTechcat = $_POST['tech_cat'];
@@ -41,28 +41,28 @@ if(isset($_POST['Update']))
 	$varTechRefs = $_POST['tech_refs'];
 	$varTechNotes = $_POST['tech_notes'];
 	$errorMessage = "";
-	  
+
 	$sql = "UPDATE technique SET technique_name=:tech_name,
-	technique_category=:tech_cat, technique_details=:tech_details, technique_url=:tech_refs, notes=:tech_notes 
+	technique_category=:tech_cat, technique_details=:tech_details, technique_url=:tech_refs, notes=:tech_notes
 	WHERE technique_index=:tech_index";
 
-	$array_param=array(':tech_index'=>$varTechIndex, 
+	$array_param=array(':tech_index'=>$varTechIndex,
 	':tech_name'=>$varTechName,
 	':tech_cat'=>intval($varTechcat),
 	':tech_details'=>$varTechDetails,
 	':tech_refs'=>$varTechRefs,
 	':tech_notes' =>$varTechNotes);
-	
+
 	$sth = $db->prepare($sql);
 	$sth->execute($array_param);
-//  $dbh=null;  
+//  $dbh=null;
 }
-?> 
+?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
 <title>View News</title>
 </head>
@@ -107,9 +107,10 @@ function goBack() {
 </table>
 <table id='dbtable'>
   <?php
-  
+
   $sql="SELECT * FROM technique";
-   $count='evenrow';       
+   $count='evenrow';
+  echo"<tr><th style='display:none;' >Id</th><th>Technique</th><th>Category</th><th></th><th></th></tr>";
   foreach ($db->query($sql) as $test)
   {
     if ($count=="oddrow") {
@@ -118,14 +119,14 @@ function goBack() {
     else{
       $count="oddrow";
     }
-      $id = $test['technique_index'];	
-      echo "<tr class='$count' align='center'>";	
-      echo"<td><font color='black'>" .htmlspecialchars($test['technique_index'], ENT_QUOTES, 'UTF-8')."</font></td>";
-      echo"<td><font color='black'>". htmlspecialchars($test['technique_name'], ENT_QUOTES, 'UTF-8'). "</font></td>";
-      echo"<td><font color='black'>". htmlspecialchars($test['technique_category'], ENT_QUOTES, 'UTF-8'). "</font></td>";
+      $id= str_replace(' ', '', $test['technique_index']);
+      echo "<tr class='$count' >";
+      echo"<td style='display:none;'>" .htmlspecialchars($test['technique_index'], ENT_QUOTES, 'UTF-8')."</td>";
+      echo"<td>". htmlspecialchars($test['technique_name'], ENT_QUOTES, 'UTF-8'). "</td>";
+      echo"<td>". htmlspecialchars($test['technique_category'], ENT_QUOTES, 'UTF-8'). "</td>";
       echo"<td> <a href ='update_tech.php?tech_index=$id'>Edit</a>";
-      echo"<td> <a href ='del_tech.php?tech_index=$id' onclick='return DeleteOrNot();'><center>Delete</center></a>";
-                          
+      echo"<td> <a href ='del_tech.php?tech_index=$id' onclick='return DeleteOrNot();'>Delete</a>";
+
       echo "</tr>";
   }
   $db=null;

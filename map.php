@@ -2,7 +2,7 @@
 include 'session.php';
 include 'common.php';
 include 'visualize.php';
-include 'cat_rad.php';
+include 'cat_forms.php';
 //get # of rows in each table to pass to browsing pages.
 
 //initialize an array with zero values for all the years in question.
@@ -45,11 +45,11 @@ else{
 
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Welcome</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link href="css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
@@ -114,7 +114,10 @@ else{
   <button type='button' onclick='toggleCase("classifys", "dvwindow")' class='styled-button-srch'>Filter By Classification</button>
   <div class='classifys dvwindow hide'>
   <button type='button' onclick='toggleCase("classifys", "dvwindow")' class='styled-button-DV'>Hide</button>
-  <?php cat_rad($db) ?>
+  <?php
+  $cat= new cats($db, $rad=True);
+  $cat->cat();
+   ?>
   </div>
 </td>
 <td>
@@ -127,11 +130,12 @@ else{
 </div>
 <?php include 'footer.php' ?>
 </div>
+<script src="js/hilightservice.js" type="text/javascript"></script>
+<script src="js/toggle.js" type="text/javascript"></script>
 </body>
 </html>
 
-<script src="js/hilightservice.js" type="text/javascript"></script>
-<script src="js/toggle.js" type="text/javascript"></script>
+
 <?php $data->db_close();
 $db=null;
  ?>

@@ -4,6 +4,7 @@
   require("../common.php"); // connect to the database
 
   $id =$_REQUEST['case_index'];
+  $id= substr($id, 0, 10) . ' ' . substr($id, 10);
   $sql="DELETE FROM cases_has_technique WHERE cases_case_index=:case_index";
   $array_param=array(':case_index'=>$id);
   $sth = $db->prepare($sql);

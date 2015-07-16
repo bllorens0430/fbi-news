@@ -106,10 +106,10 @@
   }
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
 <title>View News</title>
 </head>
@@ -152,6 +152,7 @@
   <?php
   $sql="SELECT * FROM cases ORDER BY news_date DESC";
   $count="evenrow";
+  echo "<tr><th style='display:none;' ></th><th>Date</th><th>Story</th><th></th><th></th></tr>";
   foreach ($db->query($sql) as $test)
   {
 	$date = DateTime::createFromFormat('Y-m-d h:i:s', $test['news_date']);
@@ -170,13 +171,13 @@
 	else{
 		$count="oddrow";
 	}
-	$id = $test['case_index'];
-	echo "<tr class='$count' align='center'>";
-	echo"<td style='display:none;'><font color='black'>" .htmlspecialchars(stripslashes($test['case_index']), ENT_QUOTES, 'UTF-8')."</font></td>";
-	echo"<td><font color='black'>" . $date->format('m.d.y') . "</font></td>";
-	echo"<td><font color='black'> <a target='_blank' href='".htmlspecialchars(stripslashes($test['news_url']), ENT_QUOTES, 'UTF-8')."'>" . htmlspecialchars(stripslashes($test['news_title']), ENT_QUOTES, 'UTF-8'). "</a></font></td>";
+	$id =str_replace(' ', '',  $test['case_index']);
+	echo "<tr class='$count'>";
+	echo"<td style='display:none;'>" .htmlspecialchars(stripslashes($test['case_index']), ENT_QUOTES, 'UTF-8')."</td>";
+	echo"<td>" . $date->format('m.d.y') . "</td>";
+	echo"<td> <a target='_blank' href='".htmlspecialchars(stripslashes($test['news_url']), ENT_QUOTES, 'UTF-8')."'>" . htmlspecialchars(stripslashes($test['news_title']), ENT_QUOTES, 'UTF-8'). "</a></td>";
 	echo"<td> <a href ='update.php?case_index=$id'>Edit</a>";
-	echo"<td> <a href ='del.php?case_index=$id' onclick='return DeleteOrNot();'><center>Delete</center></a>";
+	echo"<td> <a href ='del.php?case_index=$id' onclick='return DeleteOrNot();'>Delete</a>";
 
 	echo "</tr>";
   }
