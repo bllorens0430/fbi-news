@@ -57,7 +57,7 @@ $cat_count= $cat['cat_count'];
 if (!isset($_GET['noscript'])&&isset($_COOKIE['username'])) {
   $cat=new cats($db);
   echo"
-  <div class = 'hidebutton'>
+
   <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-srch'>Filter By Classification</button>
   <div class='classifys bigwindow hide'>
   <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-DV'>Hide</button>";
@@ -65,9 +65,10 @@ if (!isset($_GET['noscript'])&&isset($_COOKIE['username'])) {
    $cat=null;
    echo"
   </div>
-  </div>";
+";
 }
   ?>
+    </div>
   <input type="hidden" name="searching" value="yes" />
   <input type="hidden" name="init" value="0" />
   <input type="hidden" name="limit" value="25" />

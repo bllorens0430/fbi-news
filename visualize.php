@@ -53,12 +53,16 @@ class visualize{
 	}
 
 
-	//sets the variable
+	//sets the optional regression for the line chart
 	public function set_regres($reg){
+		//make sure there is a regression to set
 		if($reg!=''){
 			$this->regres= "trendlines: {";
+			//
 			for ($i=0; $i < $this->num_compare; $i++) {
-
+				//the visualization API has you set regression for each line
+				//using the format #: {regression information}
+				//we only do one type of regression for every line
 				if($reg=='linear'){
 			    $this->linear='checked';
 			    $this->regres.="
@@ -91,25 +95,29 @@ class visualize{
 	//Gets the proper sql call
 	//num_compare = the number of kinds of cases (currently 1 or 2)
 	public function set_sql(){
+			//if invalid we set the dates to 2003 2015, currently hardcoded
 		  if($this->begin>$this->end){
 		    $this->begin=2003;
 		    $this->end=2015;
 		    $this->error.="<p class='error'> The start year must be earlier than the end year.</p>";
 
 		  }
+		  //if there are no points to compare just show them all cases
 		  if($this->num_compare==0){
 		  	$this->sql=$this->db->prepare("SELECT crime_classification, news_date
 		  FROM cases   ORDER BY news_date");
 		  	$this->error.="<p class='error'>Please select at least one crime classification</p>";
 		  }
+		  //for only 1 line
 		  elseif($this->num_compare==1){
 		  	$this->sql=$this->db->prepare("SELECT crime_classification, news_date
 		  FROM cases WHERE crime_classification LIKE :c0  ORDER BY news_date");
 		  	$caseArr=[];
 		  	$caseArr[]="%".$this->case_array[0]."%";
-		  	$this->sql->bindParam(':0', $caseArr[0], PDO::PARAM_STR);
+		  	$this->sql->bindParam(':c0', $caseArr[0], PDO::PARAM_STR);
 
 		  }
+		  //for multiple lines
 		  else{
 		  	$this->sql="SELECT crime_classification, news_date
 		  FROM cases WHERE crime_classification LIKE :c0";
@@ -124,6 +132,7 @@ class visualize{
 		  		$this->sql->bindParam(":c$i", $caseArr[$i], PDO::PARAM_STR);
 		  	}
 		}
+			//special case for all cases
 		  if ($this->case_array[0]=='all') {
 		    $this->sql=$this->db->prepare("SELECT crime_classification, news_date
 		  FROM cases   ORDER BY news_date");
@@ -134,13 +143,16 @@ class visualize{
 		//get the relevant data from the table
 
 	function set_line(){
-
-		//this needs to be fixed so that it is scaleable, right now it creates seperate arrays for different cases
+		  	//make an array that holds tallies for the number of cases during each year
+		  	//for the specified classifications
 		$datearr = array();
 		for ($i=$this->begin; $i <= $this->end ; $i++) {
+			//if only 1 classification we only need to keep one tally
 			if($this->num_compare==1){
 		  	$datearr[$i]=0;
 		  }
+		  //otherwise we add an array into the array for each classification
+		  //this will later be filled with tallies based on DB data
 		  else{
 		  	for ($x=0; $x < $this->num_compare; $x++) {
 		  	$datearr[$i][$this->case_array[$x]] =  0;
@@ -151,44 +163,43 @@ class visualize{
 
 		if ($this->sql->execute()) {
 		  while($data=$this->sql->fetch(PDO::FETCH_ASSOC)){
-
+		  	//For every entry we extract the year
 		    $date = htmlspecialchars($data['news_date']);
 		    $date=strval($date);
 		    $date=strtotime($date);
 		    $date = idate('Y', $date);
+		    //if we have multiple tallies
 		    if($this->num_compare>1){
-		                if(isset($datearr[$date])){
-		             	  foreach ($this->case_array as $guess){
+					//make sure the year of the entry is in the specified time period
+          if(isset($datearr[$date])){
+       	  	//check which case to tally for this date
+       	  	foreach ($this->case_array as $guess){
+       	  		//if we are looking at all cases then we make a tally for every entry
+	       	  	if ($guess=='all'){
+	       	  		//make a tally for that year
+	       	  		$datearr[$date][$guess]++;
+	       	  	}
+	       	  	//then we check the relevant classifications
+	        		if(strpos(strval($data['crime_classification']),$guess)===0){
+	        			//make a tally for that year
+								$datearr[$date][$guess]++;
+	            		}
+       		 }
 
-		             	  	if ($guess=='all'){
-		             	  		$datearr[$date][$guess]++;
-		             	  	}
-		              		if(strpos(strval($data['crime_classification']),$guess)===0){
+          }
 
-									$datearr[$date][$guess]++;
-
-		              		}
-		         		 }
-
-		            }
-
-		            if($date<$this->firstyear){
-		              $this->firstyear=$date;
-		            }
-		            if($date>$this->lastyear){
-		              $this->lastyear=$date;
-		            }
+          if($date<$this->firstyear){
+            $this->firstyear=$date;
+          }
+          if($date>$this->lastyear){
+            $this->lastyear=$date;
+          }
 		    }
 		    else{
+		    		//we only have 1 entry, so we make a tally for every year that falls withing the dates
 		          if(isset($datearr[$date])){
+		          //make a tally
 		          $datearr[$date]++;
-		        }
-
-		        if($date<$this->firstyear){
-		          $this->firstyear=$date;
-		        }
-		        if($date>$this->lastyear){
-		          $this->lastyear=$date;
 		        }
 		      }
 
@@ -197,12 +208,15 @@ class visualize{
 
 		//create a string full of data points for the chart
 		if($this->num_compare>1){
+			//for every year put the tallies into the proper google chart format
 		  foreach ($datearr as $year => $count) {
 		    if($year!=0){
 		    	$thisyear=strval($year);
-
+		    	//every year has one bracket with however many data points for that year
 		    	$this->mathdata.= "[new Date($thisyear, 0, 1),";
 		    	foreach($this->case_array as $case) {
+		    		//sum=number of tallies
+		    		//each data point is: tally, "text for custom tooltip"
 				    $sum=$count[$case];
 				    	if($case=='all'){
 		    				$this->mathdata.= "$sum, '<strong>".$thisyear."</strong><br>"."All".":<strong>$sum</strong>', ";
@@ -219,6 +233,7 @@ class visualize{
 
 		}
 		else{
+			//case of 1 line
 		  foreach ($datearr as $year => $count) {
 		    if($this->case_array[0]=='all'){
 		    	$this->mathdata.= "[new Date($year, 0, 1),$count, '<strong>".$year."</strong><br>".$this->case_array[0].":<strong>$count</strong>'], ";
@@ -230,14 +245,17 @@ class visualize{
 		}
 	}
 function set_pie(){
-
-		//this needs to be fixed so that it is scaleable, right now it creates seperate arrays for different cases
+		//set pie uses the much of thesame functionality of the above set line
+		//However if only one line is shown the pie chart splits that classification into years,
+		//otherwise it makes a percentage of each classification over ALL years
 		$datearr = array();
 		for ($i=$this->begin; $i <= $this->end ; $i++) {
 			if($this->num_compare==1){
+				//make tally
 		  	$datearr[$i]=0;
 		  }
 		  else{
+		  	//make tally for seperate cases
 		  	for ($x=0; $x < $this->num_compare; $x++) {
 		  	$datearr[$i][$this->case_array[$x]] =  0;
 			}
@@ -257,35 +275,25 @@ function set_pie(){
 		             	  foreach ($this->case_array as $guess){
 
 		             	  	if ($guess=='all'){
+		             	  		//make tally
 		             	  		$datearr[$date][$guess]++;
 		             	  	}
 		              		if(strpos(strval($data['crime_classification']),$guess)===0){
-
+		              			//make tally
 									$datearr[$date][$guess]++;
 
 		              		}
 		         		 }
 
 		            }
-
-		            if($date<$this->firstyear){
-		              $this->firstyear=$date;
-		            }
-		            if($date>$this->lastyear){
-		              $this->lastyear=$date;
-		            }
 		    }
 		    else{
 		          if(isset($datearr[$date])){
+		          	//make tally
 		          $datearr[$date]++;
 		        }
 
-		        if($date<$this->firstyear){
-		          $this->firstyear=$date;
-		        }
-		        if($date>$this->lastyear){
-		          $this->lastyear=$date;
-		        }
+
 		      }
 
 		  }
@@ -297,7 +305,7 @@ function set_pie(){
 		  foreach ($datearr as $year => $count) {
 		    if($year!=0){
 		    	$thisyear=strval($year);
-
+		    	//combine all tallies
 		    	foreach($this->case_array as $case) {
 				    $sum=$count[$case];
 				    	if($case=='all'){
@@ -339,12 +347,14 @@ function set_pie(){
 		  }
 		}
 	}
+	//gets the minimum year and the maximum year from cases
 	function set_year(){
 		$sql="SELECT MIN(news_date) AS min, MAX(news_date) AS max FROM cases";
 		if($result=$this->db->query($sql)){
 
 			$data = $result->fetch(PDO::FETCH_ASSOC);
 
+			//we extract just the year from each entry
 			$min = htmlspecialchars($data['min']);
 		    $min=strval($min);
 		    $min=strtotime($min);

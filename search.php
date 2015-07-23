@@ -308,7 +308,7 @@ if($searching=="yes")  {
     $dates = new visualize($db=$db);
     $dates->set_year();
   ?>
-
+  <div class = 'hidebutton'>
   <br>
   Between
   <input type='date' name='start' value='<?php  $dates->get_fy(); echo"-01-01";?>'>
@@ -319,7 +319,7 @@ if($searching=="yes")  {
 if (!isset($_GET['noscript'])) {
   $cat=new cats($db);
   echo"
-  <div class = 'hidebutton'>
+
   <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-srch'>Filter By Classification</button>
   <div class='classifys bigwindow hide'>
   <button type='button' onclick='toggleCase(".'"classifys", "bigwindow")'."' class='styled-button-DV'>Hide</button>";
@@ -327,9 +327,10 @@ if (!isset($_GET['noscript'])) {
    $cat=null;
    echo"
   </div>
-	</div>";
+";
 }
   ?>
+    </div>
  	<input type="hidden" name="searching" value="yes" />
  	<input type="hidden" name="init" value="0" />
  	<input type="hidden" name="limit" value="25" />
@@ -348,7 +349,7 @@ if (!isset($_GET['noscript'])) {
  	if(isset($search_result)){
  		echoDisplay($init, $num, $table, $limit);
  		echo $search_result;
- 		echolinks($init, $num, $table, $limit, $find, $buttonstart, $buttonfinish);
+ 		echolinks($init, $num, $table, $limit, $find, $buttonstart="", $buttonfinish="");
  	}
  	?>
   </div>
