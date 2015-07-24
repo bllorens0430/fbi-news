@@ -45,15 +45,16 @@ if(isset($_POST['login'])){
   echo $sql;
   $mysql=$db->prepare($sql);
   if($mysql->execute()&&$mysql->rowCount()===1){
-    if($name=='admin'){
-      echo '<br><br>The Secret # is: 2893<br><br>';
+    $result=$mysql->fetch(PDO::FETCH_ASSOC);
+    if($result['name']=='admin'){
+      echo '<br><br><br>The Secret # is: 2893<br><br><br>';
     }
     else{
-      echo'<br><br>Your account does not have access to the Secret #<br><br>';
+      echo'<br><br><br>Your account does not have access to the Secret #<br><br><br>';
     }
   }
   else{
-    echo"<br>LOGIN FAILED<br>";
+    echo"<br><br><br>LOGIN FAILED<br><br><br>";
   }
 
 }
@@ -85,7 +86,7 @@ $mysql=$db->prepare($sql);
 if($mysql->execute()){
   echo"<h2> These are the users of the table </h2>";
   while($result=$mysql->fetch(PDO::FETCH_ASSOC)){
-    echo $result['name'];
+    echo strip_tags($result['name']);
     echo " ID:".$result['number'];
     echo '<br>';
   }
@@ -96,6 +97,10 @@ else{
 ?>
 <h4>Easy Injection</h4>
 <p> 10' DROP TABLE dummy -- </p>
-<p> OR name='admin </p>
+<p>1 OR name='admin' </p>
+<p>admin' -- </p>
 <h4>Advanced Injection</h4>
 <p>10'; DROP TABLE dummy; SELECT * FROM dummy WHERE name='1</p>
+<p>admin' OR name='foot</p>
+<h4>XSS</h4>
+<p>&ltscript src="text/javascript"> &gt alert("hi"); &lt/script&gt</p>
