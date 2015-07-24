@@ -4,7 +4,6 @@
   // In other words, it will halt the script whereas
   // include only emits a warning (E_WARNING) which allows the script to continue.
   require("session.php"); // start or resume a session
-
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +33,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-<title>HCISec Crime Database</title>
+<title>Crime Database</title>
   <!--<link href="css/style.css" rel="stylesheet" type="text/css" />
   <link href="css/sidestyle.css" rel="stylesheet" type="text/css" />-->
 </head>
@@ -49,7 +48,7 @@
           <div class="masthead clearfix">
             <div class="inner">
               <img class="lock" alt="lock" src="../FBIbs/img/lock.png" >
-              <h3 class="masthead-brand active"><a href="index.php">Human Computer Interaction Security Initiative</a></h3>
+              <h3 class="masthead-brand active"><a href="index.php">Cyber Crime Database</a></h3>
             </div>
           </div>
 
@@ -66,7 +65,7 @@
 
           <div class="mastfoot">
             <div class="inner">
-              <p class="text-muted"><a href="mailto:xinwenfu@gmail.com">Contact</a> | &copy; 2015 <a href="http://www.cs.uml.edu/~xinwenfu/">Xinwen Fu</a> | James Palmer | Brea Llorens<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"></a></p>            </div>
+              <p class="text-muted"><a href="mailto:xinwenfu@gmail.com">Contact</a> | &copy; 2015 <a href="http://www.cs.uml.edu/~xinwenfu/">Xinwen Fu</a> | Brea Llorens | <a href='http://jmp464.github.io/'>James Palmer</a><a rel="license" href="http://creativecommons.org/licenses/by/3.0/"></a></p>            </div>
           </div>
 
         </div>
