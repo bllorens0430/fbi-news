@@ -1,0 +1,181 @@
+body { padding-top: 70px; padding-bottom:70px;}footer{position:fixed;bottom:0;padding-left:15px;width:100%;margin-left:auto;clear:both;} #logincontent{height:auto;float:right;margin-right:10%;}tr{width:100%;} .table-striped{ table-layout: fixed; width:100%;}
+ table th, table td { overflow: hidden; } .hide{display:none;}
+.dvwindow, .bigwindow{position: fixed;left: 20%;
+  top: 10%;
+  background-color: #fff;
+  border: solid 1px gray;
+  border-radius: 2px;
+  z-index: 1000;
+  overflow-y:scroll;
+  height: 50%;
+}
+input{
+  margin:2px;
+}
+.error{
+  color:#ff6900;
+}
+
+#home{
+  background: url(../../FBIbs/img/bluebg.jpg) no-repeat center center fixed;
+  }
+#floater{
+  margin-left:32%;
+}
+#login{
+  background: url(../../FBIbs/img/orangebg.jpg) no-repeat center center fixed;
+}
+#home, #login{
+  width:25%;
+  height:75%;
+  position:absolute;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: white;
+  border-radius:2px;
+}
+#hometitle, #logintitle{
+  height:100%;
+  width:100%;
+}
+#logintitle{
+    background-color: rgba(0,0,0,.35);
+}
+#hometitle a{
+  color: white;
+  text-decoration: underline;
+}
+#hometitle a:hover, #hometitle a:focus{
+color: #FF8BB4;
+
+}
+
+.lock{
+  height:2.5em;
+  width: 2.5em;
+  margin-top: -.75em;
+  margin-bottom:1.5em;
+
+}
+.indent{
+  margin-left:1em;
+  overflow:hidden;
+  white-space:nowrap;
+}
+.navbar, .footer{
+  background-color:#294754;
+}
+.footer a{
+  color:white;
+}
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover{
+   background-color:#ff6900;
+}
+.navbar-inverse .navbar-toggle:focus, .navbar-inverse .navbar-toggle:hover {
+  background-color: #ff6900;
+}
+.navbar-inverse .navbar-toggle {
+  border-color: transparent;
+}
+.navbar-inverse .navbar-nav>li>a {
+  color: white;
+}
+.navbar-inverse .navbar-nav>li>a:hover,.navbar-inverse .navbar-nav>li>a:focus{
+  color:#ff6900;
+}
+.text-warning{
+  color:#ff6900;
+}
+#chart_div{
+  width:100%;
+}
+
+td{margin-left:-.2em;}
+button, input[type=submit], .btn{
+  background-color:#ff6900;
+  color:#fff;
+  font-family:'Helvetica Neue',sans-serif;
+  font-size:13px;
+  line-height:15px;
+  border-radius:2px;
+  -webkit-border-radius:2px;
+  -moz-border-radius:2px;
+  border:0;
+  text-shadow:#C17C3A 0 -1px 0;
+  margin-right: .5em;
+}
+button:focus, input[type=submit]:focus, .btn:focus, button:hover, input[type=submit]:hover, .btn:hover{
+  color:white;
+  background-color:#294754;
+}
+.login-card {
+  padding: 40px;
+  width: 274px;
+  margin: 0 auto 10px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.login-card h1 {
+  font-weight: 100;
+  text-align: center;
+  font-size: 2.3em;
+}
+
+.login-card input[type=submit] {
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.login-card input[type=text], input[type=password] {
+  height: 44px;
+  font-size: 16px;
+  width: 100%;
+    color:black;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-top: 1px solid #c0c0c0;
+
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+.login-card input[type=text]:hover, input[type=password]:hover, .login-card input[type=text]:focus, input[type=password]:focus  {
+  border: 1px solid #b9b9b9;
+  border-top: 1px solid #a0a0a0;
+  -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+#home p{
+  font-size:1.5em;
+}
+#aboutcontent{
+  width:50%;
+  margin:auto;
+}
+#resources{
+  }
+footer{
+  z-index:2000;
+}
+#vis-form div.col-md-2{
+  display:inline-block;
+}
+
+#crimecat{width:100%;}
+bigwindow table{padding:5px;}
+@media(max-width:992px){#home,#login{position:static; width:100%;}#homecontent,#logincontent{float:none;}#aboutcontent{width:100%;margin:none;}div#floater{margin-left:0%;}#home p{font-size:1em;}}
+@media(max-width:480px){input{display:block;}table, th, td, tr {
+display: block;} td{padding-left:4px;}tr{border:1px solid #ff6900;} #vis-form div.col-md-2{
+  display:table;
+}}
+
+

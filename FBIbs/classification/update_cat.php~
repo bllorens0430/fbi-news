@@ -1,0 +1,67 @@
+<?php
+  require("../dotcheck.php"); // dotcheck.php provides $db
+
+  $id =$_REQUEST['cat_number'];
+
+  $sql = "SELECT * FROM crime_category WHERE cat_number  = :cat_number";
+  $array_param=array(':cat_number'=>$id);
+  $sth = $db->prepare($sql);
+  $sth->execute($array_param);
+  $row = $sth->fetch();
+
+  if (!$row)
+  {
+	  die("Error: Data not found..");
+  }
+
+  $cat_number=$row['cat_number'] ;
+  $crime_classification= $row['crime_classification'] ;
+  $cat_name=$row['cat_name'] ;
+  $cat_explanation=$row['cat_explanation'] ;
+
+  $db=null;
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Edit News</title>
+</head>
+
+<body>
+<form id="crime-category" name="Crime Category" method="post" action="index.php">
+
+
+<p>Category Number:
+  <input name="cat_number" type="text" id="cat_number" size="10" value="<?php echo $id ?>" readonly />
+  Crime Classification:
+  <input name="crime_classification" type="text" id="crime_classification" size="25" value="<?php echo $crime_classification ?>" />
+</p>
+<p>Category Name:
+  <input name="cat_name" type="text" id="cat_name" size="40" value="<?php echo $cat_name ?>" />
+</p>
+<p>Category Explanation</p>
+<p>
+  <textarea name="cat_explanation" id="cat_explanation" cols="120" rows="15">
+<?php echo $cat_explanation ?>
+  </textarea>
+</p>
+
+<table>
+<tr>
+<td>
+<form>
+  <input type="submit" name="Update" value="Update" />
+  </form>
+</td>
+	<td>
+<form action="index.php">
+<input type="submit" value="Cancel">
+</form>        </td>
+  </tr>
+</table>
+</form>
+
+</body>
+</html>
